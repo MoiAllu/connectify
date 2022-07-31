@@ -65,7 +65,7 @@ const Input: React.FC<Props> = ({ type, placeholder }) => {
       <input
         type={type}
         placeholder={placeholder}
-        className="w-full bg-inherit focus-within:outline-none px-1"
+        className="w-full bg-inherit focus-within:outline-none p-2"
       />
     </div>
   );
