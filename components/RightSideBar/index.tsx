@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
-const index = (props: Props) => {
+const RightSideBar = (props: Props) => {
   return (
-    <div>index</div>
-  )
-}
+    <div className="hidden lg:flex flex-col items-center fixed bottom-0 right-0 w-[18vw] min-h-[calc(100vh-70px)] bg-white gap-3 pt-4">
+      Right Sidebar
+    </div>
+  );
+};
 
-export default index
+export default RightSideBar;
