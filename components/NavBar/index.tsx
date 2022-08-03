@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React, { Fragment } from "react";
 
 type Props = {};
@@ -50,11 +51,11 @@ const Navbar = (props: Props) => {
             </svg>
           </button>
         </div>
-        <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2 ">
-          <div className=" hover:transition-all hover:bg-gray-50  rounded-xl justify-center items-center flex cursor-pointer">
-            <a href="/" className="text-black m-1 p-1 ">
+        <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2">
+          <div className="hover:shadow-md rounded-xl justify-center items-center flex cursor-pointer">
+            <Link href="/profile" className="text-black m-1 p-1 ">
               UserName
-            </a>
+            </Link>
             <Image
               className="rounded-xl"
               src="/square.jpg"
