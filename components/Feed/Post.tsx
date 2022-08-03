@@ -5,7 +5,7 @@ type Props = {};
 
 const Post: React.FC<Props> = ({}) => {
   return (
-    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-2">
+    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-2 min-w-[400px]">
       {/* Person */}
       <div className="flex justify-between gap-3">
         <Image
@@ -59,8 +59,12 @@ const Post: React.FC<Props> = ({}) => {
           layout="responsive"
         />
         <div className="flex justify-between gap-6">
-          <p className="flex-1">9 Likes</p>
-          <p>3 Comments</p>
+          <button className="flex-1 text-start hover:underline underline-offset-1">
+            9 Likes
+          </button>
+          <button className="hover:underline underline-offset-1">
+            3 Comments
+          </button>
           <p>7 Shares</p>
         </div>
       </div>
@@ -135,7 +139,7 @@ const Post: React.FC<Props> = ({}) => {
           className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
           placeholder="Write a comment"
         />
-        <div className="bg-sky-200 p-1.5 rounded-lg">
+        <button className="bg-sky-200 p-1.5 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -151,7 +155,7 @@ const Post: React.FC<Props> = ({}) => {
             <line x1="10" y1="14" x2="21" y2="3" />
             <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
           </svg>
-        </div>
+        </button>
       </div>
     </div>
   );
