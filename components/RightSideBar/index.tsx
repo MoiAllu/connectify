@@ -29,18 +29,20 @@ const RightSideBar = (props: Props) => {
       </div>
 
       {/* Friends List */}
-      <div className="flex justify-between w-full">
+      <div className=" flex justify-between w-full">
         <h5 className="font-semibold">Friends</h5>
         <svg
           xmlns="http://www.w3.org/2000/svg"
+          className="stroke-gray-500 cursor-pointer"
           width="28"
           height="28"
           viewBox="0 0 24 24"
           strokeWidth="1.5"
-          stroke="#000000"
-          fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
+          onClick={() => {
+            console.log("Friends Clicked");
+          }}
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <circle cx="5" cy="12" r="1" />

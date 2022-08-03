@@ -18,7 +18,9 @@ const Friend: React.FC<Props> = ({ friend }) => {
         width={40}
         height={40}
       />
-      <p className="flex-1 truncate">{friend.name.split(" ")[0]}</p>
+      <p className="flex-1 truncate font-semibold">
+        {friend.name.split(" ")[0]}
+      </p>
       {Math.floor(Date.now() / 1000) - friend.lastActive < 60 ? (
         <span className="w-2 h-2 rounded-full bg-green-400"></span>
       ) : (
