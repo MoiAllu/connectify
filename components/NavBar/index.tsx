@@ -6,7 +6,7 @@ type Props = {};
 const Navbar = (props: Props) => {
   return (
     <Fragment>
-      <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white">
+      <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white gap-3 lg:gap-0">
         <div className="max-h-[70px] md:min-w-[18vw]  py-4 px-2 text-left ">
           <h3 className="pl-[12%] py-1 text-[1.2rem] lg:text-[1.6rem] text-[#377dff] font-bold font-spartan tracking-wider">
             Connectify

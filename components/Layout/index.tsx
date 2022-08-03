@@ -9,11 +9,11 @@ const Layout = ({ children }: any) => {
   // TODO - Get auth and conditionaly render Sidebars for signin and signup pages
   const auth: boolean = true;
   return (
-    <div>
+    <>
       <div className="flex bg-gray-50 ">
         <Navbar />
-        {auth && <LeftSidebar />}
       </div>
+      {auth && <LeftSidebar />}
       <div
         className={`${
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"
@@ -22,7 +22,7 @@ const Layout = ({ children }: any) => {
         {children}
       </div>
       {auth && <RightSidebar />}
-    </div>
+    </>
   );
 };
 

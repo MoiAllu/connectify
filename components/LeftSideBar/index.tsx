@@ -19,7 +19,7 @@ const LeftSideBar = (props: Props) => {
       {/* Element */}
       <Link href={"/"}>
         <div
-          className={`flex  items-center w-3/4 h-32px ${
+          className={`flex  items-center w-[90%] xl:w-[80%] h-32px ${
             isFeed
               ? "bg-blue-grey text-white stroke-white"
               : "bg-white text-black stroke-black"
@@ -48,7 +48,7 @@ const LeftSideBar = (props: Props) => {
       {/* Element */}
       <Link href={"/messages"}>
         <div
-          className={`flex  items-center w-3/4 h-32px ${
+          className={`flex  items-center w-[90%] xl:w-[80%] h-32px ${
             isMessages
               ? "bg-blue-grey text-white stroke-white"
               : "bg-white text-black stroke-black"
@@ -76,7 +76,7 @@ const LeftSideBar = (props: Props) => {
       {/* Element */}
       <Link href={"/notifications"}>
         <div
-          className={`flex  items-center w-3/4 h-32px ${
+          className={`flex items-center w-[90%] xl:w-[80%] h-32px ${
             isNotifications
               ? "bg-blue-grey text-white stroke-white"
               : "bg-white text-black stroke-black"
@@ -97,14 +97,18 @@ const LeftSideBar = (props: Props) => {
             <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
             <circle cx="17" cy="7" r="3" />
           </svg>
-          <p>Notifications</p>
+          <p className="text-md">Notification</p>
+
+          <span className="bg-red rounded-full px-2 py-1 text-xs text-white">
+            99+
+          </span>
         </div>
       </Link>
 
       {/* Element */}
       <Link href={"/profile"}>
         <div
-          className={`flex  items-center w-3/4 h-32px ${
+          className={`flex  items-center w-[90%] xl:w-[80%] h-32px ${
             isProfile
               ? "bg-blue-grey text-white stroke-white"
               : "bg-white text-black stroke-black"
@@ -132,7 +136,7 @@ const LeftSideBar = (props: Props) => {
       {/* Element */}
       <Link href={"/settings"}>
         <div
-          className={`flex  items-center w-3/4 h-32px ${
+          className={`flex  items-center w-[90%] xl:w-[80%] h-32px ${
             isSettings
               ? "bg-blue-grey text-white stroke-white"
               : "bg-white text-black stroke-black"
@@ -159,7 +163,7 @@ const LeftSideBar = (props: Props) => {
 
       {/* Element */}
       <button
-        className={`flex hover:shadow-sm hover:bg-gray-300 transition-all  items-center w-3/4 h-32px bg-white text-black stroke-black font-semibold rounded-lg p-2    gap-3 cursor-pointer hover:shadow-sm hover:bg-gray-300 transition-all`}
+        className={`flex hover:shadow-sm hover:bg-gray-300 transition-all  items-center w-[90%] xl:w-[80%] h-32px bg-white text-black stroke-black font-semibold rounded-lg p-2    gap-3 cursor-pointer hover:shadow-sm hover:bg-gray-300 transition-all`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
