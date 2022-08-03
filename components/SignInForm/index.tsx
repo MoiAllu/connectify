@@ -8,7 +8,7 @@ const index = (props: Props) => {
   return (
     <div className="text-blue-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
       <h3 className="text-2xl font-bold">Sign In </h3>
-      <p className="text-md mb-4 mt-2 text-center">You've been missing.</p>
+      <p className="text-md mb-4 mt-2 text-center">You&apos;ve been missing.</p>
       <div className="w-full max-w-[400px] bg-white p-6 flex flex-col gap-2 rounded-md">
         <div className="flex flex-col sm:flex-row gap-2 justify-between">
           <button className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-grey flex justify-center items-center px-4 gap-3 py-3">
