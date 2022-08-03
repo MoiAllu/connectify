@@ -8,7 +8,7 @@ const Navbar = (props: Props) => {
     <Fragment>
       <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white">
         <div className="max-h-[70px] md:min-w-[18vw]  py-4 px-2 text-left ">
-          <h3 className="logo pl-[12%] py-1 text-[1.2rem] lg:text-[1.6rem]">
+          <h3 className="pl-[12%] py-1 text-[1.2rem] lg:text-[1.6rem] text-[#377dff] font-bold font-spartan tracking-wider">
             Connectify
           </h3>
         </div>

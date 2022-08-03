@@ -21,13 +21,6 @@ a {
   box-sizing: border-box;
 }
 
-.logo {
-  font-family: "League Spartan", sans-serif;
-  font-weight: 700;
-  color: #377dff;
-  letter-spacing: 0.05rem;
-}
-
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

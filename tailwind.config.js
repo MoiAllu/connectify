@@ -12,6 +12,9 @@ module.exports = {
         'red': "#ff5630",
         'blue': "#377dff"
       },
+      fontFamily: {
+        spartan: "'League Spartan', sans-serif"
+      }
     },
   },
   plugins: [],
