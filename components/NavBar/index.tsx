@@ -8,12 +8,12 @@ const Navbar = (props: Props) => {
     <Fragment>
       <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white">
         <div className="max-h-[70px] md:min-w-[18vw]  py-4 px-2 text-left ">
-          <h3 className="logo pl-[12%] py-1 text-[1.2rem] lg:text-[1.6rem]">
+          <h3 className="sm:text-[0.9rem] logo pl-[12%] py-1 text-[1.2rem] lg:text-[1.6rem]">
             Connectify
           </h3>
         </div>
-        <div className="hidden sm:flex max-h-[70px] py-4 text-gray-600 ">
-          <div className="flex px-1 py-1 rounded-lg max-h-[35px] text-[14px] outline outline-gray-300 focus:shadow-sm  w-[calc(100vw-500px)] min-w-[250px] max-w-[500px] ">
+        <div className="sm:px-2 hidden sm:flex max-h-[70px] py-4 text-gray-600 ">
+          <div className=" flex px-1 py-1 rounded-lg max-h-[35px] text-[14px] outline outline-gray-300 focus:shadow-sm  w-[calc(100vw-500px)] min-w-[250px] max-w-[500px] ">
             <svg
               className=" fill-gray-500 p-1  min-w-[30px] min-h-[30px]  "
               xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,6 @@ const Navbar = (props: Props) => {
                 type="search"
               ></input>
             </div>
-            <label htmlFor="searchbox"></label>
           </div>
         </div>
         <div className="sm:hidden flex max-h-[70px] text-right w-full justify-end py-4 px-2 ">
@@ -51,9 +50,9 @@ const Navbar = (props: Props) => {
             </svg>
           </button>
         </div>
-        <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2">
-          <div className="hover:shadow-md rounded-xl justify-center items-center flex cursor-pointer">
-            <a href="/home" className="text-black m-1 p-1 ">
+        <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2 ">
+          <div className=" hover:transition-all hover:bg-gray-50  rounded-xl justify-center items-center flex cursor-pointer">
+            <a href="/" className="text-black m-1 p-1 ">
               UserName
             </a>
             <Image
