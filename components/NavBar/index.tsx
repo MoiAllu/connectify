@@ -13,7 +13,7 @@ const Navbar = (props: Props) => {
           </h3>
         </div>
         <div className="hidden sm:flex max-h-[70px] py-4 text-gray-600 ">
-          <div className="flex px-1 py-1 rounded-lg max-h-[35px] text-[14px] outline outline-gray-300 focus:shadow-sm  w-[calc(100vw-500px)] min-w-[250px] max-w-[500px] ">
+          <div className="flex items-center px-1 py-1 rounded-lg max-h-[35px] text-[14px] border border-gray-300 focus:shadow-sm  w-[calc(100vw-500px)] min-w-[250px] max-w-[500px] ">
             <svg
               className=" fill-gray-500 p-1  min-w-[30px] min-h-[30px]  "
               xmlns="http://www.w3.org/2000/svg"

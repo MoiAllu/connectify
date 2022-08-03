@@ -12,7 +12,7 @@ const Messages: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
+      <div className="flex items-center justify-center min-h-[calc(100vh-70px)] bg-gray-50 px-4">
         Messages
       </div>
     </>
