@@ -1,4 +1,5 @@
 import React from "react";
+import CreatePost from "../Cards/CreatePost";
 
 type Props = {};
 
@@ -6,7 +7,7 @@ const Feed = (props: Props) => {
   return (
     <div className="w-full flex">
       <div className="min-w-[70%] flex-1">
-        <div>Create Post</div>
+        <CreatePost />
         <div>Posts</div>
       </div>
       <div className="hidden xl:flex flex-col flex-1">
