@@ -5,7 +5,7 @@ type Props = {};
 
 const Post: React.FC<Props> = ({}) => {
   return (
-    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-2 min-w-[400px]">
+    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-2 min-w-[400px] shadow-md">
       {/* Person */}
       <div className="flex justify-between gap-3">
         <Image
