@@ -30,7 +30,7 @@ const Navbar = (props: Props) => {
             </svg>
             <div className="w-[calc(100vw-500px)]">
               <input
-                className="p-1 rounded-lg max-h-[35px] text-[14px]  min-w-[200px] max-w-[450px]  outline-none focus:outline-none  "
+                className="p-1 rounded-lg max-h-[35px] text-[14px]  w-full min-w-[210px] outline-none focus:outline-none  "
                 id="searchbox"
                 placeholder="Search for something here..."
                 type="search"
