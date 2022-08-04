@@ -5,7 +5,7 @@ type Props = {};
 
 const CreatePost = (props: Props) => {
   return (
-    <div className="w-full px-4 py-8">
+    <div className="w-full px-1 py-8">
       <div className="bg-white rounded-xl px-2 py-3 shadow-md">
         <div className=" flex p-2 text-left gap-2 mb-3 ">
           <Image
@@ -35,7 +35,7 @@ const CreatePost = (props: Props) => {
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="#2c3e50"
                 fill="none"
                 strokeLinecap="round"
@@ -50,7 +50,12 @@ const CreatePost = (props: Props) => {
           </button>
           <button className="gap-1 flex p-2 flex-1  ">
             <div className="py-2 ">
-              <Image width="20px" height="20px " src="/Photoicon.svg"></Image>
+              <Image
+                width="20px"
+                height="20px "
+                src="/Photoicon.svg"
+                alt="Photo"
+              ></Image>
             </div>
             <h3 className=" p-2 text-sm  text-left">Photo Video</h3>
           </button>
@@ -62,11 +67,11 @@ const CreatePost = (props: Props) => {
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="#2c3e50"
                 fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <circle cx="12" cy="12" r="9" />

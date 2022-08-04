@@ -5,7 +5,7 @@ type Props = {};
 
 const Post: React.FC<Props> = ({}) => {
   return (
-    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-2 min-w-[400px]">
+    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-3">
       {/* Person */}
       <div className="flex justify-between gap-3">
         <Image
@@ -43,7 +43,7 @@ const Post: React.FC<Props> = ({}) => {
       </div>
 
       {/* Post Body & Image */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         <p className="">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit.
           Reprehenderit, harum. Sunt voluptatem veniam nemo excepturi maxime et
@@ -58,27 +58,29 @@ const Post: React.FC<Props> = ({}) => {
           height={200}
           layout="responsive"
         />
-        <div className="flex justify-between gap-6">
-          <button className="flex-1 text-start hover:underline underline-offset-1">
-            9 Likes
-          </button>
+        <div className="flex justify-between gap-6 text-sm lg:text-md">
+          <div className="flex-1">
+            <button className="hover:underline underline-offset-1">
+              9 Likes
+            </button>
+          </div>
           <button className="hover:underline underline-offset-1">
             3 Comments
           </button>
-          <p>7 Shares</p>
+          <p className="cursor-default">7 Shares</p>
         </div>
       </div>
       {/* Controls */}
-      <div className="flex justify-between border-t border-b py-3">
-        <button className="flex items-center gap-1">
+      <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
+        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red hover:stroke-red">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
             height="28"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000000"
-            fill="none"
+            stroke="inherit"
+            fill="inherit"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -87,15 +89,15 @@ const Post: React.FC<Props> = ({}) => {
           </svg>
           Like
         </button>
-        <button className="flex items-center gap-1">
+        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-orange-300 hover:stroke-black">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
             height="28"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000000"
-            fill="none"
+            stroke="inherit"
+            fill="inherit"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -106,15 +108,15 @@ const Post: React.FC<Props> = ({}) => {
           </svg>
           Comments
         </button>
-        <button className="flex items-center gap-1">
+        <button className="flex items-center gap-1 stroke-black hover:stroke-blue fill-transparent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
             height="28"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000000"
-            fill="none"
+            stroke="inherit"
+            fill="inherit"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -127,7 +129,7 @@ const Post: React.FC<Props> = ({}) => {
       {/* Comment */}
       <div className="flex justify-between items-center gap-4">
         <Image
-          className="rounded-full"
+          className="rounded-full min-w-[28px] min-h-[28px]"
           src={"/square.jpg"}
           alt="Avatar Image"
           objectFit="fill"
@@ -139,7 +141,7 @@ const Post: React.FC<Props> = ({}) => {
           className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
           placeholder="Write a comment"
         />
-        <button className="bg-sky-200 p-1.5 rounded-lg">
+        <button className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
