@@ -72,7 +72,7 @@ const Post: React.FC<Props> = ({}) => {
       </div>
       {/* Controls */}
       <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red hover:stroke-red">
+        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red hover:stroke-red transition-all">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -89,7 +89,7 @@ const Post: React.FC<Props> = ({}) => {
           </svg>
           Like
         </button>
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-orange-300 hover:stroke-black">
+        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -108,7 +108,7 @@ const Post: React.FC<Props> = ({}) => {
           </svg>
           Comments
         </button>
-        <button className="flex items-center gap-1 stroke-black hover:stroke-blue fill-transparent">
+        <button className="flex items-center gap-1 stroke-black hover:stroke-blue fill-transparent transition-all">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"

@@ -54,9 +54,9 @@ const Navbar = (props: Props) => {
           </button>
         </div>
         <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2">
-          <div className="hover:shadow-md rounded-xl justify-center items-center flex cursor-pointer">
-            <Link href="/profile" className="text-black m-1 p-1 ">
-              UserName
+          <div className="hover:bg-gray-50 rounded-xl justify-center items-center flex cursor-pointer gap-2 p-3 hover:underline underline-offset-1">
+            <Link href="/profile">
+              <span className="tracking-wide">Jennifer</span>
             </Link>
             <Image
               className="rounded-xl"

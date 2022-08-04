@@ -17,7 +17,11 @@ const Feed = (props: Props) => {
           <BirthdayCard />
           <UpcomingBirthdays />
         </div>
-        <Post />
+        <div className="flex flex-col gap-4">
+          <Post />
+          <Post />
+          <Post />
+        </div>
       </div>
       <div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
         <FollowSuggestion />
