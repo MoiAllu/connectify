@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 
 type Props = {};
 
-const Navbar = (props: Props) => {
+const NavBar = (props: Props) => {
   return (
     <Fragment>
       <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white gap-3 lg:gap-0">
@@ -73,4 +73,4 @@ const Navbar = (props: Props) => {
   );
 };
 
-export default Navbar;
+export default NavBar;

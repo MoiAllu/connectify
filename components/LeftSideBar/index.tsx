@@ -105,7 +105,7 @@ const LeftSideBar = (props: Props) => {
           </svg>
           <p className="xl:text-md text-sm">Notification</p>
 
-          <span className="bg-red rounded-full px-2 py-1 xl:ml-2 text-[0.5rem] xl:text-xs text-white">
+          <span className="bg-red-500 rounded-full px-2 py-1 xl:ml-2 text-[0.5rem] xl:text-xs text-white">
             99+
           </span>
         </div>

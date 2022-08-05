@@ -72,7 +72,7 @@ const Post: React.FC<Props> = ({}) => {
       </div>
       {/* Controls */}
       <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red hover:stroke-red transition-all">
+        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red-500 hover:stroke-red-500 transition-all">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"

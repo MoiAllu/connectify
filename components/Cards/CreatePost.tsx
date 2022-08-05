@@ -83,7 +83,7 @@ const CreatePost = (props: Props) => {
             <h3 className="text-center p-2 text-sm">Feeling</h3>
           </button>
           <div className="text-right  mt-2  sm:min-w-[50px]">
-            <button className="px-7 py-2 text-white  bg-blue rounded-md  hover:shadow-lg ">
+            <button className="px-7 py-2 text-white  bg-blue-500 rounded-md  hover:shadow-lg ">
               Post
             </button>
           </div>

@@ -12,7 +12,7 @@ const FollowSuggestion = (props: Props) => {
         <div className="flex justify-between border-b py-1">
           <p className="font-semibold">You Might Like</p>
           <Link href="/">
-            <span className="text-blue hover:underline underline-offset-1 cursor-pointer">
+            <span className="text-blue-500 hover:underline underline-offset-1 cursor-pointer">
               See all
             </span>
           </Link>
@@ -45,7 +45,7 @@ const FollowSuggestion = (props: Props) => {
           <button className="flex-1 py-1.5 border text-gray-500 rounded-lg hover:shadow-md">
             Ignore
           </button>
-          <button className="flex-1 py-1.5 text-white bg-blue rounded-lg hover:shadow-lg">
+          <button className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg">
             Follow
           </button>
         </div>

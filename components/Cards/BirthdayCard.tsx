@@ -12,7 +12,7 @@ const BirthdayCard = (props: Props) => {
         <div className="flex justify-between border-b py-1">
           <p className="font-semibold">Birthdays</p>
           <Link href="/">
-            <span className="text-blue hover:underline underline-offset-1 cursor-pointer">
+            <span className="text-blue-500 hover:underline underline-offset-1 cursor-pointer">
               See all
             </span>
           </Link>
