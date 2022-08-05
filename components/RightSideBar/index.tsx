@@ -5,7 +5,7 @@ type Props = {};
 
 const RightSideBar = (props: Props) => {
   return (
-    <div className="hidden lg:flex flex-col items-center fixed bottom-0 right-0 w-[18vw] min-h-[calc(100vh-70px)] bg-white gap-3 py-1 px-4">
+    <div className="hidden lg:flex flex-col items-center fixed bottom-0 right-0 w-[18vw] h-[calc(100vh-70px)] bg-white gap-3 py-1 px-4 overflow-auto scrollbar-light">
       {/* Search */}
       <div className="flex items-center px-1 py-1 rounded-lg max-h-[35px] text-[14px] border border-gray-300 focus:shadow-sm w-full">
         <svg
@@ -50,6 +50,7 @@ const RightSideBar = (props: Props) => {
           <circle cx="19" cy="12" r="1" />
         </svg>
       </div>
+      <FriendsList />
       <FriendsList />
     </div>
   );

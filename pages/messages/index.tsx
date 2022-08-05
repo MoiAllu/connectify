@@ -13,7 +13,7 @@ const Messages: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex items-center justify-center min-h-[calc(100vh-70px)] bg-gray-50 px-4">
+      <div className="flex flex-col items-center min-h-[calc(100vh-70px)] relative top-[70px] lg:top-0 h-full bg-gray-50 px-4 rounded-2xl">
         <ChatWindow />
       </div>
     </>
