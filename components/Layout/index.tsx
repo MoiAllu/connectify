@@ -1,11 +1,23 @@
-import React from "react";
-import Navbar from "../Navbar";
+import React, { useEffect, useState } from "react";
+import Navbar from "../NavBar";
 import LeftSidebar from "../LeftSideBar";
 import RightSidebar from "../RightSideBar";
+import { useRouter } from "next/router";
 
 type props = {};
 
 const Layout = ({ children }: any) => {
+  //condition for not diplaying right sideBar on profile Page:
+  const router = useRouter();
+  const [route, isRoute] = useState(false);
+  useEffect(() => {
+    if (router.pathname == "/profile") {
+      isRoute(true);
+      console.log("Ali");
+    } else isRoute(false);
+  }, [router]);
+
+  console.log(router.pathname);
   // TODO - Get auth and conditionaly render Sidebars for signin and signup pages
   const auth: boolean = true;
   return (
@@ -21,7 +33,8 @@ const Layout = ({ children }: any) => {
       >
         {children}
       </div>
-      {auth && <RightSidebar />}
+
+      {auth && route ? "" : <RightSidebar />}
     </>
   );
 };
