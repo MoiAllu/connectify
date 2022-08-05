@@ -11,7 +11,7 @@ const Layout = ({ children }: any) => {
   const router = useRouter();
   const [route, isRoute] = useState(false);
   useEffect(() => {
-    if (router.pathname == "/profile") {
+    if (router.pathname == "/profile" || router.pathname == "/messages") {
       isRoute(true);
       console.log("Ali");
     } else isRoute(false);
@@ -20,6 +20,7 @@ const Layout = ({ children }: any) => {
   console.log(router.pathname);
   // TODO - Get auth and conditionaly render Sidebars for signin and signup pages
   const auth: boolean = true;
+
   return (
     <>
       <div className="flex bg-gray-50 ">
@@ -29,6 +30,8 @@ const Layout = ({ children }: any) => {
       <div
         className={`${
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"
+        } ${
+          route && "lg:w-[calc(100vw-18vw)] right-0"
         } lg:absolute  top-[70px] bg-gray-50 rounded-2xl`}
       >
         {children}
