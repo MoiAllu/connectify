@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../NavBar";
+import Navbar from "../Navbar";
 import LeftSidebar from "../LeftSideBar";
 import RightSidebar from "../RightSideBar";
 
