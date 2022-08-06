@@ -11,7 +11,7 @@ const Layout = ({ children }: any) => {
   const router = useRouter();
   const [route, isRoute] = useState(false);
   useEffect(() => {
-    if (router.pathname == "/profile" || router.pathname == "/messages") {
+    if (["/profile", "/messages"].includes(router.pathname)) {
       isRoute(true);
       console.log("Ali");
     } else isRoute(false);

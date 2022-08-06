@@ -8,7 +8,7 @@ type Props = {};
 const ChatWindow = (props: Props) => {
   const isActive = true;
   return (
-    <div className="bg-white w-full hidden lg:flex flex-col h-[calc(100vh-100px)] p-4 my-4 rounded-2xl">
+    <div className="bg-white w-full hidden lg:flex flex-col h-[calc(100vh-100px)] p-4 my-4 rounded-2xl shadow-md">
       <div className="flex justify-between w-full p-2 pb-4 border-b-2">
         <div className="flex justify-between gap-3">
           <Image
