@@ -4,7 +4,7 @@ import PersonChat from "./PersonChat";
 
 type Props = {};
 
-const Inbox = (props: Props) => {
+const Inbox: React.FC<Props> = ({}) => {
   return (
     <div className="flex flex-col items-center w-full lg:w-[40%] h-[calc(100vh-100px)] bg-white shadow-lg gap-3 py-6 px-4 overflow-auto scrollbar-light my-4 rounded-2xl min-w-[300px]">
       {/* Search */}
