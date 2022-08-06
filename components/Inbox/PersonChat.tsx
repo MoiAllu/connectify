@@ -6,7 +6,7 @@ type Props = {};
 
 const PersonChat = (props: Props) => {
   return (
-    <div className="flex justify-between items-center w-full p-2 pb-4 border-b-2 min-w-[272px]">
+    <div className="flex justify-between items-center w-full p-2 pb-4 border-b min-w-[272px] hover:bg-gray-100 transition-all">
       <div className="flex justify-between items-center gap-3">
         <div className="w-[40px] h-[40px]">
           <Image

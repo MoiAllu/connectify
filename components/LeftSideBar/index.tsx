@@ -74,7 +74,10 @@ const LeftSideBar = (props: Props) => {
             <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
             <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
           </svg>
-          <p className="xl:text-md text-sm">Messages</p>
+          <p className="xl:text-md text-sm flex-1">Messages</p>
+          <p className="text-xs bg-red-500 px-2 py-1 rounded-lg text-white">
+            99+
+          </p>
         </div>
       </Link>
 
@@ -103,11 +106,10 @@ const LeftSideBar = (props: Props) => {
             <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
             <circle cx="17" cy="7" r="3" />
           </svg>
-          <p className="xl:text-md text-sm">Notification</p>
-
-          <span className="bg-red-500 rounded-full px-2 py-1 xl:ml-2 text-[0.5rem] xl:text-xs text-white">
+          <p className="xl:text-md text-sm flex-1">Notification</p>
+          <p className="text-xs bg-red-500 px-2 py-1 rounded-lg text-white">
             99+
-          </span>
+          </p>
         </div>
       </Link>
 
