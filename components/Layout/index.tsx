@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../NavBar";
 import LeftSidebar from "../LeftSideBar";
 import RightSidebar from "../RightSideBar";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 type props = {};
 
 const Layout = ({ children }: any) => {
   //condition for not diplaying right sideBar on profile Page:
-  const router = useRouter();
-  const [route, isRoute] = useState(false);
+  const router: NextRouter = useRouter();
+  const [hideRightBar, isHideRightBar] = useState(false);
   useEffect(() => {
     if (["/profile", "/messages"].includes(router.pathname)) {
-      isRoute(true);
+      isHideRightBar(true);
       console.log("Ali");
-    } else isRoute(false);
+    } else isHideRightBar(false);
   }, [router]);
 
   console.log(router.pathname);
@@ -31,13 +31,13 @@ const Layout = ({ children }: any) => {
         className={`${
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"
         } ${
-          route && "lg:w-[calc(100vw-18vw)] right-0"
+          hideRightBar && "lg:w-[calc(100vw-18vw)] right-0"
         } lg:absolute  top-[70px] bg-gray-50 rounded-2xl`}
       >
         {children}
       </div>
 
-      {auth && route ? "" : <RightSidebar />}
+      {auth && hideRightBar ? "" : <RightSidebar />}
     </>
   );
 };

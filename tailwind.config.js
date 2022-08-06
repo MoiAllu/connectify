@@ -7,15 +7,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'blue-grey': '#4e5d78',
-        'white-shade': "f6f7f8",
+        "blue-grey": "#4e5d78",
+        "white-shade": "f6f7f8",
         // 'red': "#ff5630",
         // 'blue': "#377dff"
       },
       fontFamily: {
-        spartan: "'League Spartan', sans-serif"
-      }
+        spartan: "'League Spartan', sans-serif",
+      },
     },
   },
   plugins: [],
-}
+};
