@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import NotificationList from "../../components/NotificationList";
 
-const Notifications: NextPage = () => {
+const NotificationsPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -12,11 +13,22 @@ const Notifications: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex items-center justify-center min-h-[calc(100vh-70px)] bg-gray-50 px-4">
-        Notifications
+      <div className="flex flex-col items-center min-h-[calc(100vh-70px)] relative top-[70px] lg:top-0 h-full w-full bg-gray-50 p-6 rounded-2xl">
+        <div className="bg-white w-full h-full p-4 rounded-2xl shadow-md">
+          <div className="flex justify-between w-full p-2 pb-4 border-b">
+            <p className="font-bold text-gray-700">Notification</p>
+            <button className="text-blue-500 hover:underline underline-offset-1">
+              Mark all as read
+            </button>
+          </div>
+          <NotificationList />
+          {/* Remove below 2  */}
+          <NotificationList />
+          <NotificationList />
+        </div>
       </div>
     </>
   );
 };
 
-export default Notifications;
+export default NotificationsPage;

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "1",
+    "text": "Followed you",
+    "time": 1659671590,
+    "category": "Follow",
+    "markedRead": true,
+    "followedBack": true
+  },
+  {
+    "id": "13",
+    "text": "Followed you",
+    "time": 1659671590,
+    "category": "Follow",
+    "markedRead": false,
+    "followedBack": false
+  },
+  {
+    "id": "23",
+    "text": "Liked your post",
+    "time": 1659671000,
+    "category": "Like",
+    "markedRead": false
+  },
+  {
+    "id": "2",
+    "text": "Commented on your post",
+    "time": 1659671000,
+    "category": "Comment",
+    "markedRead": true
+  },
+  {
+    "id": "3",
+    "text": "Shared your post",
+    "time": 1659671000,
+    "category": "Share",
+    "markedRead": false
+  }
+]

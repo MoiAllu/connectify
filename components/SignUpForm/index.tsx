@@ -6,14 +6,14 @@ type Props = {};
 
 const index = (props: Props) => {
   return (
-    <div className="text-blue-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
+    <div className="text-blue-500-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
       <h3 className="text-2xl font-bold">Getting Started</h3>
       <p className="text-md mb-4 mt-2 text-center">
         Create an account to continue and connect with the people.
       </p>
       <div className="w-full max-w-[400px] bg-white p-6 flex flex-col gap-2 rounded-md">
         <div className="flex flex-col sm:flex-row gap-2 justify-between">
-          <button className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-grey flex justify-center items-center px-4 gap-3 py-3">
+          <button className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-500-grey flex justify-center items-center px-4 gap-3 py-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-brand-google"
@@ -31,7 +31,7 @@ const index = (props: Props) => {
             </svg>
             Login with Google
           </button>
-          <button className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-grey flex  justify-center items-center px-4 gap-3 py-3">
+          <button className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-500-grey flex  justify-center items-center px-4 gap-3 py-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -92,7 +92,7 @@ const index = (props: Props) => {
               </div>
             </div>
           </div>
-          <button className="bg-blue text-white rounded-md py-3">
+          <button className="bg-blue-500 text-white rounded-md py-3">
             Sign Up
           </button>
         </form>
@@ -100,7 +100,7 @@ const index = (props: Props) => {
         <p className="text-center">
           Already have an account?{" "}
           <Link href="/signin">
-            <span className="ml-2 text-blue underline underline-offset-1 cursor-pointer">
+            <span className="ml-2 text-blue-500 underline underline-offset-1 cursor-pointer">
               Sign In
             </span>
           </Link>

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import ChatLayout from "../../components/Layout/ChatLayout";
 
 const Messages: NextPage = () => {
   return (
@@ -12,8 +13,8 @@ const Messages: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex items-center justify-center min-h-[calc(100vh-70px)] bg-gray-50 px-4">
-        Messages
+      <div className="flex items-center min-h-[calc(100vh-70px)] relative top-[70px] lg:top-0 h-full bg-gray-50 px-4 rounded-2xl gap-3">
+        <ChatLayout />
       </div>
     </>
   );
