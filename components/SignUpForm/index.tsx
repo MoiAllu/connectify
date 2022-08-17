@@ -1,10 +1,24 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import singUpAuth from "../../lib/Utilities/signUpMutations";
 import Input from "./Input";
 
 type Props = {};
 
 const index = (props: Props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPaswword] = useState("");
+  const [name, setName] = useState("");
+
+  const submitHandler = async (event: any) => {
+    event.preventDefault();
+    const mode = "signup";
+    await singUpAuth({ name, email, password });
+    console.log(name);
+    console.log(email);
+    console.log(password);
+  };
+
   return (
     <div className="text-blue-500-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
       <h3 className="text-2xl font-bold">Getting Started</h3>
@@ -49,16 +63,38 @@ const index = (props: Props) => {
           OR
           <span className="h-[1px] w-full bg-gray-200 lg:w-1/3"></span>
         </div>
-        <form className="flex flex-col gap-2">
-          <Input type="text" placeholder="John Doe" />
-          <Input type="email" placeholder="johndoe@gmail.com" />
-          <Input type="password" placeholder="12vijv9n21n9v0j9r23r" />
+        <form className="flex flex-col gap-2" onSubmit={submitHandler}>
+          <Input
+            type="text"
+            placeholder="John Doe"
+            onChange={(e: any) => {
+              setName(e.target.value);
+            }}
+            value={name}
+          />
+          <Input
+            type="email"
+            placeholder="johndoe@gmail.com"
+            onChange={(e: any) => {
+              setEmail(e.target.value);
+            }}
+            value={email}
+          />
+          <Input
+            type="password"
+            placeholder="12vijv9n21n9v0j9r23r"
+            onChange={(e: any) => {
+              setPaswword(e.target.value);
+            }}
+            value={password}
+          />
 
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex justify-center items-center gap-1  w-full border border-gray-300border-opacity-70 focus:border-opacity-100 rounded-md px-4 py-3">
               <input
                 type="date"
                 className="w-full bg-inherit focus-within:outline-none px-1"
+                required
               />
             </div>
             <div className="flex justify-between items-center gap-1  w-full border border-gray-300border-opacity-70 focus:border-opacity-100 rounded-md px-4 py-3">

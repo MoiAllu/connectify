@@ -1,10 +1,19 @@
 import Link from "next/link";
 import React from "react";
 import Input from "../SignUpForm/Input";
+import { useState } from "react";
+import signInAuth from "../../lib/Utilities/signInMutation";
 
 type Props = {};
 
 const index = (props: Props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPasword] = useState("");
+
+  const submitHandler = async (e: any) => {
+    e.preventDefault();
+    await signInAuth({ email, password });
+  };
   return (
     <div className="text-blue-500-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
       <h3 className="text-2xl font-bold">Sign In </h3>
@@ -48,9 +57,23 @@ const index = (props: Props) => {
           <span className="h-[1px] w-full bg-gray-200 lg:w-1/3"></span>
         </div>
 
-        <form className="flex flex-col gap-2">
-          <Input type="email" placeholder="johndoe@gmail.com" />
-          <Input type="password" placeholder="12vijv9n21n9v0j9r23r" />
+        <form className="flex flex-col gap-2" onSubmit={submitHandler}>
+          <Input
+            type="email"
+            placeholder="johndoe@gmail.com"
+            onChange={(e: any) => {
+              setEmail(e.target.value);
+            }}
+            value={email}
+          />
+          <Input
+            type="password"
+            placeholder="12vijv9n21n9v0j9r23r"
+            onChange={(e: any) => {
+              setPasword(e.target.value);
+            }}
+            value={password}
+          />
           <div className="flex w-full p-2">
             <input type="checkbox" id="checkbox" />
             <label htmlFor="checkbox" className="w-[350px] m-1">

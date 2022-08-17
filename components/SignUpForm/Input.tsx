@@ -5,6 +5,10 @@ type InputTypes = "text" | "email" | "password";
 type Props = {
   type: InputTypes;
   placeholder: string;
+  value: string;
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
 function getSvg(type: string) {
@@ -58,7 +62,7 @@ function getSvg(type: string) {
   }
 }
 
-const Input: React.FC<Props> = ({ type, placeholder }) => {
+const Input: React.FC<Props> = ({ type, placeholder, onChange, value }) => {
   return (
     <div className="flex justify-center items-center gap-1 max-w-[350px] w-full border border-gray-300 border-opacity-70 focus:border-opacity-100 rounded-md px-2 py-1">
       {getSvg(type)}
@@ -66,6 +70,9 @@ const Input: React.FC<Props> = ({ type, placeholder }) => {
         type={type}
         placeholder={placeholder}
         className="w-full bg-inherit focus-within:outline-none p-2"
+        value={value}
+        onChange={onChange}
+        required
       />
     </div>
   );
