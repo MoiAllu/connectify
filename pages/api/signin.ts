@@ -25,7 +25,7 @@ const {email,password}=req.body;
           )
           res.setHeader(
             'Set-Cookie',
-            cookie.serialize('MELODY_ACESS_TOKEN', token, {
+            cookie.serialize(process.env.ACCESS_KEY, token, {
               httpOnly: true,
               maxAge: 8 * 60 * 60,
               path: '/',
