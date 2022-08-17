@@ -1,22 +1,22 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import singUpAuth from "../../lib/Utilities/signUpMutations";
 import Input from "./Input";
 
 type Props = {};
 
-const index = (props: Props) => {
+const SignUpForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPaswword] = useState("");
   const [name, setName] = useState("");
+  const router = useRouter();
 
   const submitHandler = async (event: any) => {
     event.preventDefault();
-    const mode = "signup";
+    // const mode = "signup";
     await singUpAuth({ name, email, password });
-    console.log(name);
-    console.log(email);
-    console.log(password);
+    router.push("/");
   };
 
   return (
@@ -146,4 +146,4 @@ const index = (props: Props) => {
   );
 };
 
-export default index;
+export default SignUpForm;

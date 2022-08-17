@@ -3,16 +3,19 @@ import React from "react";
 import Input from "../SignUpForm/Input";
 import { useState } from "react";
 import signInAuth from "../../lib/Utilities/signInMutation";
+import { useRouter } from "next/router";
 
 type Props = {};
 
-const index = (props: Props) => {
+const SignInForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPasword] = useState("");
+  const router = useRouter();
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
     await signInAuth({ email, password });
+    router.push("/");
   };
   return (
     <div className="text-blue-500-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
@@ -104,4 +107,4 @@ const index = (props: Props) => {
   );
 };
 
-export default index;
+export default SignInForm;
