@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-const UserInforBar = () => {
+const UserInforBar = ({ user }: any) => {
   return (
     <Fragment>
       <div className="bg-white rounded-lg p-2 flex-col shadow-md min-w-[210px] xl:flex hidden">

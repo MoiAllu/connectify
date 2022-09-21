@@ -6,10 +6,11 @@ import FollowSuggestion from "../../components/Cards/FollowSuggestion";
 import UpcomingBirthdays from "../../components/Cards/UpcomingBirthdays";
 import UserInforBar from "../../components/Cards/UserInfoBar";
 import UserProfile from "../../components/Cards/UserProfile";
-
 import Post from "../../components/Feed/Post";
+import { useMe } from "../../lib/hooks/useMe";
 
 const Profile: NextPage = () => {
+  const { user } = useMe();
   return (
     <>
       <Head>
@@ -21,10 +22,10 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-[calc(100vh-70px)]">
-        <UserProfile />
+        <UserProfile user={user} />
         <div className="flex justify-center bg-gray-50 px-4 mt-4">
           <div className="mr-4 mt-8">
-            <UserInforBar />
+            <UserInforBar user={user} />
           </div>
           <div className="mr-2">
             <CreatePost />

@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Post from "../Feed/Post";
-const UserProfile = () => {
+const UserProfile = ({ user }: any) => {
   return (
     <div className="bg-white p-2 w-full rounded-2xl shadow-sm">
       <div className="bg-[url('/Background.jpg')] bg-cover bg-fixed h-[312px] w-full rounded-lg  items-center justify-center ">
@@ -26,7 +25,7 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="mt-6 p-4">
-        <h1 className="font-bold text-gray-700 text-2xl ">Jennifer</h1>
+        <h1 className="font-bold text-gray-700 text-2xl ">{user?.name}</h1>
         <div className=" flex w-full justify-between text-gray-400 text-xs">
           <h3 className="p-2">UI Designer</h3>
           <div className="flex">

@@ -10,12 +10,19 @@ type Props = {};
 const SignInForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPasword] = useState("");
+  const [authError, setAuthError] = useState("");
+
   const router = useRouter();
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
-    await signInAuth({ email, password });
-    router.push("/");
+    try {
+      if (await signInAuth({ email, password })) {
+        router.push("/");
+      }
+    } catch {
+      setAuthError("Ops error! cannot signIn");
+    }
   };
   return (
     <div className="text-blue-500-grey flex flex-col items-center max-w-[700px] w-full text-[12px]">
@@ -61,6 +68,9 @@ const SignInForm = (props: Props) => {
         </div>
 
         <form className="flex flex-col gap-2" onSubmit={submitHandler}>
+          <div className="bg-red-600">
+            <h3 className="">{authError}</h3>
+          </div>
           <Input
             type="email"
             placeholder="johndoe@gmail.com"
