@@ -68,7 +68,7 @@ const SignInForm = (props: Props) => {
         </div>
 
         <form className="flex flex-col gap-2" onSubmit={submitHandler}>
-          <div className="bg-red-600">
+          <div className="text-red-600">
             <h3 className="">{authError}</h3>
           </div>
           <Input

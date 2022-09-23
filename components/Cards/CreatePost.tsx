@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import createPost from "../../lib/Utilities/createPost";
 
 type Props = {};
 
 const CreatePost = (props: Props) => {
+  const [content, setContent] = useState("");
+  const formSubmitHanlder = (e: any) => {
+    e.preventDefault();
+    createPost("/post", content);
+  };
   return (
     <div className="w-full px-1 py-8">
-      <div className="bg-white rounded-xl px-2 py-3 shadow-md">
+      <form
+        className="bg-white rounded-xl px-2 py-3 shadow-md"
+        onSubmit={formSubmitHanlder}
+      >
         <div className=" flex p-2 text-left gap-2 mb-3 ">
           <Image
             className="rounded-full"
@@ -16,15 +25,17 @@ const CreatePost = (props: Props) => {
             width={50}
             height={40}
           />
-          <form className="w-full flex ">
+          <div className="w-full flex ">
             <div className="bg-gray-50 px-1 py-2 rounded-lg w-full focus:shadow-lg">
               <input
                 className="w-full bg-gray-50 p-0.5 outline-none "
                 type="text"
                 placeholder=" What's happening?"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               ></input>
             </div>
-          </form>
+          </div>
         </div>
         <div className="gap-2 px-3 hidden text-gray-900 sm:flex">
           <button className="flex p-2 flex-1">
@@ -83,12 +94,15 @@ const CreatePost = (props: Props) => {
             <h3 className="text-center p-2 text-sm">Feeling</h3>
           </button>
           <div className="text-right  mt-2  sm:min-w-[50px]">
-            <button className="px-7 py-2 text-white  bg-blue-500 rounded-md  hover:shadow-lg ">
+            <button
+              className="px-7 py-2 text-white  bg-blue-500 rounded-md  hover:shadow-lg"
+              onSubmit={formSubmitHanlder}
+            >
               Post
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
