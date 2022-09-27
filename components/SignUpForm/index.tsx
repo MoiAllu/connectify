@@ -10,12 +10,13 @@ const SignUpForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPaswword] = useState("");
   const [name, setName] = useState("");
+  const [dob, setDob] = useState(Date);
   const router = useRouter();
 
   const submitHandler = async (event: any) => {
     event.preventDefault();
     // const mode = "signup";
-    await singUpAuth({ name, email, password });
+    await singUpAuth({ name, email, password, dob });
     router.push("/");
   };
 
@@ -95,6 +96,10 @@ const SignUpForm = (props: Props) => {
                 type="date"
                 className="w-full bg-inherit focus-within:outline-none px-1"
                 required
+                value={dob}
+                onChange={(e) => {
+                  setDob(e.target.value);
+                }}
               />
             </div>
             <div className="flex justify-between items-center gap-1  w-full border border-gray-300border-opacity-70 focus:border-opacity-100 rounded-md px-4 py-3">

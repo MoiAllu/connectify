@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import createPost from "../../lib/Utilities/createPost";
+import { useMe } from "../../lib/hooks/useMe";
 
 type Props = {};
 
 const CreatePost = (props: Props) => {
   const [content, setContent] = useState("");
+  const { user } = useMe();
+  const userId = user?.id;
   const formSubmitHanlder = (e: any) => {
     e.preventDefault();
-    createPost("/post", content);
+    console.log(userId);
+    createPost("/post", { content, user });
   };
   return (
     <div className="w-full px-1 py-8">

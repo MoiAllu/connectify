@@ -54,7 +54,7 @@ async function seed() {
     data: {
       message: "I am another root comment",
       userId: talal.id,
-      postId: post1.id,
+      postId: post2.id,
     },
   })
 }
