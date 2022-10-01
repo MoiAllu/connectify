@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useAllPosts, usePost } from "../../lib/hooks/usePost";
 import BirthdayCard from "../Cards/BirthdayCard";
 import CreatePost from "../Cards/CreatePost";
 import FollowSuggestion from "../Cards/FollowSuggestion";
@@ -8,6 +9,7 @@ import Post from "./Post";
 type Props = {};
 
 const Feed = (props: Props) => {
+  const { posts, isLoading } = useAllPosts();
   return (
     <div className="w-full flex gap-4">
       <div className="min-w-[70%] flex-col">
@@ -17,11 +19,13 @@ const Feed = (props: Props) => {
           <BirthdayCard />
           <UpcomingBirthdays />
         </div>
-        <div className="flex flex-col gap-4">
-          <Post />
-          <Post />
-          <Post />
-        </div>
+        {posts?.map((post: any) => {
+          return (
+            <div className="flex flex-col gap-4" key={post.id}>
+              <Post post={post} />
+            </div>
+          );
+        })}
       </div>
       <div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
         <FollowSuggestion />

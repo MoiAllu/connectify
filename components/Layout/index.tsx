@@ -6,7 +6,7 @@ import { NextRouter, useRouter } from "next/router";
 
 type props = {};
 
-const Layout = ({ children }: any) => {
+const Layout = ({ children, user }: any) => {
   //condition for not diplaying right sideBar on profile Page:
   const router: NextRouter = useRouter();
   const [hideRightBar, isHideRightBar] = useState(false);
@@ -16,15 +16,12 @@ const Layout = ({ children }: any) => {
       console.log("Ali");
     } else isHideRightBar(false);
   }, [router]);
-
-  console.log(router.pathname);
   // TODO - Get auth and conditionaly render Sidebars for signin and signup pages
   const auth: boolean = true;
-
   return (
     <>
       <div className="flex bg-gray-50 ">
-        <Navbar />
+        <Navbar user={user} />
       </div>
       {auth && <LeftSidebar />}
       <div

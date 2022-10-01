@@ -2,9 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment } from "react";
 
-type Props = {};
-
-const NavBar = (props: Props) => {
+const NavBar = ({ user }: any) => {
   return (
     <Fragment>
       <div className="flex fixed z-[2] max-h-[70px] h-[70px] w-full bg-white gap-3 lg:gap-0">
@@ -56,7 +54,7 @@ const NavBar = (props: Props) => {
         <div className="max-h-[70px] hidden sm:flex  text-right w-full justify-end py-4 px-2">
           <div className="hover:bg-gray-50 rounded-xl justify-center items-center flex cursor-pointer gap-2 p-3 hover:underline underline-offset-1">
             <Link href="/profile">
-              <span className="tracking-wide">Jennifer</span>
+              <span className="tracking-wide">{user?.name}</span>
             </Link>
             <Image
               className="rounded-xl"

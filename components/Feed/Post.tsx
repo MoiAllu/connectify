@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import moment from "moment";
-type Props = {};
 
-const Post: React.FC<Props> = ({}) => {
+const Post = ({ post }: any) => {
+  const postCreatedAt = Math.floor(new Date(post?.createdAt).getTime() / 1000);
   return (
     <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-3">
       {/* Person */}
@@ -17,9 +17,10 @@ const Post: React.FC<Props> = ({}) => {
           height={40}
         />
         <div className="flex flex-col flex-1">
-          <p className="font-semibold">Josephine</p>
+          <p className="font-semibold">{post?.author.name}</p>
           <p className="text-sm">
-            {moment.unix(1588888888).fromNow()} | {"Public"}
+            {moment.unix(postCreatedAt).fromNow()} |{" "}
+            {post?.published ? "Public" : "Private"}
           </p>
         </div>
         <svg
@@ -44,12 +45,7 @@ const Post: React.FC<Props> = ({}) => {
 
       {/* Post Body & Image */}
       <div className="flex flex-col gap-3">
-        <p className="">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Reprehenderit, harum. Sunt voluptatem veniam nemo excepturi maxime et
-          commodi deleniti voluptates sit. Sint dolor quas molestias illo optio
-          porro labore! Exercitationem.
-        </p>
+        <p className="">{post?.content}</p>
         <Image
           src={"/post.jpg"}
           alt="Post Pic"

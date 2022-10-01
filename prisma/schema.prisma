@@ -39,7 +39,7 @@ model Post {
   content   String?
   published Boolean   @default(false)
   comments  Comment[]
-  author    User      @relation(fields: [userId], references: [id])
+  author    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 }
 

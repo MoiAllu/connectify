@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import Image from "next/image";
 import createPost from "../../lib/Utilities/createPost";
 import { useMe } from "../../lib/hooks/useMe";
-
+import posts from "../../lib/Utilities/post";
 type Props = {};
 
 const CreatePost = (props: Props) => {
   const [content, setContent] = useState("");
   const { user } = useMe();
-  const userId = user?.id;
-  const formSubmitHanlder = (e: any) => {
+  const [resResult, setResResult] = useState("");
+  const formSubmitHanlder = async (e: any) => {
     e.preventDefault();
+    const userId = await user.id;
     console.log(userId);
-    createPost("/post", { content, user });
+    const respone = await createPost("/post", { content, user, userId });
+    setResResult(respone?.error);
   };
   return (
     <div className="w-full px-1 py-8">
@@ -30,9 +32,19 @@ const CreatePost = (props: Props) => {
             height={40}
           />
           <div className="w-full flex ">
-            <div className="bg-gray-50 px-1 py-2 rounded-lg w-full focus:shadow-lg">
+            <div
+              className={`${
+                resResult
+                  ? "bg-red-100 px-1 py-2 rounded-lg w-full focus:shadow-lg"
+                  : " bg-gray-50 px-1 py-2 rounded-lg w-full focus:shadow-lg"
+              }`}
+            >
               <input
-                className="w-full bg-gray-50 p-0.5 outline-none "
+                className={`${
+                  resResult
+                    ? " w-full bg-red-100 p-0.5 outline-none "
+                    : "w-full bg-gray-50 p-0.5 outline-none "
+                } `}
                 type="text"
                 placeholder=" What's happening?"
                 value={content}
@@ -41,8 +53,9 @@ const CreatePost = (props: Props) => {
             </div>
           </div>
         </div>
+        {resResult && <h2 className="text-red-600 ml-4">{resResult}</h2>}
         <div className="gap-2 px-3 hidden text-gray-900 sm:flex">
-          <button className="flex p-2 flex-1">
+          <button className="flex p-2 flex-1" type="button">
             <div className="py-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +76,7 @@ const CreatePost = (props: Props) => {
             </div>
             <h3 className="text-center p-2 text-sm">Live Video</h3>
           </button>
-          <button className="gap-1 flex p-2 flex-1  ">
+          <button className="gap-1 flex p-2 flex-1" type="button">
             <div className="py-2 ">
               <Image
                 width="20px"
@@ -74,7 +87,7 @@ const CreatePost = (props: Props) => {
             </div>
             <h3 className=" p-2 text-sm  text-left">Photo Video</h3>
           </button>
-          <button className="flex py-2 flex-1 ">
+          <button className="flex py-2 flex-1 " type="button">
             <div className="py-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -110,5 +123,4 @@ const CreatePost = (props: Props) => {
     </div>
   );
 };
-
 export default CreatePost;
