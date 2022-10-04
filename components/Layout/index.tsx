@@ -13,7 +13,6 @@ const Layout = ({ children, user }: any) => {
   useEffect(() => {
     if (["/profile", "/messages"].includes(router.pathname)) {
       isHideRightBar(true);
-      console.log("Ali");
     } else isHideRightBar(false);
   }, [router]);
   // TODO - Get auth and conditionaly render Sidebars for signin and signup pages

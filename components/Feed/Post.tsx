@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
+import CommentList from "../Cards/CommentList";
 
 const Post = ({ post }: any) => {
+  // console.log(post);
+  const commentsByParentId = useMemo(() => {
+    if (post?.comments == null) return [];
+    const group = {};
+    post?.comments.forEach((comment: any) => {
+      group[comment.parentId] ||= [];
+      group[comment.parentId].push(comment);
+    });
+    return group;
+  }, [post?.comments]);
+  // console.log(commentsByParentId);
+  function getReplies(parentId: any) {
+    return commentsByParentId[parentId];
+  }
+  // console.log(getReplies(null));
+  const rootComments = getReplies(null);
+  console.log(rootComments);
+  const [commentButton, setCommentButton] = useState(false);
+  const commentButtonHandler = (e: any) => {
+    e.preventDefault();
+    setCommentButton(!commentButton);
+  };
   const postCreatedAt = Math.floor(new Date(post?.createdAt).getTime() / 1000);
   return (
     <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-3">
@@ -17,7 +40,7 @@ const Post = ({ post }: any) => {
           height={40}
         />
         <div className="flex flex-col flex-1">
-          <p className="font-semibold">{post?.author.name}</p>
+          <p className="font-semibold">{post?.author?.name}</p>
           <p className="text-sm">
             {moment.unix(postCreatedAt).fromNow()} |{" "}
             {post?.published ? "Public" : "Private"}
@@ -60,8 +83,11 @@ const Post = ({ post }: any) => {
               9 Likes
             </button>
           </div>
-          <button className="hover:underline underline-offset-1">
-            3 Comments
+          <button
+            className="hover:underline underline-offset-1"
+            onClick={commentButtonHandler}
+          >
+            {post.comments.length} comments
           </button>
           <p className="cursor-default">7 Shares</p>
         </div>
@@ -85,7 +111,10 @@ const Post = ({ post }: any) => {
           </svg>
           Like
         </button>
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all">
+        <button
+          className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all"
+          onClick={commentButtonHandler}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -122,7 +151,11 @@ const Post = ({ post }: any) => {
           Share
         </button>
       </div>
-      {/* Comment */}
+      {commentButton && (
+        <div>
+          <CommentList comment={{ rootComments, getReplies }} />
+        </div>
+      )}
       <div className="flex justify-between items-center gap-4">
         <Image
           className="rounded-full min-w-[28px] min-h-[28px]"

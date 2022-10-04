@@ -7,8 +7,24 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
             userId:user.id
         },
         include:{
-            author:true,
-            comments:true,
+            comments:{
+                orderBy:{
+                    createdAt:"desc",
+                },
+                select:{
+                    id:true,
+                    message:true,
+                    createdAt:true,
+                    updatedAt:true,
+                    parentId:true,
+                    user:{
+                        select:{
+                            id:true,
+                            name:true
+                        }
+                    }
+                }
+            },
         }
     })
     res.json(post)
