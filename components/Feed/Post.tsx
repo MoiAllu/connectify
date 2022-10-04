@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
-type Props = {};
+import CommentList from "../Cards/CommentList";
 
-const Post: React.FC<Props> = ({}) => {
+const Post = ({ post }: any) => {
+  // console.log(post);
+  const commentsByParentId = useMemo(() => {
+    if (post?.comments == null) return [];
+    const group = {};
+    post?.comments.forEach((comment: any) => {
+      group[comment.parentId] ||= [];
+      group[comment.parentId].push(comment);
+    });
+    return group;
+  }, [post?.comments]);
+  // console.log(commentsByParentId);
+  function getReplies(parentId: any) {
+    return commentsByParentId[parentId];
+  }
+  // console.log(getReplies(null));
+  const rootComments = getReplies(null);
+  console.log(rootComments);
+  const [commentButton, setCommentButton] = useState(false);
+  const commentButtonHandler = (e: any) => {
+    e.preventDefault();
+    setCommentButton(!commentButton);
+  };
+  const postCreatedAt = Math.floor(new Date(post?.createdAt).getTime() / 1000);
   return (
     <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-3">
       {/* Person */}
@@ -17,9 +40,10 @@ const Post: React.FC<Props> = ({}) => {
           height={40}
         />
         <div className="flex flex-col flex-1">
-          <p className="font-semibold">Josephine</p>
+          <p className="font-semibold">{post?.author?.name}</p>
           <p className="text-sm">
-            {moment.unix(1588888888).fromNow()} | {"Public"}
+            {moment.unix(postCreatedAt).fromNow()} |{" "}
+            {post?.published ? "Public" : "Private"}
           </p>
         </div>
         <svg
@@ -44,12 +68,7 @@ const Post: React.FC<Props> = ({}) => {
 
       {/* Post Body & Image */}
       <div className="flex flex-col gap-3">
-        <p className="">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Reprehenderit, harum. Sunt voluptatem veniam nemo excepturi maxime et
-          commodi deleniti voluptates sit. Sint dolor quas molestias illo optio
-          porro labore! Exercitationem.
-        </p>
+        <p className="">{post?.content}</p>
         <Image
           src={"/post.jpg"}
           alt="Post Pic"
@@ -64,8 +83,11 @@ const Post: React.FC<Props> = ({}) => {
               9 Likes
             </button>
           </div>
-          <button className="hover:underline underline-offset-1">
-            3 Comments
+          <button
+            className="hover:underline underline-offset-1"
+            onClick={commentButtonHandler}
+          >
+            {post.comments.length} comments
           </button>
           <p className="cursor-default">7 Shares</p>
         </div>
@@ -89,7 +111,10 @@ const Post: React.FC<Props> = ({}) => {
           </svg>
           Like
         </button>
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all">
+        <button
+          className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all"
+          onClick={commentButtonHandler}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -126,7 +151,11 @@ const Post: React.FC<Props> = ({}) => {
           Share
         </button>
       </div>
-      {/* Comment */}
+      {commentButton && (
+        <div>
+          <CommentList comment={{ rootComments, getReplies }} />
+        </div>
+      )}
       <div className="flex justify-between items-center gap-4">
         <Image
           className="rounded-full min-w-[28px] min-h-[28px]"

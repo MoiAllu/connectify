@@ -6,10 +6,13 @@ import FollowSuggestion from "../../components/Cards/FollowSuggestion";
 import UpcomingBirthdays from "../../components/Cards/UpcomingBirthdays";
 import UserInforBar from "../../components/Cards/UserInfoBar";
 import UserProfile from "../../components/Cards/UserProfile";
-
 import Post from "../../components/Feed/Post";
+import { useMe } from "../../lib/hooks/useMe";
+import { usePost } from "../../lib/hooks/usePost";
 
 const Profile: NextPage = () => {
+  const { user } = useMe();
+  const { posts } = usePost();
   return (
     <>
       <Head>
@@ -21,14 +24,20 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-[calc(100vh-70px)]">
-        <UserProfile />
+        <UserProfile user={user} />
         <div className="flex justify-center bg-gray-50 px-4 mt-4">
           <div className="mr-4 mt-8">
-            <UserInforBar />
+            <UserInforBar user={user} />
           </div>
           <div className="mr-2">
             <CreatePost />
-            <Post />
+            {posts?.map((post: any) => {
+              return (
+                <div className="flex flex-col gap-4" key={post.id}>
+                  <Post post={post} />
+                </div>
+              );
+            })}
           </div>
           <div className="flex-col mt-8">
             <div className="mb-6">
