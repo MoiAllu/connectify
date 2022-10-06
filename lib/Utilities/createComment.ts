@@ -1,4 +1,4 @@
-export default function createComment(url:any,data:{}){
+export default function createComment(url:any,data:{userId:any,postId:any,message:string,parrentId:any}){
     return fetch(`/api${url}`),{
         method: "POST",
         credentials:"include",

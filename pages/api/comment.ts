@@ -1,14 +1,14 @@
 import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
-    const {userId,postId,parentId}=await req.body;
+    const {userId,postId,parentId,message}=await req.body;
     try{
         await prisma.comment.create({
             data:{
                 userId,
-                message:"Ali Abbasi",
-                postId:postId,
-                parentId:parentId
+                message,
+                postId,
+                parentId,
             }
         })
     }catch(e){

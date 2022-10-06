@@ -2,12 +2,13 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
 import CommentList from "../Cards/CommentList";
+import createComment from "../../lib/Utilities/createComment";
 
 const Post = ({ post }: any) => {
   // console.log(post);
   const commentsByParentId = useMemo(() => {
     if (post?.comments == null) return [];
-    const group = {};
+    const group = {} as any;
     post?.comments.forEach((comment: any) => {
       group[comment.parentId] ||= [];
       group[comment.parentId].push(comment);
@@ -20,8 +21,12 @@ const Post = ({ post }: any) => {
   }
   // console.log(getReplies(null));
   const rootComments = getReplies(null);
-  console.log(rootComments);
+  const [comment, setComment] = useState("");
   const [commentButton, setCommentButton] = useState(false);
+  const createCommentHandler = (e: any) => {
+    e.preventDefault();
+    // createComment()
+  };
   const commentButtonHandler = (e: any) => {
     e.preventDefault();
     setCommentButton(!commentButton);
@@ -112,6 +117,7 @@ const Post = ({ post }: any) => {
           Like
         </button>
         <button
+          type="button"
           className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all"
           onClick={commentButtonHandler}
         >
@@ -169,8 +175,15 @@ const Post = ({ post }: any) => {
           type="text"
           className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
           placeholder="Write a comment"
+          value={comment}
+          onChange={(e: any) => {
+            setComment(e.target.value);
+          }}
         />
-        <button className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg">
+        <button
+          className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
+          onClick={createCommentHandler}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
