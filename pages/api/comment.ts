@@ -1,20 +1,26 @@
 import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
-    const {userId,postId,parentId,message}=await req.body;
-    try{
-        await prisma.comment.create({
-            data:{
-                userId,
-                message,
-                postId,
-                parentId,
-            }
-        })
+    const {message,userId,postId,parrentId}=await req.body;
+    try{ 
+        if( message!="" && userId!=null && postId!=null){
+            await prisma.comment.create({
+                data:{
+                    userId,
+                    message,
+                    postId,
+                    parentId:parrentId
+                }
+            })
+        }else{
+            res.status(403)
+            res.json({ error: 'comment is empty'})
+        }
     }catch(e){
-        res.json({error:"something went wrong"})
-        res.send(e)
+        res.status(501)
+        res.json({ error: 'Opps something went wrong'})
         return
     }
-    res.send("successfully commented")
+    res.status(200)
+    res.json ({success:"successfully commented"});
 }

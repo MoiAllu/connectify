@@ -9,7 +9,7 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
         include:{
             comments:{
                 orderBy:{
-                    createdAt:"desc",
+                    createdAt:"asc",
                 },
                 select:{
                     id:true,

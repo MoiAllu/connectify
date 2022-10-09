@@ -3,29 +3,39 @@ import Image from "next/image";
 import moment from "moment";
 import CommentList from "../Cards/CommentList";
 import createComment from "../../lib/Utilities/createComment";
+import { useMe } from "../../lib/hooks/useMe";
 
 const Post = ({ post }: any) => {
-  // console.log(post);
+  const { user } = useMe();
+  const [comment, setComment] = useState("");
+  const [commentButton, setCommentButton] = useState(false);
+  const [commentRes, setCommentRes] = useState({
+    error: undefined,
+    success: undefined,
+  });
   const commentsByParentId = useMemo(() => {
     if (post?.comments == null) return [];
+    console.log(1);
     const group = {} as any;
     post?.comments.forEach((comment: any) => {
       group[comment.parentId] ||= [];
       group[comment.parentId].push(comment);
     });
     return group;
-  }, [post?.comments]);
-  // console.log(commentsByParentId);
+  }, [post?.comments, post]);
   function getReplies(parentId: any) {
     return commentsByParentId[parentId];
   }
-  // console.log(getReplies(null));
   const rootComments = getReplies(null);
-  const [comment, setComment] = useState("");
-  const [commentButton, setCommentButton] = useState(false);
-  const createCommentHandler = (e: any) => {
+  const createCommentHandler = async (e: any) => {
     e.preventDefault();
-    // createComment()
+    const respone = await createComment("/comment", {
+      message: comment,
+      userId: user.id,
+      postId: post.id,
+      parrentId: null,
+    });
+    await setCommentRes(respone);
   };
   const commentButtonHandler = (e: any) => {
     e.preventDefault();
@@ -92,7 +102,7 @@ const Post = ({ post }: any) => {
             className="hover:underline underline-offset-1"
             onClick={commentButtonHandler}
           >
-            {post.comments.length} comments
+            {rootComments?.length} comments
           </button>
           <p className="cursor-default">7 Shares</p>
         </div>
@@ -162,45 +172,60 @@ const Post = ({ post }: any) => {
           <CommentList comment={{ rootComments, getReplies }} />
         </div>
       )}
-      <div className="flex justify-between items-center gap-4">
-        <Image
-          className="rounded-full min-w-[28px] min-h-[28px]"
-          src={"/square.jpg"}
-          alt="Avatar Image"
-          objectFit="fill"
-          width={40}
-          height={40}
-        />
-        <input
-          type="text"
-          className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
-          placeholder="Write a comment"
-          value={comment}
-          onChange={(e: any) => {
-            setComment(e.target.value);
-          }}
-        />
-        <button
-          className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
-          onClick={createCommentHandler}
+      {commentRes.success ? (
+        <div className="text-gray-600 bg-gray-100 p-2">
+          <h1>{commentRes.success}</h1>
+        </div>
+      ) : (
+        <form
+          className="flex justify-between items-center gap-4 "
+          onSubmit={createCommentHandler}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="#000000"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <Image
+            className="rounded-full min-w-[28px] min-h-[28px]"
+            src={"/square.jpg"}
+            alt="Avatar Image"
+            objectFit="fill"
+            width={40}
+            height={40}
+          />
+          <input
+            type="text"
+            className={`shadow-sm flex-1 p-1.5 rounded-lg outline-none ${
+              commentRes.error ? "bg-red-100" : "bg-gray-50"
+            }`}
+            placeholder="Write a comment"
+            value={comment}
+            onChange={(e: any) => {
+              setComment(e.target.value);
+            }}
+          />
+
+          <button
+            className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
+            type="submit"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <line x1="10" y1="14" x2="21" y2="3" />
-            <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
-          </svg>
-        </button>
-      </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="#000000"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+              <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
+            </svg>
+          </button>
+        </form>
+      )}
+      {commentRes.error && (
+        <h2 className="text-red-600 ml-4">{commentRes.error}</h2>
+      )}
     </div>
   );
 };

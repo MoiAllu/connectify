@@ -84,7 +84,7 @@ const Comment = (data: any) => {
               </div>
             )}
           </div>
-          {childReply && <Reply />}
+          {childReply && <Reply {...data.comment} />}
         </div>
       </div>
       {childernComents &&
@@ -132,7 +132,9 @@ const Comment = (data: any) => {
                   reply
                 </button>
               </div>
-              <div className="m-2">{nestedChilDReply && <Reply />}</div>
+              <div className="m-2">
+                {nestedChilDReply && <Reply {...child} />}
+              </div>
             </div>
           </div>
         ))}
