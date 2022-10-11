@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
 import CommentList from "../Cards/CommentList";
 import createComment from "../../lib/Utilities/createComment";
 import { useMe } from "../../lib/hooks/useMe";
 
-const Post = ({ post }: any) => {
+const Post = ({ post, getReplie, setComments }: any) => {
   const { user } = useMe();
   const [comment, setComment] = useState("");
   const [commentButton, setCommentButton] = useState(false);
@@ -15,7 +15,6 @@ const Post = ({ post }: any) => {
   });
   const commentsByParentId = useMemo(() => {
     if (post?.comments == null) return [];
-    console.log(1);
     const group = {} as any;
     post?.comments.forEach((comment: any) => {
       group[comment.parentId] ||= [];
@@ -169,7 +168,7 @@ const Post = ({ post }: any) => {
       </div>
       {commentButton && (
         <div>
-          <CommentList comment={{ rootComments, getReplies }} />
+          <CommentList {...{ rootComments, getReplies }} />
         </div>
       )}
       {commentRes.success ? (

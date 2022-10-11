@@ -2,11 +2,11 @@ import moment from "moment";
 import Comment from "./Comment";
 
 const CommentList = (data: any) => {
-  //   console.log(data.comment.rootComments);
-  const childComments = data.comment;
+  const childComments = data;
+  console.log(data.rootComments);
   return (
     <div>
-      {data.comment.rootComments.map((comment: any) => {
+      {data.rootComments.map((comment: any) => {
         return (
           <div key={comment.id}>
             <Comment {...{ comment, childComments }} />
