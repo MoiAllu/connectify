@@ -5,7 +5,7 @@ import CommentList from "../Cards/CommentList";
 import createComment from "../../lib/Utilities/createComment";
 import { useMe } from "../../lib/hooks/useMe";
 
-const Post = ({ post, getReplie, setComments }: any) => {
+const Post = ({ post }: any) => {
   const { user } = useMe();
   const [comment, setComment] = useState("");
   const [commentButton, setCommentButton] = useState(false);
@@ -16,12 +16,13 @@ const Post = ({ post, getReplie, setComments }: any) => {
   const commentsByParentId = useMemo(() => {
     if (post?.comments == null) return [];
     const group = {} as any;
+    console.log(1);
     post?.comments.forEach((comment: any) => {
       group[comment.parentId] ||= [];
       group[comment.parentId].push(comment);
     });
     return group;
-  }, [post?.comments, post]);
+  }, [post?.comments]);
   function getReplies(parentId: any) {
     return commentsByParentId[parentId];
   }

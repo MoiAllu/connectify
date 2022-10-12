@@ -4,6 +4,7 @@ import { useMe } from "../../lib/hooks/useMe";
 import createComment from "../../lib/Utilities/createComment";
 
 const Reply = (data: any) => {
+  console.log(data);
   const { user } = useMe();
   const [comment, setComment] = useState("");
   const [commentRes, setCommentRes] = useState({

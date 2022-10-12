@@ -3,7 +3,6 @@ import Comment from "./Comment";
 
 const CommentList = (data: any) => {
   const { getReplies } = data;
-  console.log(data);
   return (
     <div>
       {data.rootComments.map((comment: any) => {

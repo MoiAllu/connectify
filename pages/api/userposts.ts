@@ -16,6 +16,7 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
                     message:true,
                     createdAt:true,
                     updatedAt:true,
+                    postId:true,
                     parentId:true,
                     user:{
                         select:{

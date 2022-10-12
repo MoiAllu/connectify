@@ -8,8 +8,6 @@ const Comment = (data: any) => {
   const { getReplies } = data;
   const [childReply, setChildReply] = useState(false);
   const childernComents = getReplies(data.comment.id);
-  console.log(data.comment.id);
-  console.log(childernComents);
   const [showreplies, setShowReplies] = useState(false);
   const childReplyHandler = (e: any) => {
     e.preventDefault();
