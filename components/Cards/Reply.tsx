@@ -16,7 +16,7 @@ const Reply = (data: any) => {
       message: comment,
       postId: data.postId,
       userId: user.id,
-      parrentId: data.id,
+      parentId: data.id,
     });
     await setCommentRes(respone);
   };

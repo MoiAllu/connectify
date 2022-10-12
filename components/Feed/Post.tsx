@@ -32,7 +32,7 @@ const Post = ({ post, getReplie, setComments }: any) => {
       message: comment,
       userId: user.id,
       postId: post.id,
-      parrentId: null,
+      parentId: null,
     });
     await setCommentRes(respone);
   };

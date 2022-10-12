@@ -1,7 +1,7 @@
 import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
-    const {message,userId,postId,parrentId}=await req.body;
+    const {message,userId,postId,parentId}=await req.body;
     try{ 
         if( message!="" && userId!=null && postId!=null){
             await prisma.comment.create({
@@ -9,7 +9,7 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
                     userId,
                     message,
                     postId,
-                    parentId:parrentId
+                    parentId,
                 }
             })
         }else{

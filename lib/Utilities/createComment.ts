@@ -1,4 +1,4 @@
-export default function createComment(url:any,data:{userId:any,postId:any,message:string,parrentId:any}){
+export default function createComment(url:any,data:{userId:any,postId:any,message:string,parentId:any}){
     console.log(data)
     return fetch(`/api${url}`,{
         method: "POST",
