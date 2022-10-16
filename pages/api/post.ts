@@ -2,7 +2,6 @@ import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
     const {content,userId}=await req.body;
-    console.log(req.method)
     try{ 
         if( content!=""){
 
@@ -24,5 +23,5 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
         return
     }
     res.status(200)
-    res.send({success:"successfully posted"});
+    res.json({success:"successfully posted"});
 }

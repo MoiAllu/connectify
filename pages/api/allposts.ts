@@ -7,13 +7,14 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
             author:true,
             comments:{
                 orderBy:{
-                    createdAt:"desc",
+                    createdAt:"asc"
                 },
                 select:{
                     id:true,
                     message:true,
                     createdAt:true,
                     updatedAt:true,
+                    postId:true,
                     parentId:true,
                     user:{
                         select:{
