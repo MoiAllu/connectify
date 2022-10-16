@@ -7,22 +7,26 @@ import { useMe } from "../../lib/hooks/useMe";
 
 const Post = ({ post }: any) => {
   const { user } = useMe();
-  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [message, setMessage] = useState("");
   const [commentButton, setCommentButton] = useState(false);
   const [commentRes, setCommentRes] = useState({
     error: undefined,
     success: undefined,
   });
+  useEffect(() => {
+    if (post?.comments == null) return;
+    setComments(post?.comments);
+  }, [post?.comments]);
   const commentsByParentId = useMemo(() => {
-    if (post?.comments == null) return [];
+    if (comments == null) return [];
     const group = {} as any;
-    console.log(1);
-    post?.comments.forEach((comment: any) => {
+    comments.forEach((comment: any) => {
       group[comment.parentId] ||= [];
       group[comment.parentId].push(comment);
     });
     return group;
-  }, [post?.comments]);
+  }, [comments]);
   function getReplies(parentId: any) {
     return commentsByParentId[parentId];
   }
@@ -30,13 +34,14 @@ const Post = ({ post }: any) => {
   const createCommentHandler = async (e: any) => {
     e.preventDefault();
     const respone = await createComment("/comment", {
-      message: comment,
+      message,
       userId: user.id,
       postId: post.id,
       parentId: null,
     });
     await setCommentRes(respone);
   };
+
   const commentButtonHandler = (e: any) => {
     e.preventDefault();
     setCommentButton(!commentButton);
@@ -195,9 +200,9 @@ const Post = ({ post }: any) => {
               commentRes.error ? "bg-red-100" : "bg-gray-50"
             }`}
             placeholder="Write a comment"
-            value={comment}
+            value={message}
             onChange={(e: any) => {
-              setComment(e.target.value);
+              setMessage(e.target.value);
             }}
           />
 

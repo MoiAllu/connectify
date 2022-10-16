@@ -81,7 +81,7 @@ const Comment = (data: any) => {
         </div>
       </div>
       {childernComents && showreplies && (
-        <div className="flex-col rounded-md shadow-sm ml-16 gap-1  bg-gray-50">
+        <div className="flex-col border-l-2 border-gray-300 ml-10 gap-1  bg-white">
           <CommentList {...{ rootComments: childernComents, getReplies }} />
         </div>
       )}
