@@ -13,12 +13,12 @@ const SignInForm = (props: Props) => {
   const [authError, setAuthError] = useState("");
 
   const router = useRouter();
-
+  console.log(router);
   const submitHandler = async (e: any) => {
     e.preventDefault();
     try {
       if (await signInAuth({ email, password })) {
-        router.push("/");
+        router.reload();
       }
     } catch {
       setAuthError("Ops error! cannot signIn");
