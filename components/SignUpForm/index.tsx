@@ -17,7 +17,7 @@ const SignUpForm = (props: Props) => {
     event.preventDefault();
     // const mode = "signup";
     await singUpAuth({ name, email, password, dob });
-    router.push("/");
+    router.reload();
   };
 
   return (
