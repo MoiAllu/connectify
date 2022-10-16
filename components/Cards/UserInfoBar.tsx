@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
+import Link from "next/link";
 const UserInforBar = ({ user }: any) => {
   return (
     <Fragment>
@@ -12,9 +13,9 @@ const UserInforBar = ({ user }: any) => {
             src="/Github.svg"
             className="min-h-[20px] min-w-[20px]"
           ></Image>
-          <a href="/" className="text-sm ml-2">
+          <Link href="/" className="text-sm ml-2">
             GitHub
-          </a>
+          </Link>
         </div>
         <div className="flex p-2 text-gray-500">
           {
@@ -55,9 +56,9 @@ const UserInforBar = ({ user }: any) => {
             src="/Facebook.svg"
             className="min-h-[20px] min-w-[20px]"
           ></Image>
-          <a href="/" className="text-sm ml-2 text-center">
+          <Link href="/" className="text-sm ml-2 text-center">
             Facebook
-          </a>
+          </Link>
         </div>
         <div className="flex p-2 text-gray-500">
           <Image
@@ -66,9 +67,9 @@ const UserInforBar = ({ user }: any) => {
             src="/Twitter.svg"
             className="min-h-[20px] min-w-[20px]"
           ></Image>
-          <a href="/" className="text-sm ml-2 text-center">
+          <Link href="/" className="text-sm ml-2 text-center">
             Twitter
-          </a>
+          </Link>
         </div>
         <div className="flex p-2 text-gray-500">
           <Image
@@ -77,9 +78,9 @@ const UserInforBar = ({ user }: any) => {
             src="/Instagram.svg"
             className="min-h-[20px] min-w-[20px] "
           ></Image>
-          <a href="/" className="text-sm ml-2 text-center">
+          <Link href="/" className="text-sm ml-2 text-center">
             Instagram
-          </a>
+          </Link>
         </div>
         <div className="text-sm text-gray-700 p-2 mt-2">
           <h6>52,8469 Followers</h6>
