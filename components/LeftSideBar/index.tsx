@@ -16,6 +16,7 @@ const LeftSideBar = (props: Props) => {
 
   const logoutHandler = () => {
     // TODO update auth=null from global state
+
     router.push("/signin");
   };
 
