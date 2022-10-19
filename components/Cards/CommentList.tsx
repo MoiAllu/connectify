@@ -2,13 +2,13 @@ import moment from "moment";
 import Comment from "./Comment";
 
 const CommentList = (data: any) => {
-  const { getReplies } = data;
+  const { getReplies, localComments } = data;
   return (
     <div>
       {data.rootComments.map((comment: any) => {
         return (
           <div key={comment.id}>
-            <Comment {...{ comment, getReplies }} />
+            <Comment {...{ comment, getReplies, localComments }} />
           </div>
         );
       })}

@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useMe } from "../../lib/hooks/useMe";
 import createComment from "../../lib/Utilities/createComment";
 
-const Reply = (data: any) => {
-  console.log(data);
+const Reply = (child: any) => {
+  const { data, localComments } = child;
+  const comment = data.comment;
   const { user } = useMe();
-  const [comment, setComment] = useState("");
+  const [message, setMessage] = useState("");
   const [commentRes, setCommentRes] = useState({
     error: undefined,
     success: undefined,
@@ -14,12 +15,13 @@ const Reply = (data: any) => {
   const createCommentHandler = async (e: any) => {
     e.preventDefault();
     const respone = await createComment("/comment", {
-      message: comment,
-      postId: data.postId,
+      message,
+      postId: comment.postId,
       userId: user.id,
-      parentId: data.id,
+      parentId: comment.id,
     });
-    await setCommentRes(respone);
+    localComments(respone.user);
+    setCommentRes(respone);
   };
   return (
     <>
@@ -42,13 +44,14 @@ const Reply = (data: any) => {
           />
           <input
             type="text"
+            required
             className={`shadow-sm flex-1 p-1.5 rounded-lg outline-none ${
               commentRes.error ? "bg-red-100" : "bg-gray-50"
             }`}
             placeholder="Write a reply"
-            value={comment}
+            value={message}
             onChange={(e: any) => {
-              setComment(e.target.value);
+              setMessage(e.target.value);
             }}
           />
           <button

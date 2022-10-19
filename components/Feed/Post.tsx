@@ -7,12 +7,13 @@ import { useMe } from "../../lib/hooks/useMe";
 
 const Post = ({ post }: any) => {
   const { user } = useMe();
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([] as any);
   const [message, setMessage] = useState("");
   const [commentButton, setCommentButton] = useState(false);
   const [commentRes, setCommentRes] = useState({
     error: undefined,
     success: undefined,
+    user: undefined,
   });
   useEffect(() => {
     if (post?.comments == null) return;
@@ -31,15 +32,24 @@ const Post = ({ post }: any) => {
     return commentsByParentId[parentId];
   }
   const rootComments = getReplies(null);
+
+  function localComments(comments: any) {
+    setComments((prevComments: any) => {
+      return [comments, ...prevComments];
+    });
+  }
   const createCommentHandler = async (e: any) => {
     e.preventDefault();
+    setCommentButton(true);
     const respone = await createComment("/comment", {
       message,
       userId: user.id,
       postId: post.id,
       parentId: null,
     });
-    await setCommentRes(respone);
+    localComments(respone.user);
+    console.log(respone.user);
+    setCommentRes(respone);
   };
 
   const commentButtonHandler = (e: any) => {
@@ -174,7 +184,7 @@ const Post = ({ post }: any) => {
       </div>
       {commentButton && (
         <div>
-          <CommentList {...{ rootComments, getReplies }} />
+          <CommentList {...{ rootComments, getReplies, localComments }} />
         </div>
       )}
       {commentRes.success ? (
@@ -199,6 +209,7 @@ const Post = ({ post }: any) => {
             className={`shadow-sm flex-1 p-1.5 rounded-lg outline-none ${
               commentRes.error ? "bg-red-100" : "bg-gray-50"
             }`}
+            required
             placeholder="Write a comment"
             value={message}
             onChange={(e: any) => {
