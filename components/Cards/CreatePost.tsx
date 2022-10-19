@@ -51,6 +51,7 @@ const CreatePost = (props: Props) => {
                       ? " w-full bg-red-100 p-0.5 outline-none "
                       : "w-full bg-gray-50 p-0.5 outline-none "
                   } `}
+                  required
                   type="text"
                   placeholder=" What's happening?"
                   value={content}

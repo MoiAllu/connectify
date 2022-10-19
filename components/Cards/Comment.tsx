@@ -1,17 +1,19 @@
 import moment from "moment";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import CommentList from "./CommentList";
 import Reply from "./Reply";
 
 const Comment = (data: any) => {
-  const { getReplies } = data;
+  const { getReplies, localComments } = data;
+  console.log(data);
   const [childReply, setChildReply] = useState(false);
   const childernComents = getReplies(data.comment.id);
   const [showreplies, setShowReplies] = useState(false);
   const childReplyHandler = (e: any) => {
     e.preventDefault();
     setChildReply(!childReply);
+    setShowReplies(true);
   };
   const repliesShowHandler = (e: any) => {
     e.preventDefault();
@@ -77,7 +79,7 @@ const Comment = (data: any) => {
               </div>
             )}
           </div>
-          {childReply && <Reply {...data.comment} />}
+          {childReply && <Reply {...{ data, localComments }} />}
         </div>
       </div>
       {childernComents && showreplies && (
