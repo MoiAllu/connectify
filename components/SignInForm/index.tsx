@@ -10,7 +10,10 @@ type Props = {};
 const SignInForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPasword] = useState("");
-  const [authError, setAuthError] = useState({ error: undefined });
+  const [authError, setAuthError] = useState({
+    error: undefined,
+    sucess: undefined,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const submitHandler = async (e: any) => {
@@ -18,7 +21,10 @@ const SignInForm = (props: Props) => {
     setIsLoading(true);
     const respone = await signInAuth({ email, password });
     setAuthError(respone);
-    await router.push("/");
+    console.log(respone);
+    if (respone?.success) {
+      await router.push("/");
+    }
     setIsLoading(false);
   };
   return (

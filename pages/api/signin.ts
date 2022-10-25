@@ -33,7 +33,8 @@ const {email,password}=req.body;
               secure: process.env.NODE_ENV === 'production',
             })
           )
-          res.json(user);
+          res.status(200)
+          res.json({success:"Created successfully"})
     }else{
         res.status(401)
         res.json({error:"Invalid credentials"})
