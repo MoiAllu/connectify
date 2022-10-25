@@ -6,6 +6,7 @@ type Props = {
   type: InputTypes;
   placeholder: string;
   value: string;
+  error: undefined;
   onChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -62,14 +63,24 @@ function getSvg(type: string) {
   }
 }
 
-const Input: React.FC<Props> = ({ type, placeholder, onChange, value }) => {
+const Input: React.FC<Props> = ({
+  type,
+  placeholder,
+  onChange,
+  value,
+  error,
+}) => {
   return (
-    <div className="flex justify-center items-center gap-1 max-w-[350px] w-full border border-gray-300 border-opacity-70 focus:border-opacity-100 rounded-md px-2 py-1">
+    <div
+      className={`flex justify-center items-center gap-1 max-w-[350px] w-full border border-gray-300 border-opacity-70 focus:border-opacity-100 rounded-md px-2 py-1 ${
+        error && "bg-red-200"
+      }`}
+    >
       {getSvg(type)}
       <input
         type={type}
         placeholder={placeholder}
-        className="w-full bg-inherit focus-within:outline-none p-2"
+        className={`w-full bg-inherit focus-within:outline-none p-2`}
         value={value}
         onChange={onChange}
         required

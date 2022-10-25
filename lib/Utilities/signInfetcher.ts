@@ -6,5 +6,7 @@ export default function signInFetcher(url:string,data:any){
             "Content-Type":"application/json",
         },
         body: JSON.stringify(data),
+    }).then(res=>{
+        return res.json();
     })
 }
