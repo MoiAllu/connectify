@@ -12,13 +12,21 @@ const SignUpForm = (props: Props) => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState(Date);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({
+    error: undefined,
+    success: undefined,
+    passError: undefined,
+  });
   const router = useRouter();
   const submitHandler = async (event: any) => {
     event.preventDefault();
     setIsLoading(true);
     // const mode = "signup";
-    await singUpAuth({ name, email, password, dob });
-    router.reload();
+    const response = await singUpAuth({ name, email, password, dob });
+    setError(response);
+    if (response?.success) {
+      await router.push("/");
+    }
     setIsLoading(false);
   };
 
@@ -73,6 +81,7 @@ const SignUpForm = (props: Props) => {
             onChange={(e: any) => {
               setName(e.target.value);
             }}
+            error={error?.error}
             value={name}
           />
           <Input
@@ -81,6 +90,7 @@ const SignUpForm = (props: Props) => {
             onChange={(e: any) => {
               setEmail(e.target.value);
             }}
+            error={error?.error}
             value={email}
           />
           <Input
@@ -90,8 +100,13 @@ const SignUpForm = (props: Props) => {
               setPaswword(e.target.value);
             }}
             value={password}
+            error={error?.passError || error?.error}
           />
-
+          {error?.passError && (
+            <div>
+              <h1 className="text-red-600">{error?.passError}</h1>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex justify-center items-center gap-1  w-full border border-gray-300border-opacity-70 focus:border-opacity-100 rounded-md px-4 py-3">
               <input
@@ -135,6 +150,11 @@ const SignUpForm = (props: Props) => {
               </div>
             </div>
           </div>
+          {error?.error && (
+            <div>
+              <h1 className="text-red-600">{error?.error}</h1>
+            </div>
+          )}
           <button
             className={`bg-blue-500 text-white rounded-md py-3 flex justify-center ${
               isLoading && "bg-gray-400"

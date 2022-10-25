@@ -10,21 +10,15 @@ type Props = {};
 const SignInForm = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPasword] = useState("");
-  const [authError, setAuthError] = useState("");
+  const [authError, setAuthError] = useState({ error: undefined });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const submitHandler = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      if (await signInAuth({ email, password })) {
-        router.reload();
-      } else {
-        return;
-      }
-    } catch {
-      setAuthError("Ops error! cannot signIn");
-    }
+    const respone = await signInAuth({ email, password });
+    setAuthError(respone);
+    await router.push("/");
     setIsLoading(false);
   };
   return (
@@ -70,11 +64,9 @@ const SignInForm = (props: Props) => {
           <span className="h-[1px] w-full bg-gray-200 lg:w-1/3"></span>
         </div>
 
-        <form className="flex flex-col gap-2" onSubmit={submitHandler}>
-          <div className="text-red-600">
-            <h3 className="">{authError}</h3>
-          </div>
+        <form className="flex flex-col gap-2 " onSubmit={submitHandler}>
           <Input
+            error={authError?.error}
             type="email"
             placeholder="johndoe@gmail.com"
             onChange={(e: any) => {
@@ -83,6 +75,7 @@ const SignInForm = (props: Props) => {
             value={email}
           />
           <Input
+            error={authError?.error}
             type="password"
             placeholder="12vijv9n21n9v0j9r23r"
             onChange={(e: any) => {
@@ -90,6 +83,9 @@ const SignInForm = (props: Props) => {
             }}
             value={password}
           />
+          <div className="text-red-600">
+            {authError?.error && <h3 className="p-1">{authError?.error}</h3>}
+          </div>
           <div className="flex w-full p-2">
             <input type="checkbox" id="checkbox" />
             <label htmlFor="checkbox" className="w-[350px] m-1">

@@ -10,19 +10,23 @@ export default async (req:NextApiRequest,res:NextApiResponse) => {
     const {name,email,password}=req.body;
 
  let user;
- try{
-    user= await prisma.user.create({
-        data:{
-           name,
-           email,
-           password:bcrypt.hashSync(password,salt)
+ if(password.length < 7){
+  return res.json({passError:"Password is too short"});
+ }else{
+   try{
+     user= await prisma.user.create({
+       data:{
+         name,
+         email,
+         password:bcrypt.hashSync(password,salt)
         },
-    })
- }catch(e){
-    res.status(401)
-    res.json({ error: 'User already exists'})
-    return
- }
+      })
+    }catch(e){
+      res.status(401)
+      res.json({ error: 'User already exists'})
+      return
+    }
+  }
  const token = jwt.sign(
     {
       email: user.email,
@@ -43,5 +47,6 @@ export default async (req:NextApiRequest,res:NextApiResponse) => {
       secure: process.env.NODE_ENV === 'production',
     })
   )
-  res.json(user)
+  res.status(200)
+  res.json({success:"Created successfully"})
 }
