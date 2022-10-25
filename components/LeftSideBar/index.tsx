@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import logout from "../../lib/Utilities/logot";
 
 type Props = {};
 
@@ -14,10 +15,13 @@ const LeftSideBar = (props: Props) => {
   const isProfile = pathname === "/profile";
   const isSettings = pathname === "/settings";
 
-  const logoutHandler = () => {
+  const logoutHandler = async (e: any) => {
     // TODO update auth=null from global state
-
-    router.push("/signin");
+    e.preventDefault();
+    if (await logout()) {
+      await router.push("/signin");
+    }
+    return;
   };
 
   return (
