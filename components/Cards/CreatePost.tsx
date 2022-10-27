@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import createPost from "../../lib/Utilities/createPost";
+import createPost from "../../lib/Utilities/posts/createPost";
 import { useMe } from "../../lib/hooks/useMe";
 type Props = {};
 

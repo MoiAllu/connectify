@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
 import CommentList from "../Cards/CommentList";
-import createComment from "../../lib/Utilities/createComment";
+import createComment from "../../lib/Utilities/comments/createComment";
 import { useMe } from "../../lib/hooks/useMe";
 
 const Post = ({ post }: any) => {
@@ -39,6 +39,11 @@ const Post = ({ post }: any) => {
       return [comments, ...prevComments];
     });
   }
+  function deleteLocalComment(id: any) {
+    setComments((prevComments: any) => {
+      return prevComments.filter((comment: any) => comment.id !== id);
+    });
+  }
   const createCommentHandler = async (e: any) => {
     e.preventDefault();
     setCommentButton(true);
@@ -50,7 +55,6 @@ const Post = ({ post }: any) => {
       parentId: null,
     });
     localComments(respone.user);
-    console.log(respone.user);
     setIsLoading(false);
     setCommentRes(respone);
   };
@@ -187,7 +191,9 @@ const Post = ({ post }: any) => {
       </div>
       {commentButton && (
         <div>
-          <CommentList {...{ rootComments, getReplies, localComments }} />
+          <CommentList
+            {...{ rootComments, getReplies, localComments, deleteLocalComment }}
+          />
         </div>
       )}
       {commentRes.success ? (

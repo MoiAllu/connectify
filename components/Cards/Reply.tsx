@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useMe } from "../../lib/hooks/useMe";
-import createComment from "../../lib/Utilities/createComment";
+import createComment from "../../lib/Utilities/comments/createComment";
 
 const Reply = (child: any) => {
   const { data, localComments } = child;

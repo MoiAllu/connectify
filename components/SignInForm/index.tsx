@@ -21,7 +21,6 @@ const SignInForm = (props: Props) => {
     setIsLoading(true);
     const respone = await signInAuth({ email, password });
     setAuthError(respone);
-    console.log(respone);
     if (respone?.success) {
       await router.push("/");
     }

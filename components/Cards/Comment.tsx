@@ -1,13 +1,17 @@
 import moment from "moment";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMe } from "../../lib/hooks/useMe";
+import deleteComment from "../../lib/Utilities/comments/deleteComment";
 import CommentList from "./CommentList";
 import Reply from "./Reply";
 
 const Comment = (data: any) => {
-  const { getReplies, localComments } = data;
+  const { user } = useMe();
+  const { getReplies, localComments, deleteLocalComment } = data;
   // console.log(localComments);
   // console.log(data);
+  const [deleter, setDeleter] = useState();
   const [childReply, setChildReply] = useState(false);
   const childernComents = getReplies(data.comment.id);
   const [showreplies, setShowReplies] = useState(false);
@@ -15,6 +19,18 @@ const Comment = (data: any) => {
     e.preventDefault();
     setChildReply(!childReply);
     setShowReplies(true);
+  };
+  useEffect(() => {
+    if (data.comment?.user?.id == user?.id) {
+      setDeleter(user.id);
+    }
+  }, [data?.comment]);
+  const commentDeleteHandler = async (e: any) => {
+    e.preventDefault();
+    const res = await deleteComment({ commentId: data.comment.id }).then(
+      deleteLocalComment(data.comment.id)
+    );
+    console.log(res);
   };
   const repliesShowHandler = (e: any) => {
     e.preventDefault();
@@ -63,6 +79,15 @@ const Comment = (data: any) => {
               >
                 reply
               </button>
+              {deleter && (
+                <button
+                  type="button"
+                  onClick={commentDeleteHandler}
+                  className="hover:underline text-gray-500 "
+                >
+                  delete
+                </button>
+              )}
             </div>
             {childernComents && (
               <div className="p-2 text-sm">
@@ -94,7 +119,12 @@ const Comment = (data: any) => {
           ></button>
           <div className="flex-1 ">
             <CommentList
-              {...{ rootComments: childernComents, getReplies, localComments }}
+              {...{
+                rootComments: childernComents,
+                getReplies,
+                localComments,
+                deleteLocalComment,
+              }}
             />
           </div>
         </div>
