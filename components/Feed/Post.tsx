@@ -253,6 +253,7 @@ const Post = ({ post }: any) => {
           />
 
           <button
+            disabled={isLoading}
             className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
             type="submit"
           >

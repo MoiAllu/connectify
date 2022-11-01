@@ -156,8 +156,9 @@ const SignUpForm = (props: Props) => {
             </div>
           )}
           <button
-            className={`bg-blue-500 text-white rounded-md py-3 flex justify-center ${
-              isLoading && "bg-gray-400"
+            disabled={isLoading}
+            className={` text-white rounded-md py-3 flex justify-center ${
+              isLoading ? "bg-gray-400" : "bg-blue-500"
             }`}
           >
             {isLoading && (

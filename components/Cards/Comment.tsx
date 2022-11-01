@@ -25,7 +25,7 @@ const Comment = (data: any) => {
     if (data.comment?.user?.id === user?.id) {
       setShowDeleteButton(user.id);
     }
-    data.comment.likes.filter((comment: any) => {
+    data.comment?.likes?.filter((comment: any) => {
       if (comment.userId === user.id) {
         return setCommentsLikeByMe(true);
       }
