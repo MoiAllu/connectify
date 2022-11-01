@@ -16,7 +16,7 @@ const CreatePost = (props: Props) => {
     e.preventDefault();
     setIsLoading(true);
     const userId = await user.id;
-    const respone = await createPost("/postsad", { content, user, userId });
+    const respone = await createPost("/post", { content, user, userId });
     setIsLoading(false);
     setResResult(respone);
   };

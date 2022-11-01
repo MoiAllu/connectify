@@ -1,6 +1,5 @@
-export default function createComment(url:any,data:{userId:any,postId:any,message:string,parentId:any}){
-
-    return fetch(`/api${url}`,{
+export default function likePost(data:{postId:any,userId:any,}){
+    return fetch(`/api/likepost`,{
         method: "POST",
         credentials:"include",
         headers:{

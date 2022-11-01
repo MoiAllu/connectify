@@ -5,7 +5,6 @@ import createComment from "../../lib/Utilities/comments/createComment";
 
 const Reply = (child: any) => {
   const { data, localComments } = child;
-  console.log(child);
   const comment = data.comment;
   const { user } = useMe();
   const [message, setMessage] = useState("");

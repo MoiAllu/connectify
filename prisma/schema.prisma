@@ -12,10 +12,10 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  email          String    @unique
+  id             Int        @id @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  email          String     @unique
   password       String
   name           String
   profilePicture String?
@@ -29,18 +29,21 @@ model User {
   comments       Comment[]
   likes          Like[]
   posts          Post[]
+  postlikes      PostLike[]
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   title     String
   content   String?
-  published Boolean   @default(false)
+  published Boolean    @default(false)
   comments  Comment[]
-  author    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  author    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
+  likes     Like[]
+  postlikes PostLike[]
 }
 
 model Comment {
@@ -61,8 +64,19 @@ model Comment {
 model Like {
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId    Int
   commentId Int
+  postId    Int
 
-  @@id([userId, commentId])
+  @@id([userId, commentId, postId])
+}
+
+model PostLike {
+  user   User @relation(fields: [userId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+  userId Int
+  postId Int
+
+  @@id([userId, postId])
 }

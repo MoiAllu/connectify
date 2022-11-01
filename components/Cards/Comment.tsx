@@ -3,15 +3,16 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMe } from "../../lib/hooks/useMe";
 import deleteComment from "../../lib/Utilities/comments/deleteComment";
+import likeComment from "../../lib/Utilities/likeComment";
 import CommentList from "./CommentList";
 import Reply from "./Reply";
 
 const Comment = (data: any) => {
+  //console.log(data);
   const { user } = useMe();
   const { getReplies, localComments, deleteLocalComment } = data;
-  // console.log(localComments);
-  // console.log(data);
-  const [deleter, setDeleter] = useState();
+  const [commentsLikeByMe, setCommentsLikeByMe] = useState(false);
+  const [showDeleteButton, setShowDeleteButton] = useState();
   const [childReply, setChildReply] = useState(false);
   const childernComents = getReplies(data.comment.id);
   const [showreplies, setShowReplies] = useState(false);
@@ -21,16 +22,33 @@ const Comment = (data: any) => {
     setShowReplies(true);
   };
   useEffect(() => {
-    if (data.comment?.user?.id == user?.id) {
-      setDeleter(user.id);
+    if (data.comment?.user?.id === user?.id) {
+      setShowDeleteButton(user.id);
     }
+    data.comment.likes.filter((comment: any) => {
+      if (comment.userId === user.id) {
+        return setCommentsLikeByMe(true);
+      }
+      return setCommentsLikeByMe(false);
+    });
   }, [data?.comment]);
+  const likeCommentHandler = async (e: any) => {
+    e.preventDefault();
+    const res = await likeComment({
+      commentId: data.comment.id,
+      postId: data.comment.postId,
+      userId: user.id,
+    });
+    if (res.addLike === true) {
+      setCommentsLikeByMe(true);
+    } else {
+      setCommentsLikeByMe(false);
+    }
+  };
   const commentDeleteHandler = async (e: any) => {
     e.preventDefault();
-    const res = await deleteComment({ commentId: data.comment.id }).then(
-      deleteLocalComment(data.comment.id)
-    );
-    console.log(res);
+    const res = await deleteComment({ commentId: data.comment.id });
+    deleteLocalComment(res?.deletedComment.id);
   };
   const repliesShowHandler = (e: any) => {
     e.preventDefault();
@@ -69,9 +87,16 @@ const Comment = (data: any) => {
                 childReply && "flex gap-8 px-[20px] m-2 text-sm"
               } mt-2`}
             >
-              <button type="button" className="hover:underline text-gray-500 ">
+              <button
+                type="button"
+                onClick={likeCommentHandler}
+                className={`hover:underline ${
+                  commentsLikeByMe && "text-bold text-blue-600"
+                } text-gray-500`}
+              >
                 like
               </button>
+
               <button
                 type="button"
                 onClick={childReplyHandler}
@@ -79,7 +104,7 @@ const Comment = (data: any) => {
               >
                 reply
               </button>
-              {deleter && (
+              {showDeleteButton && (
                 <button
                   type="button"
                   onClick={commentDeleteHandler}
