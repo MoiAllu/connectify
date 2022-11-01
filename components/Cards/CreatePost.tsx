@@ -124,6 +124,7 @@ const CreatePost = (props: Props) => {
             </button>
             <div className="text-right  mt-2  sm:min-w-[50px]">
               <button
+                disabled={isLoading}
                 className={`flex px-6 gap-1 py-2 text-white rounded-md  hover:shadow-lg ${
                   isLoading ? "bg-gray-400" : "bg-blue-500"
                 }`}

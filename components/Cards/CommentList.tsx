@@ -5,7 +5,7 @@ const CommentList = (data: any) => {
   const { getReplies, localComments, deleteLocalComment } = data;
   return (
     <div>
-      {data.rootComments.map((comment: any) => {
+      {data.rootComments?.map((comment: any) => {
         return (
           <div key={comment.id}>
             <Comment

@@ -104,7 +104,10 @@ const SignInForm = (props: Props) => {
             {/* <h3 className="text-right w-[350px]">Forgot password?</h3> */}
           </div>
           <button
-            className={`bg-blue-500 text-white rounded-md py-3 flex justify-center ${
+            disabled={isLoading}
+            className={`${
+              isLoading ? "bg-gray-400" : "bg-blue-500"
+            } text-white rounded-md py-3 flex justify-center ${
               isLoading && "bg-gray-400"
             }`}
           >

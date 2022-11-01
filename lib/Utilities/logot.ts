@@ -1,5 +1,5 @@
 export default function logout(){
-    return fetch(`/api$/logout`,{
+    return fetch(`/api/logout`,{
         method:"GET",
         credentials:"include",
         headers:{
