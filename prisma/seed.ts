@@ -40,7 +40,13 @@ async function seed() {
       postId: post1.id,
     },
   })
-
+ const likedbyMe=await prisma.like.create({
+  data:{
+    userId:ali.id,
+    commentId:comment1.id,
+    postId:post1.id
+  }
+})
   const comment2 = await prisma.comment.create({
     data: {
       parentId: comment1.id,

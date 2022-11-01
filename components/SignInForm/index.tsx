@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Input from "../SignUpForm/Input";
 import { useState } from "react";
-import signInAuth from "../../lib/Utilities/signInMutation";
+import signInAuth from "../../lib/Utilities/signin/signInMutation";
 import { useRouter } from "next/router";
 
 type Props = {};
@@ -21,7 +21,6 @@ const SignInForm = (props: Props) => {
     setIsLoading(true);
     const respone = await signInAuth({ email, password });
     setAuthError(respone);
-    console.log(respone);
     if (respone?.success) {
       await router.push("/");
     }

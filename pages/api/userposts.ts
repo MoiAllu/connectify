@@ -3,10 +3,12 @@ import { validateRoute } from "../../lib/Utilities/auth";
 
 export default validateRoute( async(req:any,res:any,user:any)=>{
     const post= await prisma.post.findMany({
+    
         where:{
             userId:user.id
         },
         include:{
+            postlikes:true,
             comments:{
                 orderBy:{
                     createdAt:"asc",
@@ -18,10 +20,16 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
                     updatedAt:true,
                     postId:true,
                     parentId:true,
+                    likes:true,
                     user:{
                         select:{
                             id:true,
                             name:true
+                        }
+                    },
+                    _count:{
+                        select:{
+                            likes:true
                         }
                     }
                 }

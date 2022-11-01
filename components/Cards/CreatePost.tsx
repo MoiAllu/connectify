@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import createPost from "../../lib/Utilities/createPost";
+import createPost from "../../lib/Utilities/posts/createPost";
 import { useMe } from "../../lib/hooks/useMe";
 type Props = {};
 
@@ -16,7 +16,7 @@ const CreatePost = (props: Props) => {
     e.preventDefault();
     setIsLoading(true);
     const userId = await user.id;
-    const respone = await createPost("/postsad", { content, user, userId });
+    const respone = await createPost("/post", { content, user, userId });
     setIsLoading(false);
     setResResult(respone);
   };

@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import moment from "moment";
 import CommentList from "../Cards/CommentList";
-import createComment from "../../lib/Utilities/createComment";
+import createComment from "../../lib/Utilities/comments/createComment";
 import { useMe } from "../../lib/hooks/useMe";
+import likePost from "../../lib/Utilities/posts/postLike";
 
 const Post = ({ post }: any) => {
   const { user } = useMe();
@@ -11,15 +12,24 @@ const Post = ({ post }: any) => {
   const [message, setMessage] = useState("");
   const [commentButton, setCommentButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [postLikeByMe, setPostLikeByMe] = useState(false);
+  const [likehandler, setLikeHandler] = useState(post.postlikes.length);
   const [commentRes, setCommentRes] = useState({
     error: undefined,
     success: undefined,
     user: undefined,
   });
+  console.log(post.postlikes.length + 1);
   useEffect(() => {
+    post.postlikes.filter((comment: any) => {
+      if (comment.userId === user.id) {
+        return setPostLikeByMe(true);
+      }
+      return setPostLikeByMe(false);
+    });
     if (post?.comments == null) return;
     setComments(post?.comments);
-  }, [post?.comments]);
+  }, [post?.comments, post.postlikes]);
   const commentsByParentId = useMemo(() => {
     if (comments == null) return [];
     const group = {} as any;
@@ -33,10 +43,26 @@ const Post = ({ post }: any) => {
     return commentsByParentId[parentId];
   }
   const rootComments = getReplies(null);
+  const postLikehandler = async (e: any) => {
+    e.preventDefault();
+    const res = await likePost({ userId: user.id, postId: post.id });
+    if (res.addLike === true) {
+      setLikeHandler(post.postlikes.length + 1);
+      setPostLikeByMe(true);
+    } else {
+      setLikeHandler(post.postlikes.length - 1);
+      setPostLikeByMe(false);
+    }
+  };
 
   function localComments(comments: any) {
     setComments((prevComments: any) => {
       return [comments, ...prevComments];
+    });
+  }
+  function deleteLocalComment(id: any) {
+    setComments((prevComments: any) => {
+      return prevComments.filter((comment: any) => comment.id !== id);
     });
   }
   const createCommentHandler = async (e: any) => {
@@ -50,11 +76,9 @@ const Post = ({ post }: any) => {
       parentId: null,
     });
     localComments(respone.user);
-    console.log(respone.user);
     setIsLoading(false);
     setCommentRes(respone);
   };
-
   const commentButtonHandler = (e: any) => {
     e.preventDefault();
     setCommentButton(!commentButton);
@@ -113,7 +137,7 @@ const Post = ({ post }: any) => {
         <div className="flex justify-between gap-6 text-sm lg:text-md">
           <div className="flex-1">
             <button className="hover:underline underline-offset-1">
-              9 Likes
+              {likehandler} Likes
             </button>
           </div>
           <button
@@ -127,7 +151,13 @@ const Post = ({ post }: any) => {
       </div>
       {/* Controls */}
       <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
-        <button className="flex items-center gap-1 fill-transparent stroke-black hover:fill-red-500 hover:stroke-red-500 transition-all">
+        <button
+          onClick={postLikehandler}
+          className={`flex items-center gap-1 fill-transparent stroke-black hover:fill-red-500 hover:stroke-red-500 ${
+            postLikeByMe &&
+            " stroke-red-500 fill-red-500 hover:fill-null hover:stroke-null"
+          } transition-all`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -187,7 +217,9 @@ const Post = ({ post }: any) => {
       </div>
       {commentButton && (
         <div>
-          <CommentList {...{ rootComments, getReplies, localComments }} />
+          <CommentList
+            {...{ rootComments, getReplies, localComments, deleteLocalComment }}
+          />
         </div>
       )}
       {commentRes.success ? (

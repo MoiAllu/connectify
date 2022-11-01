@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import singUpAuth from "../../lib/Utilities/signUpMutations";
+import singUpAuth from "../../lib/Utilities/signup/signUpMutations";
 import Input from "./Input";
 
 type Props = {};
