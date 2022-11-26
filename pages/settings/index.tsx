@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import ModelOverlay from "../../components/UI/ModalOverlay";
 import UserInforBar from "../../components/Cards/UserInfoBar";
+import UpdatePicture from "../../components/Cards/UpdatePicure";
 
 const Settings: NextPage = () => {
   return (
@@ -14,7 +16,7 @@ const Settings: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex items-center justify-center min-h-[calc(100vh-70px)] bg-gray-50 px-4">
-        Settings
+        setting
       </div>
     </>
   );

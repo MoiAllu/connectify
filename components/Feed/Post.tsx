@@ -6,22 +6,29 @@ import createComment from "../../lib/Utilities/comments/createComment";
 import { useMe } from "../../lib/hooks/useMe";
 import likePost from "../../lib/Utilities/posts/postLike";
 
-const Post = ({ post }: any) => {
+const Post = ({ post, iniLoading }: any) => {
   const { user } = useMe();
   const [comments, setComments] = useState([] as any);
   const [message, setMessage] = useState("");
   const [commentButton, setCommentButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [postLikeByMe, setPostLikeByMe] = useState(false);
-  const [likehandler, setLikeHandler] = useState(post.postlikes.length);
+  const [likehandler, setLikeHandler] = useState(post?.postlikes.length);
   const [commentRes, setCommentRes] = useState({
     error: undefined,
     success: undefined,
     user: undefined,
   });
-  console.log(post.postlikes.length + 1);
+  // useEffect(() => {
+  //   post?.postlikes?.filter((comment: any) => {
+  //     if (comment.userId === user.id) {
+  //       return setPostLikeByMe(true);
+  //     }
+  //     return setPostLikeByMe(false);
+  //   });
+  // }, [post?.postlikes]);
   useEffect(() => {
-    post.postlikes.filter((comment: any) => {
+    post?.postlikes?.filter((comment: any) => {
       if (comment.userId === user.id) {
         return setPostLikeByMe(true);
       }
@@ -29,7 +36,7 @@ const Post = ({ post }: any) => {
     });
     if (post?.comments == null) return;
     setComments(post?.comments);
-  }, [post?.comments, post.postlikes]);
+  }, [post?.comments, post?.likes]);
   const commentsByParentId = useMemo(() => {
     if (comments == null) return [];
     const group = {} as any;
@@ -129,10 +136,16 @@ const Post = ({ post }: any) => {
         <Image
           src={"/post.jpg"}
           alt="Post Pic"
-          className="rounded-3xl"
+          className={`rounded-3xl  duration-700 ease-in-out group-hover:opacity-75,
+      ${
+        iniLoading
+          ? "scale-110 blur-2xl grayscale"
+          : "scale-100 blur-0 grayscale-0"
+      }`}
           width={300}
           height={200}
           layout="responsive"
+          onLoadingComplete={() => {}}
         />
         <div className="flex justify-between gap-6 text-sm lg:text-md">
           <div className="flex-1">
