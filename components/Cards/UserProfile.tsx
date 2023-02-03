@@ -1,20 +1,23 @@
 import Image from "next/image";
-const UserProfile = ({ user }: any) => {
+
+const UserProfile = ({ user, setProfileButton }: any) => {
   return (
     <div className="bg-white p-2 w-full rounded-2xl shadow-sm">
       <div className="bg-[url('/Background.jpg')] bg-cover bg-fixed h-[312px] w-full rounded-lg  items-center justify-center ">
         <div className="justify-between flex h-full">
           <div className="h-full mt-[215px] px-6">
             {/** using div as profile picture as it is easy more versatile to give border radius as giving to an image */}
-            <div className=" rounded-full outline outline-white bg-[url('/square.jpg')] w-[120px] h-[120px]  bg-cover">
-              {/* <Image
+            <div
+              className={`rounded-full outline outline-white w-[120px] h-[120px] `}
+            >
+              <Image
                 className="rounded-full "
-                src={"/square.jpg"}
+                src={user.profilePicture || "/square.jpg"}
                 alt="Avatar Image"
                 objectFit="fill"
-                width={100}
-                height={100}
-              /> */}
+                width={120}
+                height={120}
+              />
             </div>
           </div>
           <div className="h-full mt-[250px] px-8 ">
@@ -29,8 +32,10 @@ const UserProfile = ({ user }: any) => {
         <div className=" flex w-full justify-between text-gray-400 text-xs">
           <h3 className="p-2">UI Designer</h3>
           <div className="flex">
-            <h3 className="p-2">Eye</h3>
-            <button className="font-semibold text-gray-700 mr-4 bg-gray-50 rounded-md transition-all p-2 hover:bg-gray-300 shadow-sm ">
+            <button
+              className="font-semibold text-gray-700 mr-4 bg-gray-50 rounded-md transition-all p-3 hover:bg-gray-300 shadow-md "
+              onClick={() => setProfileButton(true)}
+            >
               Edit basic info
             </button>
           </div>

@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { useMe } from "../lib/hooks/useMe";
 import { useAllPosts, usePost } from "../lib/hooks/usePost";
+import Connectify from "../components/Cards/Connectify";
 
 const unSignedPage = ["/signin", "/signup"];
 function MyApp({ Component, pageProps }: AppProps, req: any) {
@@ -12,10 +13,12 @@ function MyApp({ Component, pageProps }: AppProps, req: any) {
   const router = useRouter();
   return unSignedPage.includes(router.pathname) ? (
     <Component {...pageProps} />
-  ) : (
-    <Layout user={user}>
+  ) : user ? (
+    <Layout user={user} isError={isError} isLoading={isLoading}>
       <Component {...pageProps} />
     </Layout>
+  ) : (
+    <Connectify isVisible={!user} />
   );
 }
 

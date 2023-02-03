@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment } from "react";
+import { motion } from "framer-motion";
 
 const NavBar = ({ user }: any) => {
   return (

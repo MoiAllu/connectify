@@ -16,7 +16,6 @@ const LeftSideBar = (props: Props) => {
   const isSettings = pathname === "/settings";
 
   const logoutHandler = async (e: any) => {
-    // TODO update auth=null from global state
     e.preventDefault();
     if (await logout()) {
       await router.push("/signin");
