@@ -12,7 +12,7 @@ const UserProfile = ({ user, setProfileButton }: any) => {
             >
               <Image
                 className="rounded-full "
-                src={user.profilePicture}
+                src={user.profilePicture || "/square.jpg"}
                 alt="Avatar Image"
                 objectFit="fill"
                 width={120}

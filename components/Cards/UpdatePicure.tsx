@@ -4,7 +4,7 @@ import uploadToCloudinary from "../../lib/Utilities/multer/profilemulter";
 import UploadProfileUrl from "../../lib/Utilities/user/uploadProfileUrl";
 
 const UpdatePicture = ({ setProfileButton, user }: any) => {
-  const [picture, setPicture] = useState("/square.jpg");
+  const [picture, setPicture] = useState(user?.profilePicture || "/squre.jpg");
 
   const setPictureHandler = (e: any) => {
     e.preventDefault();
