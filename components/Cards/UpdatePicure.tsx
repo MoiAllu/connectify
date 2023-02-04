@@ -78,7 +78,7 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
       </div>
       <div className="flex-col flex h-full w-[40vw]">
         <label htmlFor="bio" className="text-gray-600">
-          Bio's
+          Bio&aposs
         </label>
         <input
           type="text"
