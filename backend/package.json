@@ -1,0 +1,101 @@
+{
+  "name": "connectify-fe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node build/index.js | pino-pretty --colorize",
+    "dev": "ts-node-dev ./src/index.ts | pino-pretty --colorize",
+    "postinstall": "npx typesync && husky install",
+    "prisma": "dotenv -e .env prisma",
+    "db:gen": "npm run prisma generate",
+    "db:studio": "npm run prisma studio",
+    "db:migrate": "npm run prisma migrate dev",
+    "db:push": "npm run prisma db push",
+    "lint": "./node_modules/.bin/eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itxtalal/connectify-be.git"
+  },
+  "keywords": [],
+  "author": "itxtalal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itxtalal/connectify-be/issues"
+  },
+  "homepage": "https://github.com/itxtalal/connectify-be#readme",
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "@fastify/formbody": "^7.3.0",
+    "@fastify/cookie": "^8.3.0",
+    "@prisma/client": "^4.6.1",
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
+    "cookie": "^0.5.0",
+    "fastify": "^4.10.2",
+    "fluent-json-schema": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "pino": "^8.7.0",
+    "prisma": "^4.6.1",
+    "superjson": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^10.0.28-alpha",
+    "@types/cookie": "^0.5.1",
+    "@types/eslint": "8.4.1",
+    "@types/eslint-plugin-prettier": "3.1.0",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "17.0.25",
+    "@types/nodemon": "1.19.1",
+    "@types/prettier": "2.6.0",
+    "@typescript-eslint/eslint-plugin": "5.20.0",
+    "@typescript-eslint/parser": "5.20.0",
+    "cross-env": "7.0.3",
+    "eslint": "8.13.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "husky": "7.0.4",
+    "lint-staged": "12.3.8",
+    "nodemon": "2.0.15",
+    "pino-pretty": "^9.1.1",
+    "prettier": "2.6.2",
+    "ts-node": "10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "4.6.3"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "prettier/@typescript-eslint"
+    ],
+    "env": {
+      "node": true
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run build"
+    }
+  }
+}
