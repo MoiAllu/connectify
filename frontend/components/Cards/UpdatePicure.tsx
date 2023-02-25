@@ -45,9 +45,9 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
     const resPostgres = await UploadProfileUrl({ user, pictureUrl });
   };
   return (
-    <div className="z-20 bg-white lg:w-[70vw] w-[75vw] lg:h-[60vh] h-[50vh] max-w-[1250px] max-h-[750px]  shadow-lg rounded-md flex flex-col items-center justify-center p-5">
-      <div className="flex p-5">
-        <div className="flex flex-col gap-2">
+    <div className="z-20 bg-white lg:w-[70vw] w-[75vw] lg:h-[60vh] h-[50vh] max-w-[1250px] max-h-[750px]  shadow-lg rounded-md flex flex-col items-center justify-center md:p-5 p-1">
+      <div className="flex sm:p-5 p-1 h-full w-full">
+        <div className="md:flex flex-col gap-2 hidden ">
           <h1 className="font-semibold text-lg">Ali Abbasi</h1>
           <Image
             className="rounded-md shadow-md"
@@ -56,9 +56,9 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
             height={300}
           />
         </div>
-        <div className="flex px-10 items-center">
+        <div className="flex md:px-10 md:items-center">
           <form
-            className="flex flex-col gap-1 items-start"
+            className="flex flex-col gap-1 items-start text-[12px] md:text-lg"
             onSubmit={uploadPictureHandler}
             onChange={setPictureHandler}
             encType="multipart/form-data"
@@ -76,6 +76,14 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
           </form>
         </div>
       </div>
+      <div className="md:hidden flex-col flex max-h-[160px] max-w-[160px] ">
+        <Image
+          className="rounded-md shadow-md"
+          src={picture}
+          width={300}
+          height={300}
+        />
+      </div>
       <div className="flex-col flex h-full w-[40vw]">
         <label htmlFor="bio" className="text-gray-600">
           Bio&aposs
@@ -87,11 +95,11 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
           className="border p-1 rounded-sm text-gray-500 h-full max-h-[100px] "
         ></input>
       </div>
-      <div className="flex gap-1 p-4 justify-end items-end h-full w-full">
-        <div className="px-5 py-2 bg-blue-600 rounded-md shadow-sm hover:bg-gray-400 transition-all text-white ">
+      <div className="flex gap-1 sm:p-4 p-1 justify-end items-end h-full w-full">
+        <div className="md:px-5 px-2 py-2 bg-blue-600 rounded-md shadow-sm hover:bg-gray-400 transition-all text-white text-[12px] md:text-[15px]">
           <button>Save</button>
         </div>
-        <div className="px-4 py-2 bg-red-600 rounded-md shadow-sm hover:bg-red-400 transition-all text-white">
+        <div className="md:px-4 px-2 py-2 bg-red-600 rounded-md shadow-sm hover:bg-red-400 transition-all text-white text-[12px] md:text-[15px]">
           <button onClick={() => setProfileButton(false)}>Cancel</button>
         </div>
       </div>
