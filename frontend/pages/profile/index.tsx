@@ -49,7 +49,7 @@ const Profile: NextPage = () => {
                 })}
               </div>
             )}
-            <div className="flex-col mt-8">
+            <div className="md:flex-col mt-8 hidden">
               <div className="mb-6">
                 <BirthdayCard />
               </div>

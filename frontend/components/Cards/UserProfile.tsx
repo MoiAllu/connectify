@@ -21,7 +21,7 @@ const UserProfile = ({ user, setProfileButton }: any) => {
             </div>
           </div>
           <div className="h-full mt-[250px] px-8 ">
-            <button className="bg-white px-2 py-1 rounded-md shadow-sm text-gray-700 transition-all hover:bg-gray-300 ">
+            <button className="hidden sm:flex bg-white px-2 py-1 rounded-md shadow-sm text-gray-700 transition-all hover:bg-gray-300  ">
               <span className="text-xs">Edit Cover Photo</span>
             </button>
           </div>

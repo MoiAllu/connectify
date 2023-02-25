@@ -13,7 +13,7 @@ const NotificationsPage: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col items-center min-h-[calc(100vh-70px)] relative top-[70px] lg:top-0 h-full w-full bg-gray-50 p-6 rounded-2xl">
+      <div className="flex flex-col items-center min-h-[calc(100vh-70px)] relative sm:top-[70px] lg:top-0 h-full w-full bg-gray-50 p-6 rounded-2xl">
         <div className="bg-white w-full h-full p-4 rounded-2xl shadow-md">
           <div className="flex justify-between w-full p-2 pb-4 border-b">
             <p className="font-bold text-gray-700">Notification</p>

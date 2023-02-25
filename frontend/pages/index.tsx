@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex justify-center min-h-[calc(100vh-70px)] py-2 pt-[70px] lg:pt-0 px-4">
+      <div className="flex justify-center min-h-[calc(100vh-70px)] py-2 sm:pt-[70px] lg:pt-0 px-4">
         <Feed />
       </div>
     </>
