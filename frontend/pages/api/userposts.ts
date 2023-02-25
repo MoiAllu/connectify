@@ -9,6 +9,7 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
         },
         include:{
             postlikes:true,
+            author:true,
             comments:{
                 orderBy:{
                     createdAt:"asc",
@@ -24,7 +25,8 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
                     user:{
                         select:{
                             id:true,
-                            name:true
+                            name:true,
+                            profilePicture:true,
                         }
                     },
                     _count:{

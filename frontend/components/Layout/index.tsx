@@ -4,6 +4,7 @@ import LeftSidebar from "../LeftSideBar";
 import RightSidebar from "../RightSideBar";
 import { NextRouter, useRouter } from "next/router";
 import { motion } from "framer-motion";
+import BottomBar from "../BottomBar";
 type props = {};
 
 const Layout = ({ children, user }: any) => {
@@ -41,6 +42,7 @@ const Layout = ({ children, user }: any) => {
         {children}
       </div>
       {!hideRightBar && <RightSidebar />}
+      <BottomBar />
     </>
   );
 };
