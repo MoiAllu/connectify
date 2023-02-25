@@ -4,6 +4,7 @@ import Input from "../SignUpForm/Input";
 import { useState } from "react";
 import signInAuth from "../../lib/Utilities/signin/signInMutation";
 import { useRouter } from "next/router";
+import testUserSignIn from "../../lib/Utilities/TestUser";
 
 type Props = {};
 
@@ -16,6 +17,20 @@ const SignInForm = (props: Props) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const guestUserHandler = async (e: any) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const respone = await testUserSignIn({
+      email: "user@test.com",
+      password: "password",
+    });
+    setAuthError(respone);
+    if (respone?.success) {
+      await router.push("/");
+    }
+    setIsLoading(false);
+  };
   const submitHandler = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
@@ -63,6 +78,12 @@ const SignInForm = (props: Props) => {
             Sign In with Apple
           </button>
         </div>
+        <button
+          className="bg-gray-200 rounded-md text-[12px] font-bold text-blue-500-grey flex  justify-center items-center px-4 gap-3 py-3"
+          onClick={guestUserHandler}
+        >
+          <span>Sign in as Guest</span>
+        </button>
         <div className="flex gap-3 w-full justify-center items-center max-w-[350px] text-[12px] text-gray-500 font-bold">
           <span className="h-[1px] w-full bg-gray-200 lg:w-1/3"></span>
           OR
