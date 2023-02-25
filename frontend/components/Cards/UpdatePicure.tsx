@@ -97,7 +97,7 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
       </div>
       <div className="flex gap-1 sm:p-4 p-1 justify-end items-end h-full w-full">
         <div className="md:px-5 px-2 py-2 bg-blue-600 rounded-md shadow-sm hover:bg-gray-400 transition-all text-white text-[12px] md:text-[15px]">
-          <button>Save</button>
+          <button onClick={() => setProfileButton(false)}>Save</button>
         </div>
         <div className="md:px-4 px-2 py-2 bg-red-600 rounded-md shadow-sm hover:bg-red-400 transition-all text-white text-[12px] md:text-[15px]">
           <button onClick={() => setProfileButton(false)}>Cancel</button>

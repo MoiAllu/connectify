@@ -34,7 +34,7 @@ const CreatePost = (props: Props) => {
           <div className=" flex p-2 text-left gap-2 mb-3 ">
             <Image
               className="rounded-full"
-              src="/square.jpg"
+              src={user?.profilePicture || "/square.jpg"}
               alt="Avatar"
               objectFit="fill"
               width={50}

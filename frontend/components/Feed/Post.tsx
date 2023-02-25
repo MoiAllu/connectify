@@ -97,7 +97,7 @@ const Post = ({ post, iniLoading }: any) => {
       <div className="flex justify-between gap-3">
         <Image
           className="rounded-full"
-          src={"/square.jpg"}
+          src={post?.author?.profilePicture || "/square.jpg"}
           alt="Avatar Image"
           objectFit="fill"
           width={40}

@@ -24,7 +24,7 @@ const BottomBar = (props: Props) => {
   };
 
   return (
-    <div className="flex md:hidden flex-row items-center fixed bottom-0 w-full min-h-[50px] bg-white gap-2 p-1">
+    <div className="flex lg:hidden flex-row items-center fixed bottom-0 w-full min-h-[50px] bg-white gap-2 p-1">
       {/* Element */}
       <Link href={"/"}>
         <div

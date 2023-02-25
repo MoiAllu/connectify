@@ -22,6 +22,7 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
                         select:{
                             id:true,
                             name:true,
+                            profilePicture:true,
                         }
                     },
                     _count: { select: { likes: true } },

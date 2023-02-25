@@ -59,7 +59,7 @@ const NavBar = ({ user }: any) => {
             </Link>
             <Image
               className="rounded-xl"
-              src="/square.jpg"
+              src={user?.profilePicture || "/square.jpg"}
               alt="Rounded avatar"
               objectFit="fill"
               width={40}

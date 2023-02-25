@@ -17,10 +17,13 @@ const LeftSideBar = (props: Props) => {
 
   const logoutHandler = async (e: any) => {
     e.preventDefault();
-    if (await logout()) {
-      await router.push("/signin");
+    const res = window.confirm("Are you sure you want to logout?");
+    if (res) {
+      if (await logout()) {
+        await router.push("/signin");
+      }
+      return;
     }
-    return;
   };
 
   return (

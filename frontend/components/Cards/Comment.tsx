@@ -8,7 +8,6 @@ import CommentList from "./CommentList";
 import Reply from "./Reply";
 
 const Comment = (data: any) => {
-  //console.log(data);
   const { user } = useMe();
   const { getReplies, localComments, deleteLocalComment } = data;
   const [commentsLikeByMe, setCommentsLikeByMe] = useState(false);
@@ -60,7 +59,7 @@ const Comment = (data: any) => {
         <div>
           <Image
             className="rounded-full min-w-[28px] min-h-[28px]"
-            src={"/square.jpg"}
+            src={data?.comment?.user?.profilePicture || "/square.jpg"}
             alt="Avatar Image"
             objectFit="fill"
             width={40}
