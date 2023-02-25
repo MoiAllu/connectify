@@ -246,7 +246,7 @@ const Post = ({ post, iniLoading }: any) => {
         >
           <Image
             className="rounded-full min-w-[28px] min-h-[28px]"
-            src={"/square.jpg"}
+            src={post?.author?.profilePicture || "/square.jpg"}
             alt="Avatar Image"
             objectFit="fill"
             width={40}
