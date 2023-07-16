@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async (req:NextApiRequest,res:NextApiResponse) => {
+    try{
     const {commentId}= await req.body;
     try {
          const deletedComment = await prisma.comment.delete({
@@ -16,4 +17,7 @@ export default async (req:NextApiRequest,res:NextApiResponse) => {
         res.json({ error: 'Opps something went wrong'})
         return
     }
+}catch{
+    res.status(500).json({error:"Something went wrong"})
+}
 }

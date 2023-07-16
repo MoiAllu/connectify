@@ -1,22 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import createPost from "../../lib/Utilities/posts/createPost";
 import { useMe } from "../../lib/hooks/useMe";
+import uploadToCloudinary from "../../lib/Utilities/multer/profilemulter";
+
 type Props = {};
 
 const CreatePost = (props: Props) => {
   const [content, setContent] = useState("");
+  const [preview, setPreview] = useState("");
   const { user } = useMe();
   const [isLoading, setIsLoading] = useState(false);
   const [resResult, setResResult] = useState({
     error: undefined,
     success: undefined,
   });
+  const onSelectFile = (e: any) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.onload = function (onLoadEvent: any) {
+      setPreview(onLoadEvent.target.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
   const formSubmitHanlder = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
+    const form = e.currentTarget;
+    const fileInput: any = Array.from(form.elements).find(
+      ({ name }: any) => name === "img"
+    );
+    const formData = new FormData();
+    for (const file of fileInput.files) {
+      formData.append("file", file);
+    }
+    formData.append("upload_preset", "unsigned_upload");
+    const pictureUrl = await uploadToCloudinary(formData);
+    const url = await pictureUrl.secure_url;
     const userId = await user.id;
-    const respone = await createPost("/post", { content, user, userId });
+    const respone = await createPost("/post", {
+      content,
+      user,
+      userId,
+      url,
+    });
     setIsLoading(false);
     setResResult(respone);
   };
@@ -66,6 +93,14 @@ const CreatePost = (props: Props) => {
           {resResult && (
             <h2 className="text-red-600 ml-4">{resResult?.error}</h2>
           )}
+          {preview && (
+            <div className="h-full flex justify-center mx-auto">
+              <img
+                src={preview}
+                className="rounded max-w-[500px] max-h-[500px] object-contain"
+              ></img>
+            </div>
+          )}
           <div className="gap-2 px-3 hidden text-gray-900 sm:flex">
             <button className="flex p-2 flex-1" type="button">
               <div className="py-2">
@@ -88,17 +123,34 @@ const CreatePost = (props: Props) => {
               </div>
               <h3 className="text-center p-2 text-sm">Live Video</h3>
             </button>
-            <button className="gap-1 flex p-2 flex-1" type="button">
-              <div className="py-2 ">
-                <Image
-                  width="20px"
-                  height="20px "
-                  src="/Photoicon.svg"
-                  alt="Photo"
-                ></Image>
+
+            <button className="gap-1 flex p-2 flex-1 " type="button">
+              <div className="flex hover:bg-gray-200 transition-all hover:shadow-md px-2 rounded-md hover:scale-105 ease-in-out">
+                <div className="py-2">
+                  <Image
+                    width="20px"
+                    height="20px "
+                    src="/Photoicon.svg"
+                    alt="Photo" // blurDataURL="data:..."
+                  ></Image>
+                </div>
+                <label
+                  className=" p-2 text-sm  text-left hover:cursor-pointer"
+                  htmlFor="upImg"
+                >
+                  Photo Video
+                </label>
+                <input
+                  type="file"
+                  id="upImg"
+                  name="img"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={onSelectFile}
+                />
               </div>
-              <h3 className=" p-2 text-sm  text-left">Photo Video</h3>
             </button>
+
             <button className="flex py-2 flex-1 " type="button">
               <div className="py-2">
                 <svg

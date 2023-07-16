@@ -1,4 +1,5 @@
-export default function createPost(url:any,data:{content:string;user:any,userId:any}){
+export default function createPost(url:any,data:{content:string,user:any,userId:any,url:any}){
+    console.log(data.url)
     return fetch(`/api${url}`,{
         method: 'POST',
         credentials:"include",

@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
+    try{
     const {user,pictureUrl}= await req.body;
         if(user && pictureUrl){
             await prisma.user.update({where:{
@@ -22,4 +23,7 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
             res.status(500)
             res.json({error:"Unreachable Server"})
         }
+    }catch{
+        res.status(500).json({error:"Something went wrong"})
+    }
 }

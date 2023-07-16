@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const cookie =require("cookie");
 
 export default async (req:NextApiRequest,res:NextApiResponse) => {
+  try{
 const {email,password}=req.body;
 
     const user =await prisma.user.findUnique({
@@ -39,4 +40,8 @@ const {email,password}=req.body;
         res.status(401)
         res.json({error:"Invalid credentials"})
     }
+  }catch{
+    res.status(500).json({error:"Something went wrong"})
+  }
+  
 }
