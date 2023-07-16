@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import fetcher from "../Utilities/fetcher";
 
-export const usePost          = () => {
+export const usePost = () => {
 const {data,error} = useSWR("/userposts",fetcher)
 return{
     posts:data,

@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt');
 const cookie =require("cookie");
 
 export default async (req:NextApiRequest,res:NextApiResponse) => {
+  try{
+    
+  
     const salt = bcrypt.genSaltSync()
     const {name,email,password}=req.body;
 
@@ -49,4 +52,7 @@ export default async (req:NextApiRequest,res:NextApiResponse) => {
   )
   res.status(200)
   res.json({success:"Created successfully"})
+  }catch{
+    res.status(500).json({error:"Something went wrong"})
+  }
 }

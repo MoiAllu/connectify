@@ -2,8 +2,8 @@ import prisma from "../../lib/prisma";
 import { validateRoute } from "../../lib/Utilities/auth";
 
 export default validateRoute( async(req:any,res:any,user:any)=>{
+    try{
     const post= await prisma.post.findMany({
-    
         where:{
             userId:user.id
         },
@@ -39,4 +39,7 @@ export default validateRoute( async(req:any,res:any,user:any)=>{
         }
     })
     res.json(post)
+}catch{
+    res.status(500).json({error:"Something went wrong"})
+}
 })

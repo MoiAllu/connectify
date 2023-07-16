@@ -41,18 +41,12 @@ const Feed = (props: Props) => {
   ) : (
     <motion.div className="w-full flex gap-4">
       <motion.div
-        className="min-w-[70%] flex-col"
+        className="min-w-[100%] flex-col"
         variants={container}
         initial="hidden"
         animate="show"
         exit="exit"
       >
-        <CreatePost />
-        <motion.div className="flex 2xl:hidden gap-4 overflow-auto mb-2 pb-2">
-          <FollowSuggestion />
-          <BirthdayCard />
-          <UpcomingBirthdays />
-        </motion.div>
         {posts?.map((post: any) => {
           return (
             <motion.div

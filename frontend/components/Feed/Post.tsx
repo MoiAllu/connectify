@@ -132,21 +132,23 @@ const Post = ({ post, iniLoading }: any) => {
 
       {/* Post Body & Image */}
       <div className="flex flex-col gap-3">
-        <p className="">{post?.content}</p>
-        <Image
-          src={"/post.jpg"}
-          alt="Post Pic"
-          className={`rounded-3xl  duration-700 ease-in-out group-hover:opacity-75,
+        <p className="">{post?.title}</p>
+        {post?.content && (
+          <Image
+            src={post?.content}
+            alt="Post Pic"
+            className={`rounded-3xl  duration-700 ease-in-out group-hover:opacity-75,
       ${
         iniLoading
           ? "scale-110 blur-2xl grayscale"
           : "scale-100 blur-0 grayscale-0"
       }`}
-          width={300}
-          height={200}
-          layout="responsive"
-          onLoadingComplete={() => {}}
-        />
+            width={300}
+            height={200}
+            layout="responsive"
+            onLoadingComplete={() => {}}
+          />
+        )}
         <div className="flex justify-between gap-6 text-sm lg:text-md">
           <div className="flex-1">
             <button className="hover:underline underline-offset-1">

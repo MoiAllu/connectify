@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async (req:NextApiRequest,res:NextApiResponse) => {
+    try{
     const {postId,userId}= await req.body;
     const data={
         postId,userId
@@ -24,4 +25,7 @@ export default async (req:NextApiRequest,res:NextApiResponse) => {
         res.status(200)
         return res.json({addLike:false})
     }
+}catch{
+    res.status(500).json({error:"Something went wrong"})
+}
 }

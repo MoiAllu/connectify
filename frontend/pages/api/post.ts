@@ -1,16 +1,17 @@
 import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
-    const {content,userId}=await req.body;
+    try{
+    const {content,userId,url}=await req.body;
     try{ 
         if( content!=""){
 
             await prisma.post.create({
                 data:{
-                    content,
                     title:content,
                     userId,
-                    published:true
+                    published:true,
+                    content:url,
                 }
             })
         }else{
@@ -24,4 +25,7 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
     }
     res.status(200)
     res.json({success:"successfully posted"});
+}catch{
+    res.status(500).json({error:"Something went wrong"})
+}
 }

@@ -1,6 +1,9 @@
 import { NextApiRequest,NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
+    try{
+
+    
     const {message,userId,postId,parentId}=await req.body;
     try{ 
         if( message!=null && userId!=null && postId!=null){
@@ -24,4 +27,7 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
         res.json({ error: 'Opps something went wrong'})
         return
     }
+}catch{
+    res.status(500).json({error:"Something went wrong"})
+}
 }

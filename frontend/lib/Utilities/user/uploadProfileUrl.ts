@@ -1,5 +1,4 @@
 const UploadProfileUrl=(data:{user:any,pictureUrl:any})=>{
-    console.log(data.pictureUrl)
 return fetch("/api/uploadprofilepicture",{
     method:"PUT",
     credentials:"include",
