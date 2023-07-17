@@ -7,7 +7,6 @@ const cookie =require("cookie");
 export default async (req:NextApiRequest,res:NextApiResponse) => {
   try{
 const {email,password}=req.body;
-
     const user =await prisma.user.findUnique({
         where:{
             email,
