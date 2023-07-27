@@ -60,7 +60,6 @@ const UserProfile = ({ user, setProfileButton }: any) => {
       setIsLoading(false);
       return;
     }
-    console.log(pictureUrl);
     const resPostres = await UploadBgPicture({ user, pictureUrl });
     if (resPostres.status === 200) {
       setSuccess(true);
@@ -73,7 +72,6 @@ const UserProfile = ({ user, setProfileButton }: any) => {
     setSuccess(false);
     setIsLoading(false);
     setIsSelected(false);
-    console.log(resPostres);
   };
 
   return (

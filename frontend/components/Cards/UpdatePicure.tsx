@@ -54,7 +54,6 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
       setIsLoading(false);
       return;
     }
-    console.log(pictureUrl);
     const resPostres = await UploadProfileUrl({ user, pictureUrl });
     if (resPostres.status === 200) {
       setSuccess(true);
@@ -65,7 +64,6 @@ const UpdatePicture = ({ setProfileButton, user }: any) => {
     setError(resPostres.statusText);
     setSuccess(false);
     setIsLoading(false);
-    console.log(resPostres);
   };
   return (
     <div className="z-20 bg-white lg:w-[70vw] w-[75vw] lg:h-[60vh] h-[50vh] max-w-[1250px] max-h-[750px]  shadow-lg rounded-md flex flex-col items-center justify-center md:p-5 p-1">
