@@ -9,11 +9,11 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
                 email:user.email,
             },
             data:{
-                profilePicture:pictureUrl.secure_url,
+                bgPicture:pictureUrl.secure_url,
             }
           })
             res.status(200)
-            res.json({success:"Updated Profile Picture"})
+            res.json({success:"Updated Background Picture"})
             return
         } else if(!user && !pictureUrl){
             res.status(400)

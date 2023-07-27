@@ -5,8 +5,12 @@ import CommentList from "../Cards/CommentList";
 import createComment from "../../lib/Utilities/comments/createComment";
 import { useMe } from "../../lib/hooks/useMe";
 import likePost from "../../lib/Utilities/posts/postLike";
+import deletePost from "../../lib/Utilities/posts/deletePost";
+import Router from "next/router";
 
 const Post = ({ post, iniLoading }: any) => {
+  const [delRes, setDelRes] = useState({} as any);
+  const [dropdown, setDropDown] = useState(false);
   const { user } = useMe();
   const [comments, setComments] = useState([] as any);
   const [message, setMessage] = useState("");
@@ -27,7 +31,10 @@ const Post = ({ post, iniLoading }: any) => {
   //     return setPostLikeByMe(false);
   //   });
   // }, [post?.postlikes]);
+
   useEffect(() => {
+    setDelRes("");
+    setDropDown(false);
     post?.postlikes?.filter((comment: any) => {
       if (comment.userId === user.id) {
         return setPostLikeByMe(true);
@@ -61,7 +68,23 @@ const Post = ({ post, iniLoading }: any) => {
       setPostLikeByMe(false);
     }
   };
-
+  const deletePostHandler = async (e: any) => {
+    e.preventDefault();
+    const res = window.confirm(
+      "Deleted post can't be recover, are your sure you want to delete the post?"
+    );
+    if (res) {
+      const response = await deletePost("/deletepost", {
+        postId: post.id,
+        userId: user.id,
+        postUserId: post.author.id,
+      });
+      setDelRes(response);
+      if (await response.success) {
+        Router.reload();
+      }
+    }
+  };
   function localComments(comments: any) {
     setComments((prevComments: any) => {
       return [comments, ...prevComments];
@@ -92,11 +115,11 @@ const Post = ({ post, iniLoading }: any) => {
   };
   const postCreatedAt = Math.floor(new Date(post?.createdAt).getTime() / 1000);
   return (
-    <div className="bg-white w-full rounded-3xl flex flex-col px-6 py-4 gap-3">
+    <div className="bg-white w-full sm:rounded-3xl flex flex-col sm:px-6 px-3 py-4 gap-3">
       {/* Person */}
-      <div className="flex justify-between gap-3">
+      <div className=" w-full flex justify-between gap-3">
         <Image
-          className="rounded-full"
+          className="rounded-full relative"
           src={post?.author?.profilePicture || "/square.jpg"}
           alt="Avatar Image"
           objectFit="fill"
@@ -110,208 +133,290 @@ const Post = ({ post, iniLoading }: any) => {
             {post?.published ? "Public" : "Private"}
           </p>
         </div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="stroke-gray-500 cursor-pointer"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          onClick={() => {
-            console.log("Friends Clicked");
-          }}
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <circle cx="5" cy="12" r="1" />
-          <circle cx="12" cy="12" r="1" />
-          <circle cx="19" cy="12" r="1" />
-        </svg>
+        <div className="flex-col justify-between items-center">
+          <button
+            id="dropdownDefaultButton"
+            data-dropdown-toggle="dropdown"
+            onClick={() => setDropDown(!dropdown)}
+            className=""
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-gray-500 cursor-pointer"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              onClick={() => {
+                console.log("Friends Clicked");
+              }}
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <circle cx="5" cy="12" r="1" />
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+            </svg>
+          </button>
+        </div>
       </div>
-
-      {/* Post Body & Image */}
-      <div className="flex flex-col gap-3">
-        <p className="">{post?.title}</p>
-        {post?.content && (
-          <Image
-            src={post?.content}
-            alt="Post Pic"
-            className={`rounded-3xl  duration-700 ease-in-out group-hover:opacity-75,
+      {delRes.error && <h2 className="text-red-600 ml-4">{delRes.error}</h2>}
+      {dropdown && (
+        <div
+          id="dropdown"
+          className="z-10 bg-gray-50 rounded-lg dark:bg-gray-700 transition-all"
+        >
+          <ul
+            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="dropdownDefaultButton"
+          >
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Save
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Share
+              </a>
+            </li>
+            <li>
+              {post?.author?.id === user?.id && (
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  {post?.published ? "Make Private" : "Make Public"}
+                </a>
+              )}
+            </li>
+            <li>
+              {post?.author?.id === user?.id && (
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Archive
+                </a>
+              )}
+              {post?.author?.id === user?.id && (
+                <a
+                  onClick={deletePostHandler}
+                  className="flex items-center p-3 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-red-500 hover:underline"
+                >
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 18"
+                  >
+                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
+                  </svg>
+                  Delete Post
+                </a>
+              )}
+            </li>
+          </ul>
+        </div>
+      )}
+      <div className="w-full flex flex-col gap-3 transition-all">
+        {/* Post Body & Image */}
+        <div className="flex flex-col gap-3">
+          <p className="">{post?.title}</p>
+          {post?.content && (
+            <Image
+              src={post?.content}
+              alt="Post Pic"
+              className={`rounded-3xl  duration-700 ease-in-out group-hover:opacity-75,
       ${
         iniLoading
           ? "scale-110 blur-2xl grayscale"
           : "scale-100 blur-0 grayscale-0"
       }`}
-            width={300}
-            height={200}
-            layout="responsive"
-            onLoadingComplete={() => {}}
-          />
-        )}
-        <div className="flex justify-between gap-6 text-sm lg:text-md">
-          <div className="flex-1">
-            <button className="hover:underline underline-offset-1">
-              {likehandler} Likes
+              width={300}
+              height={200}
+              layout="responsive"
+              onLoadingComplete={() => {}}
+            />
+          )}
+          <div className="flex justify-between gap-6 text-sm lg:text-md">
+            <div className="flex-1">
+              <button className="hover:underline underline-offset-1">
+                {likehandler} Likes
+              </button>
+            </div>
+            <button
+              className="hover:underline underline-offset-1"
+              onClick={commentButtonHandler}
+            >
+              {rootComments?.length} comments
             </button>
+            <p className="cursor-default">7 Shares</p>
           </div>
+        </div>
+        {/* Controls */}
+        <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
           <button
-            className="hover:underline underline-offset-1"
+            onClick={postLikehandler}
+            className={`flex items-center gap-1 fill-transparent stroke-black hover:fill-red-500 hover:stroke-red-500 ${
+              postLikeByMe &&
+              " stroke-red-500 fill-red-500 hover:fill-null hover:stroke-null"
+            } transition-all`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="inherit"
+              fill="inherit"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+            </svg>
+            Like
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all"
             onClick={commentButtonHandler}
           >
-            {rootComments?.length} comments
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="inherit"
+              fill="inherit"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+              <line x1="8" y1="9" x2="16" y2="9" />
+              <line x1="8" y1="13" x2="14" y2="13" />
+            </svg>
+            Comments
           </button>
-          <p className="cursor-default">7 Shares</p>
+          <button className="flex items-center gap-1 stroke-black hover:stroke-blue fill-transparent transition-all">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="inherit"
+              fill="inherit"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 13l4 -4l-4 -4m4 4h-11a4 4 0 0 0 0 8h1" />
+            </svg>
+            Share
+          </button>
         </div>
-      </div>
-      {/* Controls */}
-      <div className="flex justify-between border-t border-b py-3 text-sm lg:text-md">
-        <button
-          onClick={postLikehandler}
-          className={`flex items-center gap-1 fill-transparent stroke-black hover:fill-red-500 hover:stroke-red-500 ${
-            postLikeByMe &&
-            " stroke-red-500 fill-red-500 hover:fill-null hover:stroke-null"
-          } transition-all`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="inherit"
-            fill="inherit"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {commentButton && (
+          <div>
+            <CommentList
+              {...{
+                rootComments,
+                getReplies,
+                localComments,
+                deleteLocalComment,
+              }}
+            />
+          </div>
+        )}
+        {commentRes.success ? (
+          <div className="text-gray-600 bg-gray-100 p-2">
+            <h1>{commentRes.success}</h1>
+          </div>
+        ) : (
+          <form
+            className="flex justify-between items-center gap-4 "
+            onSubmit={createCommentHandler}
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-          </svg>
-          Like
-        </button>
-        <button
-          type="button"
-          className="flex items-center gap-1 fill-transparent stroke-black hover:fill-emerald-100 hover:stroke-black transition-all"
-          onClick={commentButtonHandler}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="inherit"
-            fill="inherit"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
-            <line x1="8" y1="9" x2="16" y2="9" />
-            <line x1="8" y1="13" x2="14" y2="13" />
-          </svg>
-          Comments
-        </button>
-        <button className="flex items-center gap-1 stroke-black hover:stroke-blue fill-transparent transition-all">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="inherit"
-            fill="inherit"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M15 13l4 -4l-4 -4m4 4h-11a4 4 0 0 0 0 8h1" />
-          </svg>
-          Share
-        </button>
-      </div>
-      {commentButton && (
-        <div>
-          <CommentList
-            {...{ rootComments, getReplies, localComments, deleteLocalComment }}
-          />
-        </div>
-      )}
-      {commentRes.success ? (
-        <div className="text-gray-600 bg-gray-100 p-2">
-          <h1>{commentRes.success}</h1>
-        </div>
-      ) : (
-        <form
-          className="flex justify-between items-center gap-4 "
-          onSubmit={createCommentHandler}
-        >
-          <Image
-            className="rounded-full min-w-[28px] min-h-[28px]"
-            src={post?.author?.profilePicture || "/square.jpg"}
-            alt="Avatar Image"
-            objectFit="fill"
-            width={40}
-            height={40}
-          />
-          <input
-            type="text"
-            className={`shadow-sm flex-1 p-1.5 rounded-lg outline-none ${
-              commentRes.error ? "bg-red-100" : "bg-gray-50"
-            }`}
-            required
-            placeholder="Write a comment"
-            value={message}
-            onChange={(e: any) => {
-              setMessage(e.target.value);
-            }}
-          />
+            <Image
+              className="rounded-full min-w-[28px] min-h-[28px]"
+              src={post?.author?.profilePicture || "/square.jpg"}
+              alt="Avatar Image"
+              objectFit="fill"
+              width={40}
+              height={40}
+            />
+            <input
+              type="text"
+              className={`shadow-sm flex-1 p-1.5 rounded-lg outline-none ${
+                commentRes.error ? "bg-red-100" : "bg-gray-50"
+              }`}
+              required
+              placeholder="Write a comment"
+              value={message}
+              onChange={(e: any) => {
+                setMessage(e.target.value);
+              }}
+            />
 
-          <button
-            disabled={isLoading}
-            className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
-            type="submit"
-          >
-            {isLoading ? (
-              <svg
-                aria-hidden="true"
-                className="mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="#000000"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-                <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
-              </svg>
-            )}
-          </button>
-        </form>
-      )}
-      {commentRes.error && (
-        <h2 className="text-red-600 ml-4">{commentRes.error}</h2>
-      )}
+            <button
+              disabled={isLoading}
+              className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
+              type="submit"
+            >
+              {isLoading ? (
+                <svg
+                  aria-hidden="true"
+                  className="mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="#000000"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                  <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
+                </svg>
+              )}
+            </button>
+          </form>
+        )}
+        {commentRes.error && (
+          <h2 className="text-red-600 ml-4">{commentRes.error}</h2>
+        )}
+      </div>
     </div>
   );
 };

@@ -22,6 +22,7 @@ const CreatePost = (props: Props) => {
       setPreview(onLoadEvent.target.result);
     };
     reader.readAsDataURL(e.target.files[0]);
+    console.log(preview);
   };
   const formSubmitHanlder = async (e: any) => {
     e.preventDefault();
@@ -94,11 +95,23 @@ const CreatePost = (props: Props) => {
             <h2 className="text-red-600 ml-4">{resResult?.error}</h2>
           )}
           {preview && (
-            <div className="h-full flex justify-center mx-auto">
+            <div className="h-full flex gap-3 justify-center">
               <img
                 src={preview}
                 className="rounded max-w-[500px] max-h-[500px] object-contain"
               ></img>
+              <button
+                className="flex"
+                type="button"
+                onClick={() => setPreview("")}
+              >
+                <Image
+                  src="/delete1.svg"
+                  width="34px"
+                  height="34px "
+                  className="opacity-70"
+                />
+              </button>
             </div>
           )}
           <div className="gap-2 px-3 hidden text-gray-900 sm:flex">

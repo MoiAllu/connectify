@@ -31,14 +31,14 @@ const Profile: NextPage = () => {
       {
         <div className="min-h-[calc(100vh-70px)]">
           <UserProfile user={user} setProfileButton={setProfileButton} />
-          <div className="flex justify-center bg-gray-50 px-4 mt-4">
-            <div className="mr-4 mt-8">
+          <div className="flex justify-center sm:bg-gray-50 sm:px-4 mt-4">
+            <div className="lg:mr-4 mt-8">
               <UserInforBar user={user} />
             </div>
             {isLoading ? (
               <FeedAnimation />
             ) : (
-              <div className="mr-2">
+              <div className="sm:mr-2 md:min-w-[80%] w-[100%]">
                 <CreatePost />
                 {posts?.map((post: any) => {
                   return (
