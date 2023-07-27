@@ -22,6 +22,7 @@ const CreatePost = (props: Props) => {
       setPreview(onLoadEvent.target.result);
     };
     reader.readAsDataURL(e.target.files[0]);
+    console.log(preview);
   };
   const formSubmitHanlder = async (e: any) => {
     e.preventDefault();
