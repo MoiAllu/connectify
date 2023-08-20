@@ -2,11 +2,46 @@ import moment from "moment";
 import React from "react";
 import Image from "next/image";
 import Message from "./Message";
-
-type Props = {};
+import routeHandler from "../../lib/Utilities/messages/routeHandler";
+type Props = {
+  showChatWindow: boolean;
+  setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
+  chatWindowData: {};
+  allMessages: {};
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: [
+      {
+        id: number;
+        name: string;
+        email: string;
+        profilePicture: string;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+  };
+};
 
 const ChatWindow = (props: Props) => {
+  const { chatWindowData, user, allMessages: converasation } = props;
   const isActive = true;
+  console.log(converasation);
+  const submitHandler = async (e: any) => {
+    e.preventDefault();
+    const response = await routeHandler({
+      userId: user.id,
+      friendId: chatWindowData?.friendId,
+      conversationId: chatWindowData?.conversationId,
+      message: e.target[0].value,
+    });
+  };
+  if (!props.showChatWindow) return null;
   return (
     <div className="bg-white w-full hidden lg:flex flex-col h-[calc(100vh-100px)] p-4 my-4 rounded-2xl shadow-md">
       <div className="flex justify-between w-full p-2 pb-4 border-b-2">
@@ -20,7 +55,7 @@ const ChatWindow = (props: Props) => {
             height={40}
           />
           <div className="flex flex-col flex-1">
-            <p className="font-semibold">Josephine Frida</p>
+            <p className="font-semibold">{chatWindowData?.friendName}</p>
             {isActive ? (
               <div className="flex items-center gap-3">
                 <p className="text-sm text-gray-400">Active now</p>
@@ -35,16 +70,23 @@ const ChatWindow = (props: Props) => {
 
       {/* Chat */}
       <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3">
-        <Message person={"receiver"} />
-        <Message person={"sender"} />
-        <Message person={"receiver"} />
-        <Message person={"sender"} />
-        <Message person={"receiver"} />
-        <Message person={"sender"} />
+        {converasation?.message.map((mess: any) => (
+          <Message
+            key={mess.id}
+            message={mess.body}
+            createdAt={mess.createdAt}
+            isSender={mess.senderId === user.id}
+            image={mess.image}
+            profilePicture={mess.sender.profilePicture}
+          />
+        ))}
       </div>
 
       {/* Message */}
-      <div className="flex justify-between items-center gap-4">
+      <form
+        className="flex justify-between items-center gap-4"
+        onSubmit={submitHandler}
+      >
         <Image
           className="rounded-full min-w-[28px] min-h-[28px]"
           src={"/square.jpg"}
@@ -58,7 +100,10 @@ const ChatWindow = (props: Props) => {
           className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
           placeholder="Send a message"
         />
-        <button className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg">
+        <button
+          className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
+          type="submit"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -75,7 +120,7 @@ const ChatWindow = (props: Props) => {
             <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5" />
           </svg>
         </button>
-      </div>
+      </form>
     </div>
   );
 };

@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import ChatLayout from "../../components/Layout/ChatLayout";
+import { useMe } from "../../lib/hooks/useMe";
 
 const Messages: NextPage = () => {
+  const user = useMe();
   return (
     <>
       <Head>
@@ -14,7 +16,7 @@ const Messages: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex items-center min-h-[calc(100vh-70px)] relative sm:top-[70px] lg:top-0 h-full bg-gray-50 px-4 rounded-2xl gap-3">
-        <ChatLayout />
+        <ChatLayout {...user} />
       </div>
     </>
   );

@@ -2,10 +2,17 @@ import React from "react";
 import Image from "next/image";
 import moment from "moment";
 type Props = {
-  person: "sender" | "receiver";
+  message: string;
+  createdAt: any;
+  isSender: boolean;
+  profilePicture: string;
+  image: string;
 };
 
-const Message: React.FC<Props> = ({ person }) => {
+const Message: React.FC<Props> = (props: Props) => {
+  const { message, createdAt, isSender, profilePicture, image } = props;
+  const person = isSender ? "sender" : "receiver";
+  console.log(profilePicture);
   return (
     <div
       className={`flex flex-col ${
@@ -15,7 +22,7 @@ const Message: React.FC<Props> = ({ person }) => {
       <div
         className={`flex ${
           person === "sender" ? "flex-row-reverse" : "flex-row"
-        } gap-2 max-w-[80%]`}
+        } gap-2 max-w-[80%] justify-center items-center`}
       >
         {/* Image */}
         <div className="flex flex-col-reverse">
@@ -24,28 +31,25 @@ const Message: React.FC<Props> = ({ person }) => {
             src={"/square.jpg"}
             alt="Avatar Image"
             objectFit="contain"
-            width={50}
-            height={50}
+            width={30}
+            height={30}
           />
         </div>
         {/* Message */}
         <div
           className={`${
             person === "sender" ? "bg-gray-100" : "bg-blue-400"
-          } p-4 rounded-2xl`}
+          } p-3 rounded-2xl`}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et architecto
-          tempora necessitatibus eaque fuga! Natus recusandae iste rem accusamus
-          hic, voluptates aperiam autem obcaecati corrupti quisquam sunt itaque
-          iusto! Suscipit!
+          {message && <p className="text-sm">{message}</p>}
         </div>
         {/* 3 Dots */}
         <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="stroke-gray-500 cursor-pointer"
-            width="28"
-            height="28"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             strokeLinecap="round"
@@ -59,7 +63,7 @@ const Message: React.FC<Props> = ({ person }) => {
         </div>
       </div>
       <div className={`mx-8`}>
-        <p className="text-sm">{moment.unix(1588888888).fromNow()}</p>
+        <p className="text-xs">{moment.unix(1588888888).fromNow()}</p>
       </div>
     </div>
   );
