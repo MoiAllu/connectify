@@ -1,10 +1,17 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import routeHandler from "../../lib/Utilities/friends/routeHandler";
 
 type Props = {};
 
 const FollowSuggestion = (props: Props) => {
+  const followHandler = async (e: any) => {
+    e.preventDefault();
+    const response = await routeHandler({ userId: 10, friendId: 11 });
+    console.log(response);
+  };
+
   return (
     <div className="px-1 min-w-[290px] max-w-[290px] h-[175px]">
       <div className="w-full p-4 bg-white rounded-xl shadow-md">
@@ -45,7 +52,10 @@ const FollowSuggestion = (props: Props) => {
           <button className="flex-1 py-1.5 border text-gray-500 rounded-lg hover:shadow-md">
             Ignore
           </button>
-          <button className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg">
+          <button
+            className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg "
+            onClick={followHandler}
+          >
             Follow
           </button>
         </div>

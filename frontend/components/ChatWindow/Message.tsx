@@ -12,7 +12,6 @@ type Props = {
 const Message: React.FC<Props> = (props: Props) => {
   const { message, createdAt, isSender, profilePicture, image } = props;
   const person = isSender ? "sender" : "receiver";
-  console.log(profilePicture);
   return (
     <div
       className={`flex flex-col ${

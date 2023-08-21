@@ -31,7 +31,6 @@ type Props = {
 const ChatWindow = (props: Props) => {
   const { chatWindowData, user, allMessages: converasation } = props;
   const isActive = true;
-  console.log(converasation);
   const submitHandler = async (e: any) => {
     e.preventDefault();
     const response = await routeHandler({
@@ -70,7 +69,7 @@ const ChatWindow = (props: Props) => {
 
       {/* Chat */}
       <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3">
-        {converasation?.message.map((mess: any) => (
+        {converasation?.message?.map((mess: any) => (
           <Message
             key={mess.id}
             message={mess.body}

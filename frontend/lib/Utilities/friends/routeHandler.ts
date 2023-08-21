@@ -1,5 +1,5 @@
-export default function getHandler(data:{user:any,userId:number, conversationId:number}){
-    return fetch(`/api/messages/get`,{
+export default function routeHandler(data:{userId:number, friendId:number}){
+    return fetch(`/api/friends/route`,{
         method: 'POST',
         credentials:"include",
         headers:{

@@ -24,9 +24,12 @@ const PersonChat = (props: Props) => {
     setChatWindowData,
     setAllMessages,
   } = props;
+  const conversation = user.conversations?.find((conversation: any) =>
+    conversation?.usersIds?.find((id: any) => id === friendId)
+  );
+  const lastMessage = conversation?.message[conversation?.message?.length - 1];
   const onClickHandler = async (e: any) => {
     e.preventDefault();
-
     const response = await routeHandler({
       currentUserId: userId,
       members: [userId, friendId],
@@ -34,6 +37,8 @@ const PersonChat = (props: Props) => {
       userId: friendId,
       name: friendName,
     });
+
+    console.log(response);
     setChatWindowData({
       userId,
       friendId,
@@ -66,11 +71,12 @@ const PersonChat = (props: Props) => {
         </div>
         <div className="flex flex-col flex-1">
           <p className="font-semibold truncate max-w-[150px]">{friendName}</p>
-          <p className="text-xs truncate max-w-[150px]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam
-            minima necessitatibus cumque ex ipsam mollitia explicabo aliquid,
-            atque accusantium eaque obcaecati voluptatum perferendis, totam
-            autem quod dolore nesciunt assumenda hic.m
+          <p
+            className={`text-xs truncate max-w-[150px] ${
+              lastMessage?.senderId !== userId && "font-semibold"
+            }`}
+          >
+            {lastMessage?.body}
           </p>
         </div>
       </div>

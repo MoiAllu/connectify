@@ -28,9 +28,9 @@ const Chats = (props: Props) => {
           setAllMessages={setAllMessages}
           userId={user.id}
           user={user}
-          key={friend.id}
-          friendId={friend.id}
-          friendName={friend.name}
+          key={friend.user.id}
+          friendId={friend.user.id}
+          friendName={friend.user.name}
         />
       ))}
     </div>

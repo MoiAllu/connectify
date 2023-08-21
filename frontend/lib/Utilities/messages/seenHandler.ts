@@ -1,5 +1,4 @@
 export default function seenHandler(data:{userId:number, conversationId:number}){
-    console.log(data);
     return fetch(`/api/messages/seen`,{
         method: 'POST',
         credentials:"include",

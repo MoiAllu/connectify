@@ -37,12 +37,20 @@ model User {
   conversationId  Int?
   seenMessage     Message?       @relation(fields: [seenMessageId], references: [id])
   seenMessageId   Int?
-  friend          User?          @relation("friends", fields: [friendId], references: [id], onDelete: Cascade)
-  friends         User[]         @relation("friends")
-  friendId        Int?
-  friendrequest   User?          @relation("request", fields: [friendRequestId], references: [id], onDelete: Cascade)
-  friendrequests  User[]         @relation("request")
-  friendRequestId Int?
+  friends         Friends[]
+  friendsrequests Friends[]      @relation("request")
+}
+
+model Friends {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation("request", fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  friend    User     @relation(fields: [friendId], references: [id], onDelete: Cascade)
+  friendId  Int
+  status    String   @default("pending")
+
+  @@id([userId, friendId])
 }
 
 model Post {
@@ -104,7 +112,7 @@ model Conversation {
   userId      Int?
   usersIds    Int[]
   users       User[]
-  User        User?     @relation("conversation", fields: [userId], references: [id])
+  User        User?     @relation("conversation", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Message {

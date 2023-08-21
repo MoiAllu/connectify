@@ -1,5 +1,5 @@
 export default function routeHandler(data:{currentUserId:number, userId:number, conversationId:number, message:string, image:string}){
-    console.log(data);
+
     return fetch(`/api/messages/route`,{
         method: 'POST',
         credentials:"include",

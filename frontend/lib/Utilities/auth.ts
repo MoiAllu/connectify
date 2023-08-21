@@ -13,7 +13,24 @@ export const validateRoute = (handler:any) => {
             where: { id },
             include:
             {
-              friends: true,
+              friends: {
+                include: {
+                  friend: true,
+                  user: true
+                }
+              },
+              conversations:{
+                include:{
+                  message:{
+                    include:{
+                      seen:true,
+                      sender:true,
+                      users:true  
+                    }
+                  }
+                },
+                
+              }
             }     
           })
           if (!user) {

@@ -18,7 +18,13 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
                         users:true
                     }
                 },
-                users: true,
+                users: {
+                    include: {
+                        conversations: true,
+                        friends: true,
+                    }
+                },
+                
             }
         })
         
