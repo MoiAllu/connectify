@@ -28,6 +28,7 @@ const PersonChat = (props: Props) => {
     conversation?.usersIds?.find((id: any) => id === friendId)
   );
   const lastMessage = conversation?.message[conversation?.message?.length - 1];
+
   const onClickHandler = async (e: any) => {
     e.preventDefault();
     const response = await routeHandler({

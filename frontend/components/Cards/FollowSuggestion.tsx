@@ -8,7 +8,7 @@ type Props = {};
 const FollowSuggestion = (props: Props) => {
   const followHandler = async (e: any) => {
     e.preventDefault();
-    const response = await routeHandler({ userId: 10, friendId: 11 });
+    const response = await routeHandler({ userId: 10, friendId: 12 });
     console.log(response);
   };
 
