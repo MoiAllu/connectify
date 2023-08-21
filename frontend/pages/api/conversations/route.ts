@@ -9,6 +9,7 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
         if(isGroup && (!members || members.length<2 || !name)){
             return res.status(400).json({error:"Invalid Data"});
         }
+  
         if(isGroup){
             const newConversation = await prisma.conversation.create({
                 data:{
@@ -26,7 +27,21 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
                     }
                 },
                 include:{
-                    users:true
+                    users:{
+                        include:{
+                          conversations:{
+                            include:{
+                              message:{
+                                include:{
+                                  seen:true,
+                                  sender:true,
+                                  users:true
+                                }
+                              }
+                            }
+                          },
+                          }
+                    }
                 }
             });
             return res.json(newConversation);
@@ -48,13 +63,34 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
               ]
             }
           });
-      
-          const singleConversation = existingConversations[0];
-      
-          if (singleConversation) {
-            return res.json(singleConversation);
-          }
-      
+          await prisma.user.update({
+            where:{
+              id:currentUserId
+            },
+            data:{
+              conversations:{
+                connect:{
+                  id:existingConversations[0].id
+                }
+              }
+            }
+          })
+          await prisma.user.update({
+            where:{
+              id:userId
+            },
+            data:{
+              conversations:{
+                connect:{
+                  id:existingConversations[0].id
+                }
+              }
+            }
+          })
+
+       const singleConversation = existingConversations[0]
+       if(singleConversation) return res.json(singleConversation); 
+        
           const newConversation = await prisma.conversation.create({
             data: {
               users: {
@@ -66,13 +102,40 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
                     id: userId
                   }
                 ]
+                
               },
                 usersIds: [currentUserId, userId]
+              
             },
             include: {
               users: true,
+              
             }
           });
+          await prisma.user.update({
+            where:{
+              id:currentUserId
+            },
+            data:{
+              conversations:{
+                connect:{
+                  id:existingConversations[0].id
+                }
+              }
+            }
+          })
+          await prisma.user.update({
+            where:{
+              id:userId
+            },
+            data:{
+              conversations:{
+                connect:{
+                  id:existingConversations[0].id
+                }
+              }
+            }
+          })
         return res.json(newConversation);
 
     }catch{
