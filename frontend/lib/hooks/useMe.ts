@@ -9,3 +9,11 @@ return{
     isError: error
 }
 } 
+export const useAllUsers=()=>{
+    const {data,error}=useSWR("/allusers",fetcher)
+    return{
+        users:data,
+        isLoading:!data && !error,
+        isError:error
+    };
+}

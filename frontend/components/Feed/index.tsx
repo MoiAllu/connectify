@@ -7,7 +7,29 @@ import FollowSuggestion from "../Cards/FollowSuggestion";
 import UpcomingBirthdays from "../Cards/UpcomingBirthdays";
 import { FeedAnimation } from "./feedAnimation";
 import Post from "./Post";
-type Props = {};
+import { useAllUsers } from "../../lib/hooks/useMe";
+type Props = {
+  users: [
+    {
+      id: number;
+      name: string;
+      email: string;
+      profilePicture: string;
+      createdAt: string;
+      updatedAt: string;
+      friends: any;
+    }
+  ];
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: any;
+  };
+};
 const container = {
   show: {
     transition: {
@@ -35,6 +57,7 @@ const item = {
   },
 };
 const Feed = (props: Props) => {
+  const { user: author, users } = props;
   const { posts, isLoading } = useAllPosts();
   return isLoading ? (
     <FeedAnimation />
@@ -60,7 +83,11 @@ const Feed = (props: Props) => {
         })}
       </motion.div>
       <motion.div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
-        <FollowSuggestion />
+        {users.map((user: any) => {
+          return (
+            <FollowSuggestion authorId={author?.id} user={user} key={user.id} />
+          );
+        })}
         <BirthdayCard />
         <UpcomingBirthdays />
       </motion.div>

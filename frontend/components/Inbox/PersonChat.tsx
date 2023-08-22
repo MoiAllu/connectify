@@ -39,7 +39,7 @@ const PersonChat = (props: Props) => {
       name: friendName,
     });
 
-    console.log(response);
+    // console.log(response);
     setChatWindowData({
       userId,
       friendId,

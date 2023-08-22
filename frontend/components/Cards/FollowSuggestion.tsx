@@ -3,12 +3,26 @@ import React from "react";
 import Image from "next/image";
 import routeHandler from "../../lib/Utilities/friends/routeHandler";
 
-type Props = {};
-
+type Props = {
+  authorId: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: any;
+  };
+};
 const FollowSuggestion = (props: Props) => {
+  const { user, authorId } = props;
   const followHandler = async (e: any) => {
     e.preventDefault();
-    const response = await routeHandler({ userId: 10, friendId: 12 });
+    const response = await routeHandler({
+      userId: authorId,
+      friendId: user.id,
+    });
     console.log(response);
   };
 
@@ -29,14 +43,14 @@ const FollowSuggestion = (props: Props) => {
         <div className="flex py-4 gap-4 pl-3">
           <Image
             className="rounded-full"
-            src={"/square.jpg"}
+            src={"/square.jpg" || user?.profilePicture}
             alt="Avatar Image"
             objectFit="fill"
             width={40}
             height={40}
           />
           <div className="flex-1">
-            <p className="font-semibold">Frida Peterson</p>
+            <p className="font-semibold">{user?.name}</p>
             <p className="text-xs">Founder & CEO at Connectify</p>
           </div>
         </div>

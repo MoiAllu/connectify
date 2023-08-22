@@ -5,6 +5,7 @@ import prisma from '../../../lib/prisma'
 export default async(req:NextApiRequest,res:NextApiResponse)=>{
     try{
         const {userId,friendId}=req.body
+        console.log(userId,friendId)
         if(userId===friendId){
             res.status(403)
             res.json({ error: 'You cannot add yourself'})
