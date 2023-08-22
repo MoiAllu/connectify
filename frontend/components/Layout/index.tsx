@@ -41,7 +41,7 @@ const Layout = ({ children, user }: any) => {
       >
         {children}
       </div>
-      {!hideRightBar && <RightSidebar />}
+      {!hideRightBar && <RightSidebar user={user} />}
       <BottomBar />
     </>
   );

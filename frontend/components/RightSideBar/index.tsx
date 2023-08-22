@@ -1,9 +1,20 @@
 import React from "react";
 import FriendsList from "./FriendsList";
 
-type Props = {};
+type Props = {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: any;
+  };
+};
 
 const RightSideBar = (props: Props) => {
+  const { user } = props;
   return (
     <div className="hidden lg:flex flex-col items-center fixed bottom-0 right-0 w-[18vw] h-[calc(100vh-70px)] bg-white gap-3 py-1 px-4 overflow-auto scrollbar-light">
       {/* Search */}
@@ -50,8 +61,7 @@ const RightSideBar = (props: Props) => {
           <circle cx="19" cy="12" r="1" />
         </svg>
       </div>
-      <FriendsList />
-      <FriendsList />
+      <FriendsList user={user} />
     </div>
   );
 };
