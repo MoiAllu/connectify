@@ -8,6 +8,7 @@ type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  conversations: any;
   userId: number;
   friendId: number;
   friendName: string;
@@ -23,12 +24,16 @@ const PersonChat = (props: Props) => {
     setShowChatWindow,
     setChatWindowData,
     setAllMessages,
+    conversations,
   } = props;
-  const conversation = user.conversations?.find((conversation: any) =>
-    conversation?.usersIds?.find((id: any) => id === friendId)
-  );
-  const lastMessage = conversation?.message[conversation?.message?.length - 1];
 
+  const messages = conversations.filter(
+    (conversation: any) => conversation.userId === friendId
+  );
+  const lastMessage = messages[0]?.message[messages[0]?.message.length - 1];
+  const date = parseInt(
+    (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
+  );
   const onClickHandler = async (e: any) => {
     e.preventDefault();
     const response = await routeHandler({
@@ -51,6 +56,7 @@ const PersonChat = (props: Props) => {
       userId,
       conversationId: response.id,
     });
+    console.log(messages);
     setAllMessages(messages);
     setShowChatWindow(true);
   };
@@ -74,7 +80,9 @@ const PersonChat = (props: Props) => {
           <p className="font-semibold truncate max-w-[150px]">{friendName}</p>
           <p
             className={`text-xs truncate max-w-[150px] ${
-              lastMessage?.senderId !== userId && "font-semibold"
+              lastMessage?.senderId !== userId &&
+              lastMessage?.seenId !== userId &&
+              "font-semibold"
             }`}
           >
             {lastMessage?.body}
@@ -83,10 +91,18 @@ const PersonChat = (props: Props) => {
       </div>
 
       <div className=" flex flex-col items-end text-sm pt-1 min-w-[57px]">
-        {moment.unix(1588888888).format("hh:mm a")}
-        <div className="bg-red-400 text-white text-center px-1">
-          <span>1</span>
-        </div>
+        {moment
+          .unix(
+            parseInt(
+              (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
+            )
+          )
+          .format("hh:mm a")}
+        {lastMessage?.senderId !== userId && lastMessage?.seenId !== userId && (
+          <div className="bg-red-400 text-white text-center px-1">
+            <span>1</span>
+          </div>
+        )}
       </div>
     </div>
   );

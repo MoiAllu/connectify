@@ -8,7 +8,6 @@ type Props = {
 };
 
 const Friend: React.FC<Props> = ({ friend }) => {
-  console.log(friend);
   return (
     <div className="flex items-center justify-between w-full gap-3">
       <Image

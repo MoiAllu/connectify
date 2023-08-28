@@ -19,7 +19,7 @@ const FriendsList = (props: Props) => {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       {user.friends.map((friend: any) => (
-        <Friend key={friend.id} friend={friend} />
+        <Friend key={friend.userId} friend={friend} />
       ))}
     </div>
   );

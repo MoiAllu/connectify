@@ -59,6 +59,11 @@ const item = {
 const Feed = (props: Props) => {
   const { user: author, users } = props;
   const { posts, isLoading } = useAllPosts();
+  const filterUser = users?.filter(
+    (user: any) =>
+      user.id !== author.id &&
+      !author.friends.map((friend: any) => friend.userId).includes(user.id)
+  );
   return isLoading ? (
     <FeedAnimation />
   ) : (
@@ -83,7 +88,7 @@ const Feed = (props: Props) => {
         })}
       </motion.div>
       <motion.div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
-        {users.map((user: any) => {
+        {filterUser.map((user: any) => {
           return (
             <FollowSuggestion authorId={author?.id} user={user} key={user.id} />
           );

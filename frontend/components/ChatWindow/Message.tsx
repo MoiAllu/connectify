@@ -7,16 +7,21 @@ type Props = {
   isSender: boolean;
   profilePicture: string;
   image: string;
+  bottomRef: any;
+  lastMessage: any;
+  Id: any;
 };
 
 const Message: React.FC<Props> = (props: Props) => {
-  const { message, createdAt, isSender, profilePicture, image } = props;
+  const { message, createdAt, isSender, profilePicture, image, lastMessage } =
+    props;
   const person = isSender ? "sender" : "receiver";
   return (
     <div
       className={`flex flex-col ${
         person === "sender" ? "items-end" : "items-start"
       }`}
+      ref={props.bottomRef}
     >
       <div
         className={`flex ${
@@ -62,7 +67,17 @@ const Message: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className={`mx-8`}>
-        <p className="text-xs">{moment.unix(1588888888).fromNow()}</p>
+        {lastMessage.id === props.Id && (
+          <p className="text-xs">
+            {moment
+              .unix(
+                parseInt(
+                  (new Date(lastMessage.createdAt).getTime() / 1000).toFixed(0)
+                )
+              )
+              .fromNow()}
+          </p>
+        )}
       </div>
     </div>
   );

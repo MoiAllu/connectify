@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { pusherServer } from "../../../lib/pusher";
 export default async (req :NextApiRequest, res:NextApiResponse) => {
     try{
         const {currentUserId,userId, members, isGroup, name} = req.body;
@@ -44,6 +45,13 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
                     }
                 }
             });
+             // Update all connections with new conversation
+      newConversation.users.forEach((user) => {
+        if (user.email) {
+          pusherServer.trigger(user.email, 'conversation:new', newConversation);
+        }
+      });
+
             return res.json(newConversation);
         }
 
@@ -63,6 +71,7 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
               ]
             }
           });
+          
           // await prisma.user.update({
           //   where:{
           //     id:currentUserId
@@ -70,8 +79,8 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
           //   data:{
           //     conversations:{
           //       connect:{
-          //         id:existingConversations[0].id
-          //       }
+          //           id:existingConversations[0].id
+          //         }
           //     }
           //   }
           // })
@@ -136,6 +145,11 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
           //     }
           //   }
           // })
+          newConversation.users.map((user) => {
+            if (user.email) {
+              pusherServer.trigger(user.email, 'conversation:new', newConversation);
+            }
+          });
         return res.json(newConversation);
 
     }catch{

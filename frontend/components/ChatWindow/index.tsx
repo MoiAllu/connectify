@@ -1,8 +1,11 @@
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
+import { pusherClient } from "../../lib/pusher";
+import { find } from "lodash";
+import { copyFileSync } from "fs";
 type Props = {
   showChatWindow: boolean;
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,7 +33,29 @@ type Props = {
 
 const ChatWindow = (props: Props) => {
   const { chatWindowData, user, allMessages: converasation } = props;
+  const [allMessages, setAllMessages] = React.useState(converasation.message);
+  const [sendedMessage, setSendedMessage] = React.useState({});
+  const bottomRef = React.useRef<HTMLDivElement>(null);
   const isActive = true;
+  const conversationId = "chat" + converasation.id;
+  useEffect(() => {
+    setAllMessages(converasation?.message);
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const messageHandler = (data: any) => {
+      setAllMessages((prev: any) => {
+        if (find(prev, { id: data.id })) return prev;
+        else return [...prev, data];
+      });
+    };
+    console.log(conversationId);
+    pusherClient.subscribe(conversationId);
+    pusherClient.bind("chat", messageHandler);
+    return () => {
+      pusherClient.unsubscribe(conversationId);
+      pusherClient.unbind("chat", messageHandler);
+    };
+  }, [converasation, sendedMessage.id, allMessages]);
+
   const submitHandler = async (e: any) => {
     e.preventDefault();
     const response = await routeHandler({
@@ -39,7 +64,10 @@ const ChatWindow = (props: Props) => {
       conversationId: chatWindowData?.conversationId,
       message: e.target[0].value,
     });
+    console.log(response);
+    setSendedMessage(response);
   };
+
   if (!props.showChatWindow) return null;
   return (
     <div className="bg-white w-full hidden lg:flex flex-col h-[calc(100vh-100px)] p-4 my-4 rounded-2xl shadow-md">
@@ -68,18 +96,23 @@ const ChatWindow = (props: Props) => {
       </div>
 
       {/* Chat */}
-      <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3">
-        {converasation?.message?.map((mess: any) => (
-          <Message
-            key={mess.id}
-            message={mess.body}
-            createdAt={mess.createdAt}
-            isSender={mess.senderId === user.id}
-            image={mess.image}
-            profilePicture={mess.sender.profilePicture}
-          />
-        ))}
-      </div>
+      {allMessages && (
+        <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3 h-full w-full">
+          {allMessages.map((mess: any, i: any) => (
+            <Message
+              key={mess.id}
+              message={mess.body}
+              createdAt={mess.createdAt}
+              isSender={mess.senderId === user.id}
+              image={mess.image}
+              profilePicture={mess.sender.profilePicture}
+              bottomRef={i === allMessages.length - 1 ? bottomRef : null}
+              lastMessage={allMessages[allMessages.length - 1]}
+              Id={mess.id}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Message */}
       <form

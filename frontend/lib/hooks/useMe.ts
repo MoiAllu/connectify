@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import fetcher from "../Utilities/fetcher";
+const {useState}=require("react")
 
 export const useMe=()=>{
 const {data,error}=useSWR("/me",fetcher)
