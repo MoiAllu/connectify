@@ -25,9 +25,10 @@ const Chats = (props: Props) => {
     setAllMessages,
     conversations,
   } = props;
+  const [selected, setSelected] = React.useState(null || Number);
   return (
     <div className="flex flex-col w-full gap-2">
-      {user.friends.map((friend: any) => (
+      {user.friends.map((friend: any, i: any) => (
         <PersonChat
           setShowChatWindow={setShowChatWindow}
           setChatWindowData={setChatWindowData}
@@ -38,6 +39,9 @@ const Chats = (props: Props) => {
           friendId={friend.user.id}
           friendName={friend.user.name}
           conversations={conversations}
+          Id={friend.user.id}
+          setSelected={setSelected}
+          selected={selected}
         />
       ))}
     </div>

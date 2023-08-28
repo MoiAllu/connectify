@@ -7,7 +7,6 @@ type Props = {
   isSender: boolean;
   profilePicture: string;
   image: string;
-  bottomRef: any;
   lastMessage: any;
   Id: any;
 };
@@ -21,7 +20,6 @@ const Message: React.FC<Props> = (props: Props) => {
       className={`flex flex-col ${
         person === "sender" ? "items-end" : "items-start"
       }`}
-      ref={props.bottomRef}
     >
       <div
         className={`flex ${

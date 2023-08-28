@@ -4,8 +4,7 @@ import Image from "next/image";
 import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
 import { pusherClient } from "../../lib/pusher";
-import { find } from "lodash";
-import { copyFileSync } from "fs";
+import { compact, find } from "lodash";
 type Props = {
   showChatWindow: boolean;
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,15 +37,19 @@ const ChatWindow = (props: Props) => {
   const bottomRef = React.useRef<HTMLDivElement>(null);
   const isActive = true;
   const conversationId = "chat" + converasation.id;
+  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => {
     setAllMessages(converasation?.message);
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     const messageHandler = (data: any) => {
       setAllMessages((prev: any) => {
+        console.log(prev);
+        console.log(data);
         if (find(prev, { id: data.id })) return prev;
         else return [...prev, data];
       });
     };
+    console.log(allMessages);
     console.log(conversationId);
     pusherClient.subscribe(conversationId);
     pusherClient.bind("chat", messageHandler);
@@ -54,7 +57,7 @@ const ChatWindow = (props: Props) => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("chat", messageHandler);
     };
-  }, [converasation, sendedMessage.id, allMessages]);
+  }, [converasation, sendedMessage.id]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -106,11 +109,11 @@ const ChatWindow = (props: Props) => {
               isSender={mess.senderId === user.id}
               image={mess.image}
               profilePicture={mess.sender.profilePicture}
-              bottomRef={i === allMessages.length - 1 ? bottomRef : null}
               lastMessage={allMessages[allMessages.length - 1]}
               Id={mess.id}
             />
           ))}
+          <div ref={bottomRef} className="p-2 h-full w-full flex"></div>
         </div>
       )}
 

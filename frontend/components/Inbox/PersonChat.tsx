@@ -3,6 +3,7 @@ import Image from "next/image";
 import moment from "moment";
 import routeHandler from "../../lib/Utilities/conversations/routeHandler";
 import getHandler from "../../lib/Utilities/messages/getHandler";
+import { set } from "lodash";
 
 type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +14,9 @@ type Props = {
   friendId: number;
   friendName: string;
   user: any;
+  Id: number;
+  setSelected: any;
+  selected: null | Number;
 };
 
 const PersonChat = (props: Props) => {
@@ -25,8 +29,10 @@ const PersonChat = (props: Props) => {
     setChatWindowData,
     setAllMessages,
     conversations,
+    setSelected,
+    selected,
   } = props;
-
+  console.log(props.Id);
   const messages = conversations.filter(
     (conversation: any) => conversation.userId === friendId
   );
@@ -36,6 +42,11 @@ const PersonChat = (props: Props) => {
   );
   const onClickHandler = async (e: any) => {
     e.preventDefault();
+    setSelected(friendId);
+    setAllMessages({});
+    setChatWindowData({});
+    setShowChatWindow(false);
+
     const response = await routeHandler({
       currentUserId: userId,
       members: [userId, friendId],
@@ -43,7 +54,6 @@ const PersonChat = (props: Props) => {
       userId: friendId,
       name: friendName,
     });
-
     // console.log(response);
     setChatWindowData({
       userId,
@@ -56,13 +66,14 @@ const PersonChat = (props: Props) => {
       userId,
       conversationId: response.id,
     });
-    console.log(messages);
     setAllMessages(messages);
     setShowChatWindow(true);
   };
   return (
     <div
-      className="flex justify-between items-center w-full p-2 pb-4 border-b min-w-[272px] hover:bg-gray-100 transition-all"
+      className={`flex justify-between items-center w-full p-2 pb-4 border-b min-w-[272px] hover:bg-gray-100 transition-all hover:cursor-pointer rounded-md ${
+        selected === friendId && `bg-gray-100`
+      }`}
       onClick={onClickHandler}
     >
       <div className="flex justify-between items-center gap-3">
