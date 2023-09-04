@@ -4,6 +4,16 @@ import Inbox from "../Inbox";
 import getUserConversationHandler from "../../lib/Utilities/conversations/userConHandler";
 
 type Props = {
+  setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteMessageData: React.Dispatch<
+    React.SetStateAction<{
+      userId: number;
+      messageId: number;
+      conversationId: number;
+    }>
+  >;
+  setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  allMessages: {};
   user: {
     id: number;
     name: string;
@@ -27,7 +37,6 @@ type Props = {
 const ChatLayout = (props: Props) => {
   const [showChatWindow, setShowChatWindow] = React.useState(false);
   const [chatWindowdata, setChatWindowData] = React.useState({});
-  const [allMessages, setAllMessages] = React.useState({});
   const [conversations, setConversations] = React.useState([]);
 
   useEffect(() => {
@@ -45,14 +54,16 @@ const ChatLayout = (props: Props) => {
         conversations={conversations}
         setShowChatWindow={setShowChatWindow}
         setChatWindowData={setChatWindowData}
-        setAllMessages={setAllMessages}
+        setAllMessages={props.setAllMessages}
       />
       <ChatWindow
         {...props}
         showChatWindow={showChatWindow}
         setShowChatWindow={setChatWindowData}
         chatWindowData={chatWindowdata}
-        allMessages={allMessages}
+        allMessages={props.allMessages}
+        setDeleteBackdropHandler={props.setDeleteBackdropHandler}
+        setDeleteMessageData={props.setDeleteMessageData}
       />
     </>
   );

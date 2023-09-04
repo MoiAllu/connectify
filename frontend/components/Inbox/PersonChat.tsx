@@ -32,7 +32,6 @@ const PersonChat = (props: Props) => {
     setSelected,
     selected,
   } = props;
-  console.log(props.Id);
   const messages = conversations.filter(
     (conversation: any) => conversation.userId === friendId
   );

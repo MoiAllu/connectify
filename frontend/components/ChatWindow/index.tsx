@@ -4,10 +4,18 @@ import Image from "next/image";
 import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
 import { pusherClient } from "../../lib/pusher";
-import { compact, find } from "lodash";
+import { compact, find, set } from "lodash";
 type Props = {
+  setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
   showChatWindow: boolean;
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteMessageData: React.Dispatch<
+    React.SetStateAction<{
+      userId: number;
+      messageId: number;
+      conversationId: number;
+    }>
+  >;
   chatWindowData: {};
   allMessages: {};
   user: {
@@ -31,16 +39,23 @@ type Props = {
 };
 
 const ChatWindow = (props: Props) => {
-  const { chatWindowData, user, allMessages: converasation } = props;
-  const [allMessages, setAllMessages] = React.useState(converasation.message);
+  const {
+    chatWindowData,
+    user,
+    allMessages: conversation,
+    setDeleteBackdropHandler,
+    setDeleteMessageData,
+  } = props;
+  const [allMessages, setAllMessages] = React.useState(conversation?.message);
   const [sendedMessage, setSendedMessage] = React.useState({});
-  const bottomRef = React.useRef<HTMLDivElement>(null);
   const isActive = true;
-  const conversationId = "chat" + converasation.id;
-  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  const conversationId = "chat" + conversation.id;
+  // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => {
-    setAllMessages(converasation?.message);
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    setAllMessages(conversation?.message);
+  }, [conversation]);
+
+  useEffect(() => {
     const messageHandler = (data: any) => {
       setAllMessages((prev: any) => {
         console.log(prev);
@@ -49,15 +64,14 @@ const ChatWindow = (props: Props) => {
         else return [...prev, data];
       });
     };
-    console.log(allMessages);
-    console.log(conversationId);
+    // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     pusherClient.subscribe(conversationId);
     pusherClient.bind("chat", messageHandler);
     return () => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("chat", messageHandler);
     };
-  }, [converasation, sendedMessage.id]);
+  }, [conversation, sendedMessage]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -111,9 +125,12 @@ const ChatWindow = (props: Props) => {
               profilePicture={mess.sender.profilePicture}
               lastMessage={allMessages[allMessages.length - 1]}
               Id={mess.id}
+              userId={user.id}
+              conversationId={conversation.id}
+              setDeleteBackdropHandler={setDeleteBackdropHandler}
+              setDeleteMessageData={setDeleteMessageData}
             />
           ))}
-          <div ref={bottomRef} className="p-2 h-full w-full flex"></div>
         </div>
       )}
 

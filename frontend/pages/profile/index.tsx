@@ -53,9 +53,9 @@ const Profile: NextPage = () => {
               <div className="mb-6">
                 <BirthdayCard />
               </div>
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <FollowSuggestion />
-              </div>
+              </div> */}
               <UpcomingBirthdays />
             </div>
           </div>
