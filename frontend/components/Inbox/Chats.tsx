@@ -5,6 +5,7 @@ type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  setConversations: React.Dispatch<React.SetStateAction<[]>>;
   conversations: any;
   user: {
     id: number;
@@ -23,9 +24,11 @@ const Chats = (props: Props) => {
     setShowChatWindow,
     setChatWindowData,
     setAllMessages,
+    setConversations,
     conversations,
   } = props;
   const [selected, setSelected] = React.useState(null || Number);
+
   return (
     <div className="flex flex-col w-full gap-2">
       {user.friends.map((friend: any, i: any) => (
@@ -33,6 +36,7 @@ const Chats = (props: Props) => {
           setShowChatWindow={setShowChatWindow}
           setChatWindowData={setChatWindowData}
           setAllMessages={setAllMessages}
+          setConversations={setConversations}
           userId={user.id}
           user={user}
           key={friend.user.id}

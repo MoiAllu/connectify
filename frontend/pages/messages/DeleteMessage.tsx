@@ -16,9 +16,41 @@ type Props = {
 
 const DeleteMessage = (props: Props) => {
   const { userId, messageId, conversationId } = props.deleteMessageData;
+  const [changeState, setChangeState] = React.useState(false);
   //Delete message from database
+  //   React.useEffect(() => {
+  //     console.log("changeState", changeState);
+  //     const messageHandler = (data: any) => {
+  //       props.setAllMessages((prev: any) => {
+  //         if (find(prev.message, { id: data.id })) {
+  //           console.log("Filter Array", {
+  //             ...prev,
+  //             message: prev.message.filter(
+  //               (message: any) => message.id !== data.id
+  //             ),
+  //           });
+  //           return {
+  //             ...prev,
+  //             message: prev.message.filter(
+  //               (message: any) => message.id !== data.id
+  //             ),
+  //           };
+  //         } else return { ...prev };
+  //       });
+  //     };
+  //     const conversationid = "deleteChat" + conversationId;
+  //     // console.log(conversationid);
+  //     pusherClient.subscribe(conversationid);
+  //     pusherClient.bind("deleteChat", messageHandler);
+  //     return () => {
+  //       pusherClient.unsubscribe(conversationid);
+  //       pusherClient.unbind("deleteChat", messageHandler);
+  //     };
+  //   }, [changeState]);
+
   const deleteHandler = async (e: any) => {
     e.preventDefault();
+    setChangeState(!changeState);
     const response = await deleteMessageHandler({
       messageId,
       userId,

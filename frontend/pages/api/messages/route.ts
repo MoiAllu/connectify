@@ -3,7 +3,7 @@ import prisma from "../../../lib/prisma";
 import { pusherServer } from "../../../lib/pusher";
 export default async (req :NextApiRequest, res:NextApiResponse) => {
     try{
-        const {userId,friendId,conversationId,message, image} = req.body;
+        const {userId,conversationId,message, image} = req.body;
         if(!conversationId){
             return res.status(400).json({error:"UnAuthorized"});
         }

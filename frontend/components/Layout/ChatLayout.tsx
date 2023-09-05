@@ -13,7 +13,31 @@ type Props = {
     }>
   >;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
-  allMessages: {};
+
+  allMessages:
+    | {
+        id: number;
+        message: [
+          {
+            id: number;
+            body: string;
+            image: string;
+            createdAt: string;
+            updatedAt: string;
+            senderId: number;
+            conversationId: number;
+            sender: {
+              id: number;
+              name: string;
+              email: string;
+              profilePicture: string;
+              createdAt: string;
+              updatedAt: string;
+            };
+          }
+        ];
+      }
+    | any;
   user: {
     id: number;
     name: string;
@@ -38,7 +62,6 @@ const ChatLayout = (props: Props) => {
   const [showChatWindow, setShowChatWindow] = React.useState(false);
   const [chatWindowdata, setChatWindowData] = React.useState({});
   const [conversations, setConversations] = React.useState([]);
-
   useEffect(() => {
     getUserConversationHandler({
       userId: props.user.id,
@@ -52,19 +75,23 @@ const ChatLayout = (props: Props) => {
       <Inbox
         {...props}
         conversations={conversations}
+        setConversations={setConversations}
         setShowChatWindow={setShowChatWindow}
         setChatWindowData={setChatWindowData}
         setAllMessages={props.setAllMessages}
       />
-      <ChatWindow
-        {...props}
-        showChatWindow={showChatWindow}
-        setShowChatWindow={setChatWindowData}
-        chatWindowData={chatWindowdata}
-        allMessages={props.allMessages}
-        setDeleteBackdropHandler={props.setDeleteBackdropHandler}
-        setDeleteMessageData={props.setDeleteMessageData}
-      />
+      {props.allMessages && (
+        <ChatWindow
+          {...props}
+          showChatWindow={showChatWindow}
+          setShowChatWindow={setChatWindowData}
+          chatWindowData={chatWindowdata}
+          allMessages={props.allMessages}
+          setAllMessages={props.setAllMessages}
+          setDeleteBackdropHandler={props.setDeleteBackdropHandler}
+          setDeleteMessageData={props.setDeleteMessageData}
+        />
+      )}
     </>
   );
 };

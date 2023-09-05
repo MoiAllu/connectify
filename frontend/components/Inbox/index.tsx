@@ -6,6 +6,7 @@ type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
   conversations: any;
   user: {
     id: number;

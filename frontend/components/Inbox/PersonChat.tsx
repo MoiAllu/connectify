@@ -4,11 +4,13 @@ import moment from "moment";
 import routeHandler from "../../lib/Utilities/conversations/routeHandler";
 import getHandler from "../../lib/Utilities/messages/getHandler";
 import { set } from "lodash";
+import getUserConversationHandler from "../../lib/Utilities/conversations/userConHandler";
 
 type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  setConversations: React.Dispatch<React.SetStateAction<[]>>;
   conversations: any;
   userId: number;
   friendId: number;
@@ -28,23 +30,37 @@ const PersonChat = (props: Props) => {
     setShowChatWindow,
     setChatWindowData,
     setAllMessages,
+    setConversations,
     conversations,
     setSelected,
     selected,
   } = props;
+  const [changeState, setChangeState] = React.useState(false);
   const messages = conversations.filter(
     (conversation: any) => conversation.userId === friendId
   );
+
   const lastMessage = messages[0]?.message[messages[0]?.message.length - 1];
   const date = parseInt(
     (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
   );
+
+  React.useEffect(() => {
+    getUserConversationHandler({
+      userId: user.id,
+    }).then((res) => {
+      if (!res.error) setConversations(res);
+      else console.log(res);
+    });
+    console.log("changeState", changeState);
+  }, [changeState]);
   const onClickHandler = async (e: any) => {
     e.preventDefault();
     setSelected(friendId);
     setAllMessages({});
     setChatWindowData({});
     setShowChatWindow(false);
+    setChangeState(!changeState);
 
     const response = await routeHandler({
       currentUserId: userId,
@@ -60,14 +76,20 @@ const PersonChat = (props: Props) => {
       conversationId: response.id,
       friendName: friendName,
     });
-    const messages = await getHandler({
-      user,
-      userId,
-      conversationId: response.id,
-    });
-    setAllMessages(messages);
+    // const allmessages = await getHandler({
+    //   user,
+    //   userId,
+    //   conversationId: response.id,
+    // });
+    const allmessages = conversations.filter(
+      (conversation: any) => conversation.id === response.id
+    );
+    // console.log("api response", messages);
+    // console.log("local response", messages2[0]);
+    setAllMessages(allmessages[0]);
     setShowChatWindow(true);
   };
+
   return (
     <div
       className={`flex justify-between items-center w-full p-2 pb-4 border-b min-w-[272px] hover:bg-gray-100 transition-all hover:cursor-pointer rounded-md ${

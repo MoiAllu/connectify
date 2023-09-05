@@ -16,8 +16,30 @@ type Props = {
       conversationId: number;
     }>
   >;
+  setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   chatWindowData: {};
-  allMessages: {};
+  allMessages: {
+    id: number;
+    message: [
+      {
+        id: number;
+        body: string;
+        image: string;
+        createdAt: string;
+        updatedAt: string;
+        senderId: number;
+        conversationId: number;
+        sender: {
+          id: number;
+          name: string;
+          email: string;
+          profilePicture: string;
+          createdAt: string;
+          updatedAt: string;
+        };
+      }
+    ];
+  };
   user: {
     id: number;
     name: string;
@@ -42,26 +64,21 @@ const ChatWindow = (props: Props) => {
   const {
     chatWindowData,
     user,
-    allMessages: conversation,
+    allMessages,
     setDeleteBackdropHandler,
     setDeleteMessageData,
   } = props;
-  const [allMessages, setAllMessages] = React.useState(conversation?.message);
   const [sendedMessage, setSendedMessage] = React.useState({});
   const isActive = true;
-  const conversationId = "chat" + conversation.id;
+  const conversationId = "chat" + allMessages.id;
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => {
-    setAllMessages(conversation?.message);
-  }, [conversation]);
-
-  useEffect(() => {
     const messageHandler = (data: any) => {
-      setAllMessages((prev: any) => {
+      props.setAllMessages((prev: any) => {
         console.log(prev);
         console.log(data);
-        if (find(prev, { id: data.id })) return prev;
-        else return [...prev, data];
+        if (find(prev.message, { id: data.id })) return { prev };
+        else return { ...prev, message: [...prev.message, data] };
       });
     };
     // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,13 +88,14 @@ const ChatWindow = (props: Props) => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("chat", messageHandler);
     };
-  }, [conversation, sendedMessage]);
+  }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
     const response = await routeHandler({
       userId: user.id,
       friendId: chatWindowData?.friendId,
+      currentUserId: user.id,
       conversationId: chatWindowData?.conversationId,
       message: e.target[0].value,
     });
@@ -113,20 +131,20 @@ const ChatWindow = (props: Props) => {
       </div>
 
       {/* Chat */}
-      {allMessages && (
+      {allMessages.message && (
         <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3 h-full w-full">
-          {allMessages.map((mess: any, i: any) => (
+          {allMessages.message.map((mess: any, i: any) => (
             <Message
               key={mess.id}
               message={mess.body}
               createdAt={mess.createdAt}
               isSender={mess.senderId === user.id}
               image={mess.image}
-              profilePicture={mess.sender.profilePicture}
-              lastMessage={allMessages[allMessages.length - 1]}
+              profilePicture={mess.sender?.profilePicture}
+              lastMessage={allMessages.message[allMessages.message.length - 1]}
               Id={mess.id}
               userId={user.id}
-              conversationId={conversation.id}
+              conversationId={allMessages.id}
               setDeleteBackdropHandler={setDeleteBackdropHandler}
               setDeleteMessageData={setDeleteMessageData}
             />
