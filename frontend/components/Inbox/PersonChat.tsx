@@ -54,6 +54,7 @@ const PersonChat = (props: Props) => {
     });
     console.log("changeState", changeState);
   }, [changeState]);
+
   const onClickHandler = async (e: any) => {
     e.preventDefault();
     setSelected(friendId);
