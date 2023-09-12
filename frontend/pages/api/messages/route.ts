@@ -24,11 +24,6 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
               sender: {
                 connect: { id: userId }
               },
-              seen: {
-                connect: {
-                  id: userId
-                }
-              },
             }
           });
         

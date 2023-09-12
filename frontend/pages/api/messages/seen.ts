@@ -26,23 +26,23 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
         const lastMessage = conversation.message[conversation.message.length-1];
         if(!lastMessage) return res.json(conversation)
 
-        // const updateMessage = await prisma.message.update({
-        //     where:{
-        //         id:lastMessage.id
-        //     },
-        //     include:{
-        //         seen:true,
-        //         sender:true
-        //     },
-        //     data:{
-        //         seen:{
-        //             connect:{
-        //                 id:userId
-        //         }
-        //     }
-        //     }
-        // })
-        // return res.json(updateMessage)
+        const updateMessage = await prisma.message.update({
+            where:{
+                id:lastMessage.id
+            },
+            include:{
+                seen:true,
+                sender:true
+            },
+            data:{
+                seen:{
+                    connect:{
+                        id:userId
+                }
+            }
+            }
+        })
+        return res.json(updateMessage)
 
         
     }catch{

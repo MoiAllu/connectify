@@ -36,10 +36,11 @@ const PersonChat = (props: Props) => {
     selected,
   } = props;
   const [changeState, setChangeState] = React.useState(false);
+  const friendUser = [user.id, friendId];
+  const friendUser2 = [friendId, user.id];
   const messages = conversations.filter(
-    (conversation: any) => conversation.userId === friendId
+    (conversation: any) => conversation.userIds === friendUser || friendUser2
   );
-
   const lastMessage = messages[0]?.message[messages[0]?.message.length - 1];
   const date = parseInt(
     (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
