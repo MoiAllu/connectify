@@ -12,7 +12,11 @@ const Layout = ({ children, user }: any) => {
   const router: NextRouter = useRouter();
   const [hideRightBar, isHideRightBar] = useState(false);
   useEffect(() => {
-    if (["/profile", "/messages"].includes(router.pathname)) {
+    if (router.query.profile) {
+      isHideRightBar(true);
+      return;
+    }
+    if (["/profile", "/messages", "/notifications"].includes(router.pathname)) {
       isHideRightBar(true);
     } else isHideRightBar(false);
   }, [router]);

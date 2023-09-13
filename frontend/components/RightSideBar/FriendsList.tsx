@@ -1,6 +1,7 @@
 import React from "react";
 import Friend from "./Friend";
 import friends from "./friends.json";
+import Link from "next/link";
 
 type Props = {
   user: {

@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { pusherServer } from "../../../lib/pusher";
 export default async (req :NextApiRequest, res:NextApiResponse) => {
     try{
         const {userId,conversationId} = req.body;
+        console.log(userId,conversationId)
         if(!conversationId ||!userId){
             return res.status(400).json({error:"UnAuthorized"});
         }
@@ -13,11 +15,18 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
             include:{
                 message:{
                     include:{
-                        seen:true
+                        seen:true,
+                        sender:true,
+                        users:true
                     }
                 },
-                users: true
-
+                users: {
+                    include: {
+                        conversations: true,
+                        friends: true,
+                    }
+                },
+                
             }
         })
         if (!conversation) {
@@ -26,25 +35,29 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
         const lastMessage = conversation.message[conversation.message.length-1];
         if(!lastMessage) return res.json(conversation)
 
-        const updateMessage = await prisma.message.update({
+        const updatedMessage = await prisma.message.update({
             where:{
                 id:lastMessage.id
             },
             include:{
                 seen:true,
-                sender:true
+                sender:true,
+                users: true
             },
             data:{
-                seen:{
+                users:{
                     connect:{
                         id:userId
+                    }
                 }
             }
-            }
         })
-        return res.json(updateMessage)
-
-        
+        const id= "chat"+ conversationId;
+        if (lastMessage.users.indexOf(userId) !== -1 || lastMessage.sender.id === userId) {
+            return res.json(conversation);
+          }
+        await pusherServer.trigger(id, 'seen', updatedMessage);
+        return res.json(updatedMessage);        
     }catch{
         return res.status(500).json({error:"Something went wrong"});
     } 

@@ -15,7 +15,9 @@ export default async (req: any, res: any) => {
                 users:true,
                 message:{
                     include:{
-                        seen:true
+                        seen:true,
+                        users: true,
+            
                     }
                 }
             }

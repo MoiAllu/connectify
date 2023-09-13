@@ -5,6 +5,7 @@ import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
 import { pusherClient } from "../../lib/pusher";
 import { compact, find, set } from "lodash";
+import seenHandler from "../../lib/Utilities/messages/seenHandler";
 type Props = {
   setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
   showChatWindow: boolean;
@@ -72,23 +73,37 @@ const ChatWindow = (props: Props) => {
   const isActive = true;
   const conversationId = "chat" + allMessages.id;
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  useEffect(() => {
-    const messageHandler = (data: any) => {
-      props.setAllMessages((prev: any) => {
-        console.log(prev);
-        console.log(data);
-        if (find(prev.message, { id: data.id })) return { prev };
-        else return { ...prev, message: [...prev.message, data] };
-      });
-    };
-    // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    pusherClient.subscribe(conversationId);
-    pusherClient.bind("chat", messageHandler);
-    return () => {
-      pusherClient.unsubscribe(conversationId);
-      pusherClient.unbind("chat", messageHandler);
-    };
-  }, [sendedMessage]);
+  // useEffect(() => {
+  //   const messageHandler = (data: any) => {
+  //     seenHandler({
+  //       userId: user.id,
+  //       conversationId: allMessages.id,
+  //     });
+  //     props.setAllMessages((prev: any) => {
+  //       console.log(prev);
+  //       console.log(data);
+  //       if (find(prev.message, { id: data.id })) return { prev };
+  //       else return { ...prev, message: [...prev.message, data] };
+  //     });
+  //   };
+  //   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   const updateMessageHandler = (data: any) => {
+  //     props.setAllMessages((prev: any) => {
+  //       console.log("seenPrev", prev);
+  //       console.log("seendata", data);
+  //       return prev;
+  //     });
+  //   };
+
+  //   pusherClient.subscribe(conversationId);
+  //   pusherClient.bind("chat", messageHandler);
+  //   pusherClient.bind("seen", updateMessageHandler);
+  //   return () => {
+  //     pusherClient.unbind("chat", messageHandler);
+  //     pusherClient.bind("seen", updateMessageHandler);
+  //     pusherClient.unsubscribe(conversationId);
+  //   };
+  // }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -101,6 +116,51 @@ const ChatWindow = (props: Props) => {
     });
     console.log(response);
     setSendedMessage(response);
+    if (response.error) return console.log(response.error);
+    const messageHandler = (data: any) => {
+      seenHandler({
+        userId: user.id,
+        conversationId: allMessages.id,
+      });
+      props.setAllMessages((prev: any) => {
+        console.log("before send Array", prev);
+        console.log("message", data);
+        if (find(prev.message, { id: data.id })) return prev;
+        else return { ...prev, message: [...prev.message, data] };
+      });
+    };
+    // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const updateMessageHandler = (data: any) => {
+      props.setAllMessages((prev: any) => {
+        console.log("seenPrev", prev);
+        console.log("seendata", data);
+        if (
+          prev.message.map((mess: any) => {
+            if (mess.id === data.id) {
+              mess === data;
+            }
+          })
+        ) {
+          return (
+            console.log("after update", {
+              ...prev,
+              message: [...prev.message],
+            }),
+            { prev, message: [...prev.message] }
+          );
+        }
+        return prev;
+      });
+    };
+
+    pusherClient.subscribe(conversationId);
+    pusherClient.bind("chat", messageHandler);
+    pusherClient.bind("seen", updateMessageHandler);
+    return () => {
+      pusherClient.unbind("chat", messageHandler);
+      pusherClient.bind("seen", updateMessageHandler);
+      pusherClient.unsubscribe(conversationId);
+    };
   };
 
   if (!props.showChatWindow) return null;

@@ -5,7 +5,7 @@ import routeHandler from "../../lib/Utilities/conversations/routeHandler";
 import getHandler from "../../lib/Utilities/messages/getHandler";
 import { set } from "lodash";
 import getUserConversationHandler from "../../lib/Utilities/conversations/userConHandler";
-
+import seenHandler from "../../lib/Utilities/messages/seenHandler";
 type Props = {
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
@@ -36,10 +36,10 @@ const PersonChat = (props: Props) => {
     selected,
   } = props;
   const [changeState, setChangeState] = React.useState(false);
-  const friendUser = [user.id, friendId];
-  const friendUser2 = [friendId, user.id];
-  const messages = conversations.filter(
-    (conversation: any) => conversation.userIds === friendUser || friendUser2
+  // const friendUser = [user.id, friendId];
+  // const friendUser2 = [friendId, user.id];
+  const messages = conversations.filter((conversation: any) =>
+    conversation.usersIds.includes(friendId)
   );
   const lastMessage = messages[0]?.message[messages[0]?.message.length - 1];
   const date = parseInt(
@@ -78,6 +78,12 @@ const PersonChat = (props: Props) => {
       conversationId: response.id,
       friendName: friendName,
     });
+    console.log(response.id);
+    const seenMessage = await seenHandler({
+      userId: user.id,
+      conversationId: response.id,
+    });
+    console.log(seenMessage);
     // const allmessages = await getHandler({
     //   user,
     //   userId,

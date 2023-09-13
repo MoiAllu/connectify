@@ -13,7 +13,8 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
         const newMessage = await prisma.message.create({
             include: {
               seen: true,
-              sender: true
+              sender: true,
+              users: true,
             },
             data: {
               body: message,

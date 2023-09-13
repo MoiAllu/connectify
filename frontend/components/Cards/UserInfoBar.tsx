@@ -1,12 +1,12 @@
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
-const UserInforBar = ({ user }: any) => {
+const UserInforBar = ({ user, owner }: any) => {
   return (
     <Fragment>
       <div className="bg-white rounded-lg p-2 flex-col shadow-md min-w-[210px] xl:flex hidden">
         <h1 className="font-semibold text-gray-700 ">INTRO</h1>
-        <div className="flex p-2 text-gray-500">
+        <div className="flex p-2 text-gray-500 gap-2">
           <Image
             width="20px"
             height="20px"
@@ -49,7 +49,7 @@ const UserInforBar = ({ user }: any) => {
           ></Image>
           <span className="text-sm ml-2  text-gray-500">Islamabad</span>
         </div>
-        <div className="flex p-2 text-gray-500">
+        <div className="flex p-2 text-gray-500 gap-2">
           <Image
             width="20px"
             height="20px"
@@ -60,7 +60,7 @@ const UserInforBar = ({ user }: any) => {
             Facebook
           </Link>
         </div>
-        <div className="flex p-2 text-gray-500">
+        <div className="flex p-2 text-gray-500 gap-2">
           <Image
             width="20px"
             height="20px"
@@ -71,7 +71,7 @@ const UserInforBar = ({ user }: any) => {
             Twitter
           </Link>
         </div>
-        <div className="flex p-2 text-gray-500">
+        <div className="flex p-2 text-gray-500 gap-2">
           <Image
             width="20px"
             height="20px"
@@ -88,11 +88,13 @@ const UserInforBar = ({ user }: any) => {
         <div className="text-sm text-gray-700 px-2 py-1">
           <h6>2590 Followings</h6>
         </div>
-        <div className="text-center">
-          <button className="mt-2 px-6 py-2 text-center text-sm bg-gray-50 rounded-md hover:bg-gray-300 shadow-sm hover:shadow-md">
-            <span>Edit Details</span>
-          </button>
-        </div>
+        {owner && (
+          <div className="text-center">
+            <button className="mt-2 px-6 py-2 text-center text-sm bg-gray-50 rounded-md hover:bg-gray-300 shadow-sm hover:shadow-md">
+              <span>Edit Details</span>
+            </button>
+          </div>
+        )}
       </div>
     </Fragment>
   );

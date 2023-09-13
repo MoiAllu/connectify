@@ -37,10 +37,11 @@ const Message: React.FC<Props> = (props: Props) => {
     setDeleteBackdropHandler,
     setDeleteMessageData,
   } = props;
-  const [optionHandler, setOptionHandler] = React.useState(false);
 
+  const [optionHandler, setOptionHandler] = React.useState(false);
   const bottomRef = React.useRef<HTMLDivElement>(null);
   const person = isSender ? "sender" : "receiver";
+  const seenBy = lastMessage.users.filter((user: any) => user.id !== userId);
   const messageDeleteHandler = async (e: any) => {
     e.preventDefault();
     console.log(Id, userId, conversationId);
@@ -141,15 +142,20 @@ const Message: React.FC<Props> = (props: Props) => {
       </div>
       <div className={`mx-8`}>
         {lastMessage.id === props.Id && (
-          <p className="text-xs">
-            {moment
-              .unix(
-                parseInt(
-                  (new Date(lastMessage.createdAt).getTime() / 1000).toFixed(0)
+          <div className="flex justify-center items-center text-xs gap-1">
+            {lastMessage.senderId === userId && seenBy[0] && <p>seen</p>}
+            <p>
+              {moment
+                .unix(
+                  parseInt(
+                    (new Date(lastMessage.createdAt).getTime() / 1000).toFixed(
+                      0
+                    )
+                  )
                 )
-              )
-              .fromNow()}
-          </p>
+                .fromNow()}
+            </p>
+          </div>
         )}
       </div>
     </div>
