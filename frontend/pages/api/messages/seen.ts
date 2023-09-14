@@ -4,7 +4,6 @@ import { pusherServer } from "../../../lib/pusher";
 export default async (req :NextApiRequest, res:NextApiResponse) => {
     try{
         const {userId,conversationId} = req.body;
-        console.log(userId,conversationId)
         if(!conversationId ||!userId){
             return res.status(400).json({error:"UnAuthorized"});
         }
@@ -53,7 +52,7 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
             }
         })
         const id= "chat"+ conversationId;
-        if (lastMessage.users.indexOf(userId) !== -1 || lastMessage.sender.id === userId) {
+        if (lastMessage.users.indexOf(userId) !== -1 ) {
             return res.json(conversation);
           }
         await pusherServer.trigger(id, 'seen', updatedMessage);

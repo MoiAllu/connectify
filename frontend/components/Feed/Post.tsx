@@ -129,7 +129,7 @@ const Post = ({ post, iniLoading }: any) => {
         />
         <div className="flex flex-col flex-1">
           <Link href={`/profile/${post?.author?.id}-${post?.author?.name}`}>
-            <p className="font-semibold">{post?.author?.name}</p>
+            <p className="font-semibold cursor-pointer">{post?.author?.name}</p>
           </Link>
           <p className="text-sm">
             {moment.unix(postCreatedAt).fromNow()} |{" "}

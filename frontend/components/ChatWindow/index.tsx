@@ -4,8 +4,9 @@ import Image from "next/image";
 import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
 import { pusherClient } from "../../lib/pusher";
-import { compact, find, set } from "lodash";
+import { find } from "lodash";
 import seenHandler from "../../lib/Utilities/messages/seenHandler";
+
 type Props = {
   setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
   showChatWindow: boolean;
@@ -74,23 +75,31 @@ const ChatWindow = (props: Props) => {
   const conversationId = "chat" + allMessages.id;
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   // useEffect(() => {
-  //   const messageHandler = (data: any) => {
-  //     seenHandler({
+  //   const messageHandler = async (data: any) => {
+  //     await seenHandler({
   //       userId: user.id,
   //       conversationId: allMessages.id,
   //     });
+
   //     props.setAllMessages((prev: any) => {
-  //       console.log(prev);
-  //       console.log(data);
-  //       if (find(prev.message, { id: data.id })) return { prev };
+  //       console.log("before send Array", prev);
+  //       console.log("message", data);
+  //       if (find(prev.message, { id: data.id })) return prev;
   //       else return { ...prev, message: [...prev.message, data] };
   //     });
   //   };
   //   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   //   const updateMessageHandler = (data: any) => {
+  //     console.log("update message", data);
   //     props.setAllMessages((prev: any) => {
-  //       console.log("seenPrev", prev);
-  //       console.log("seendata", data);
+  //       if (prev.message.map((message: any) => message.id === data.id)) {
+  //         const indexMsg = prev.message.findIndex(
+  //           (message: any) => message.id === data.id
+  //         );
+  //         prev.message[indexMsg] = data;
+  //         console.log("updated", prev);
+  //         return prev;
+  //       }
   //       return prev;
   //     });
   //   };
@@ -117,37 +126,29 @@ const ChatWindow = (props: Props) => {
     console.log(response);
     setSendedMessage(response);
     if (response.error) return console.log(response.error);
-    const messageHandler = (data: any) => {
-      seenHandler({
+    const messageHandler = async (data: any) => {
+      const updatedMessage = await seenHandler({
         userId: user.id,
         conversationId: allMessages.id,
       });
+      console.log("new message", updatedMessage);
+
       props.setAllMessages((prev: any) => {
-        console.log("before send Array", prev);
-        console.log("message", data);
         if (find(prev.message, { id: data.id })) return prev;
         else return { ...prev, message: [...prev.message, data] };
       });
     };
     // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     const updateMessageHandler = (data: any) => {
+      console.log("update__message", data);
       props.setAllMessages((prev: any) => {
-        console.log("seenPrev", prev);
-        console.log("seendata", data);
-        if (
-          prev.message.map((mess: any) => {
-            if (mess.id === data.id) {
-              mess === data;
-            }
-          })
-        ) {
-          return (
-            console.log("after update", {
-              ...prev,
-              message: [...prev.message],
-            }),
-            { prev, message: [...prev.message] }
+        if (prev.message.map((message: any) => message.id === data.id)) {
+          const indexMsg = prev.message.findIndex(
+            (message: any) => message.id === data.id
           );
+          prev.message[indexMsg] = data;
+          console.log("updated", prev);
+          return prev;
         }
         return prev;
       });

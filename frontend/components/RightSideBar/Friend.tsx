@@ -20,7 +20,9 @@ const Friend: React.FC<Props> = ({ friend }) => {
         height={40}
       />
       <Link href={`/profile/${friend.user.id}-${friend.user.name}`}>
-        <div className="flex-1 truncate font-semibold">{friend.user.name}</div>
+        <div className="flex-1 truncate font-semibold hover:cursor-pointer">
+          {friend.user.name}
+        </div>
       </Link>
       {/* {Math.floor(Date.now() / 1000) - friend.updatedAt < 60 ? (
         <span className="w-2 h-2 rounded-full bg-green-400"></span>
