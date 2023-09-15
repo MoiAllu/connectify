@@ -6,6 +6,7 @@ type Props = {
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[]>>;
+  setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
   conversations: any;
   user: {
     id: number;
@@ -26,6 +27,7 @@ const Chats = (props: Props) => {
     setAllMessages,
     setConversations,
     conversations,
+    setMobileView,
   } = props;
   const [selected, setSelected] = React.useState(null || Number);
 
@@ -46,6 +48,7 @@ const Chats = (props: Props) => {
           Id={friend.user.id}
           setSelected={setSelected}
           selected={selected}
+          setMobileView={setMobileView}
         />
       ))}
     </div>

@@ -11,6 +11,7 @@ type Props = {
   setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[]>>;
+  setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
   conversations: any;
   userId: number;
   friendId: number;
@@ -31,6 +32,7 @@ const PersonChat = (props: Props) => {
     setChatWindowData,
     setAllMessages,
     setConversations,
+    setMobileView,
     conversations,
     setSelected,
     selected,
@@ -58,6 +60,7 @@ const PersonChat = (props: Props) => {
 
   const onClickHandler = async (e: any) => {
     e.preventDefault();
+    setMobileView(true);
     setSelected(friendId);
     setAllMessages({});
     setChatWindowData({});
@@ -125,25 +128,28 @@ const PersonChat = (props: Props) => {
               "font-semibold"
             }`}
           >
-            {lastMessage?.body}
+            {lastMessage ? lastMessage?.body : "Start a conversation"}
           </p>
         </div>
       </div>
-
-      <div className=" flex flex-col items-end text-sm pt-1 min-w-[57px]">
-        {moment
-          .unix(
-            parseInt(
-              (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
+      {lastMessage && (
+        <div className=" flex flex-col items-end text-sm pt-1 min-w-[57px]">
+          {moment
+            .unix(
+              parseInt(
+                (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
+              )
             )
-          )
-          .format("hh:mm a")}
-        {lastMessage?.senderId !== userId && lastMessage?.seenId !== userId && (
-          <div className="bg-red-400 text-white text-center px-1">
-            <span>1</span>
-          </div>
-        )}
-      </div>
+            .format("hh:mm a")}
+          {lastMessage?.senderId !== userId &&
+            lastMessage?.seenId !== userId &&
+            lastMessage && (
+              <div className="bg-red-400 text-white text-center px-1">
+                <span>1</span>
+              </div>
+            )}
+        </div>
+      )}
     </div>
   );
 };

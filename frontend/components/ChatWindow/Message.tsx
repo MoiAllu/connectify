@@ -73,7 +73,7 @@ const Message: React.FC<Props> = (props: Props) => {
         } gap-2 max-w-[80%] justify-center items-center`}
       >
         {/* Image */}
-        <div className="flex flex-col-reverse">
+        <div className="lg:flex flex-col-reverse hidden">
           <Image
             className="rounded-full min-w-[28px] min-h-[28px]"
             src={"/square.jpg"}

@@ -26,7 +26,7 @@ const Messages: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex items-center min-h-[calc(100vh-70px)] relative sm:top-[70px] lg:top-0 h-full bg-gray-50 px-4 rounded-2xl gap-3">
+      <div className="flex items-center min-h-[calc(100vh-70px)] bottom-[30px] lg:bottom-0 relative sm:top-[70px] lg:top-0 h-full bg-gray-50 lg:px-4 rounded-2xl gap-3">
         <ChatLayout
           {...user}
           setDeleteBackdropHandler={setDeleteBackdropHandler}
