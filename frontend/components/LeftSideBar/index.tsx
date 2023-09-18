@@ -3,10 +3,29 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import logout from "../../lib/Utilities/logot";
+import { useGetUserConversations } from "../../lib/hooks/useMe";
 
-type Props = {};
+type Props = {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: any;
+    friendsrequests: any;
+  };
+};
 
 const LeftSideBar = (props: Props) => {
+  const {
+    allConversations,
+    conversations,
+    isLoading,
+    isError,
+    countUnseenMessages,
+  } = useGetUserConversations(props.user.id);
   const router = useRouter();
   const { pathname } = router;
   const isFeed = pathname === "/";
@@ -82,9 +101,12 @@ const LeftSideBar = (props: Props) => {
             <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
           </svg>
           <p className="xl:text-md text-sm flex-1">Messages</p>
-          <p className="text-xs bg-red-500 px-2 py-1 rounded-lg text-white">
-            99+
-          </p>
+
+          {countUnseenMessages > 0 && (
+            <p className="text-xs bg-red-500 px-2 py-1 rounded-lg text-white">
+              {countUnseenMessages}
+            </p>
+          )}
         </div>
       </Link>
 

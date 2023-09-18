@@ -20,7 +20,9 @@ type Props = {
     }>
   >;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
   chatWindowData: {};
+  conversations: any;
   allMessages: {
     id: number;
     message: [
@@ -78,6 +80,7 @@ const ChatWindow = (props: Props) => {
   const [isMessageSending, setIsMessageSending] = React.useState(false);
   const isActive = true;
   const conversationId = "chat" + allMessages.id;
+
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   // useEffect(() => {
   //   const messageHandler = async (data: any) => {
@@ -122,6 +125,7 @@ const ChatWindow = (props: Props) => {
   const submitHandler = async (e: any) => {
     e.preventDefault();
     setIsMessageSending(true);
+
     const response = await routeHandler({
       userId: user.id,
       friendId: chatWindowData?.friendId,
@@ -135,27 +139,39 @@ const ChatWindow = (props: Props) => {
     setSendedMessage(response);
     if (response.error) return console.log(response.error);
     const messageHandler = async (data: any) => {
-      const updatedMessage = await seenHandler({
+      await seenHandler({
         userId: user.id,
         conversationId: allMessages.id,
       });
-      console.log("new message", updatedMessage);
-
-      props.setAllMessages((prev: any) => {
-        if (find(prev.message, { id: data.id })) return prev;
-        else return { ...prev, message: [...prev.message, data] };
+      // props.setAllMessages((prev: any) => {
+      //   if (find(prev.message, { id: data.id })) return prev;
+      //   else return { ...prev, message: [...prev.message, data] };
+      // });
+      console.log("allMessages", allMessages);
+      props.setConversations((prev: any) => {
+        prev.map((conversation: any) => {
+          if (conversation.id === allMessages.id) {
+            conversation.message = [...conversation.message, data];
+          }
+          return conversation;
+        });
+        return prev;
       });
+      const updatedMessages = props.conversations.filter(
+        (conversation: any) => conversation.id === allMessages.id
+      );
+      props.setAllMessages(updatedMessages[0]);
     };
     // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     const updateMessageHandler = (data: any) => {
-      console.log("update__message", data);
+      console.log("seen Handler active");
       props.setAllMessages((prev: any) => {
-        if (prev.message.map((message: any) => message.id === data.id)) {
+        if (prev.message?.map((message: any) => message.id === data.id)) {
           const indexMsg = prev.message.findIndex(
             (message: any) => message.id === data.id
           );
           prev.message[indexMsg] = data;
-          console.log("updated", prev);
+
           return prev;
         }
         return prev;

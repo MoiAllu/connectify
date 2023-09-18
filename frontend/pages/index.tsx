@@ -14,7 +14,9 @@ const Home: NextPage = (props: Props) => {
   const filterUser = users?.filter(
     (user: any) =>
       user.id !== author.id &&
-      !author.friends.map((friend: any) => friend.userId).includes(user.id)
+      !author.friendsrequests
+        .map((friend: any) => friend.friendId)
+        .includes(user.id)
   );
   return (
     <>
@@ -31,11 +33,7 @@ const Home: NextPage = (props: Props) => {
         <div className="flex 2xl:hidden gap-4 overflow-auto mb-2 pb-2">
           {filterUser?.map((user: any) => {
             return (
-              <FollowSuggestion
-                authorId={author.id}
-                user={user}
-                key={user.id}
-              />
+              <FollowSuggestion author={author} user={user} key={user.id} />
             );
           })}
           <BirthdayCard />

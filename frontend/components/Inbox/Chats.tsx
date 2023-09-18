@@ -7,6 +7,7 @@ type Props = {
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[]>>;
   setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
+  setChatWindowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   conversations: any;
   user: {
     id: number;
@@ -16,6 +17,7 @@ type Props = {
     createdAt: string;
     updatedAt: string;
     friends: any;
+    friendsrequests: any;
   };
 };
 
@@ -26,15 +28,24 @@ const Chats = (props: Props) => {
     setChatWindowData,
     setAllMessages,
     setConversations,
+    setChatWindowLoading,
     conversations,
     setMobileView,
   } = props;
   const [selected, setSelected] = React.useState(null || Number);
-
+  const friends = user.friends.filter((friend: any) => {
+    return user.friendsrequests.some(
+      (friendrequest: any) =>
+        friendrequest.friendId === friend.user.id &&
+        friendrequest.userId === user.id
+    );
+  });
+  // user.friendsrequests.map((friend: any) => console.log(friend.friendId));
   return (
     <div className="flex flex-col w-full gap-2">
-      {user.friends.map((friend: any, i: any) => (
+      {friends.map((friend: any, i: any) => (
         <PersonChat
+          setChatWindowLoading={setChatWindowLoading}
           setShowChatWindow={setShowChatWindow}
           setChatWindowData={setChatWindowData}
           setAllMessages={setAllMessages}

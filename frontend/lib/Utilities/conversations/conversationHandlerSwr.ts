@@ -1,6 +1,5 @@
-export default function getUserConversationHandler(data:{userId:number}){
-    console.log(data)
-    return fetch(`/api/conversations/userconversations`,{
+export default function conversationHandlerSwr(data:{userId:number}){
+    return fetch(`/api/conversations/userconversationswr`,{
         method: 'POST',
         credentials:"include",
         headers:{

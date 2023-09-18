@@ -10,6 +10,7 @@ type Props = {
     createdAt: string;
     updatedAt: string;
     friends: any;
+    friendsrequests: any;
   };
 };
 

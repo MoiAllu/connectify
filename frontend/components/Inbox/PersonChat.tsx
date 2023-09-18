@@ -12,6 +12,7 @@ type Props = {
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[]>>;
   setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
+  setChatWindowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   conversations: any;
   userId: number;
   friendId: number;
@@ -31,8 +32,8 @@ const PersonChat = (props: Props) => {
     setShowChatWindow,
     setChatWindowData,
     setAllMessages,
-    setConversations,
     setMobileView,
+    setChatWindowLoading,
     conversations,
     setSelected,
     selected,
@@ -48,19 +49,20 @@ const PersonChat = (props: Props) => {
     (new Date(lastMessage?.createdAt).getTime() / 1000).toFixed(0)
   );
 
-  React.useEffect(() => {
-    getUserConversationHandler({
-      userId: user.id,
-    }).then((res) => {
-      if (!res.error) setConversations(res);
-      else console.log(res);
-    });
-    console.log("changeState", changeState);
-  }, [changeState]);
+  // React.useEffect(() => {
+  //   getUserConversationHandler({
+  //     userId: user.id,
+  //   }).then((res) => {
+  //     if (!res.error) setConversations(res);
+  //     else console.log(res);
+  //   });
+  //   console.log("changeState", changeState);
+  // }, [changeState]);
 
   const onClickHandler = async (e: any) => {
     e.preventDefault();
     setMobileView(true);
+    setChatWindowLoading(true);
     setSelected(friendId);
     setAllMessages({});
     setChatWindowData({});
@@ -99,6 +101,7 @@ const PersonChat = (props: Props) => {
     // console.log("local response", messages2[0]);
     setAllMessages(allmessages[0]);
     setShowChatWindow(true);
+    setChatWindowLoading(false);
   };
 
   return (
@@ -141,8 +144,8 @@ const PersonChat = (props: Props) => {
               )
             )
             .format("hh:mm a")}
-          {lastMessage?.senderId !== userId &&
-            lastMessage?.seenId !== userId &&
+          {!lastMessage?.users.map((user: any) => user.id).includes(userId) &&
+            lastMessage?.senderId !== userId &&
             lastMessage && (
               <div className="bg-red-400 text-white text-center px-1">
                 <span>1</span>

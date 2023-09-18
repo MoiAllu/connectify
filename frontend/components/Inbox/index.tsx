@@ -8,6 +8,7 @@ type Props = {
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
   setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
+  setChatWindowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   conversations: any;
   user: {
     id: number;
@@ -26,6 +27,7 @@ type Props = {
         updatedAt: string;
       }
     ];
+    friendsrequests: any;
   };
 };
 

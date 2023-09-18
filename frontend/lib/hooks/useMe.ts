@@ -1,6 +1,8 @@
 import useSWR from "swr";
 import fetcher from "../Utilities/fetcher";
 import getUser from "../Utilities/user/getUser";
+import conversationHandlerSwr from "../Utilities/conversations/conversationHandlerSwr";
+import { useEffect } from "react";
 const {useState}=require("react")
 
 export const useMe=()=>{
@@ -27,4 +29,30 @@ export const useGetUser=(userId:Number)=>{
         isError:error
     };
 
+}
+export const useGetUserConversations=(userId:any)=>{
+    const [allConversations,setAllConversations]=useState([])
+    const [countUnseenMessages,setCountUnseenMessages]=useState(0)
+    const {data,error}=useSWR(userId,conversationHandlerSwr);
+    useEffect(()=>{
+        if(data){
+            setAllConversations(data)
+            allConversations?.map((conversation:any)=>{
+                if(!conversation.message[conversation.message.length-1]?.users.map((user:any)=>user.id).includes(userId) && conversation.message[conversation.message.length-1]?.senderId!=userId)
+                {
+                    console.log("new message")
+                    setCountUnseenMessages(countUnseenMessages+1)
+                }
+            })
+        }
+    },[userId,data])
+    
+    return{
+        conversations:data,
+        allConversations:allConversations,
+        setAllConversations:setAllConversations,
+        isLoading:!data && !error,
+        isError:error,
+        countUnseenMessages:countUnseenMessages
+    };
 }

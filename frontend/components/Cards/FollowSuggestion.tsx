@@ -2,9 +2,10 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import routeHandler from "../../lib/Utilities/friends/routeHandler";
+import { includes } from "lodash";
 
 type Props = {
-  authorId: number;
+  author: any;
   user: {
     id: number;
     name: string;
@@ -13,10 +14,11 @@ type Props = {
     createdAt: string;
     updatedAt: string;
     friends: any;
+    friendsrequests: any;
   };
 };
 const FollowSuggestion = (props: Props) => {
-  const { user, authorId } = props;
+  const { user, author } = props;
   const [isFollowingLoading, setIsFollowingLoading] = React.useState(false);
   const [isFollowing, setIsFollowing] = React.useState(false);
   const [sendedRequest, setSendedRequest] = React.useState({ error: "" });
@@ -25,7 +27,7 @@ const FollowSuggestion = (props: Props) => {
     setIsFollowingLoading(true);
     setSendedRequest({ error: "" });
     const response = await routeHandler({
-      userId: authorId,
+      userId: author.id,
       friendId: user.id,
     });
     console.log(response);
@@ -38,6 +40,9 @@ const FollowSuggestion = (props: Props) => {
     setIsFollowingLoading(false);
     setIsFollowing(true);
   };
+  const followBack = author.friends
+    .map((friend: any) => friend.user.id)
+    .includes(user.id);
 
   return (
     <div className="px-1 min-w-[290px] max-w-[290px] h-[175px]">
@@ -77,40 +82,75 @@ const FollowSuggestion = (props: Props) => {
         {sendedRequest.error && (
           <p className="text-red-500 text-sm ">{sendedRequest.error}</p>
         )}
-
-        <div className="flex gap-6 justify-between px-4">
-          {!isFollowingLoading && !isFollowing && (
-            <button
-              className="flex-1 py-1.5 border text-gray-500 rounded-lg hover:shadow-md"
-              disabled={isFollowingLoading}
-            >
-              Ignore
-            </button>
-          )}
-          {isFollowing ? (
-            <button
-              className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
-              disabled={isFollowingLoading}
-            >
-              Following
-            </button>
-          ) : isFollowingLoading ? (
-            <button
-              className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
-              disabled={isFollowingLoading}
-            >
-              Loading...
-            </button>
-          ) : (
-            <button
-              className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg "
-              onClick={followHandler}
-              disabled={isFollowingLoading}
-            >
-              Follow
-            </button>
-          )}
-        </div>
+        {followBack ? (
+          <div className="flex gap-6 justify-between px-4">
+            {!isFollowingLoading && !isFollowing && (
+              <button
+                className="flex-1 py-1.5 border text-gray-500 rounded-lg hover:shadow-md"
+                disabled={isFollowingLoading}
+              >
+                Ignore
+              </button>
+            )}
+            {isFollowing ? (
+              <button
+                className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
+                disabled={isFollowingLoading}
+              >
+                Accepted
+              </button>
+            ) : isFollowingLoading ? (
+              <button
+                className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
+                disabled={isFollowingLoading}
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg "
+                onClick={followHandler}
+                disabled={isFollowingLoading}
+              >
+                Accept
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="flex gap-6 justify-between px-4">
+            {!isFollowingLoading && !isFollowing && (
+              <button
+                className="flex-1 py-1.5 border text-gray-500 rounded-lg hover:shadow-md"
+                disabled={isFollowingLoading}
+              >
+                Ignore
+              </button>
+            )}
+            {isFollowing ? (
+              <button
+                className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
+                disabled={isFollowingLoading}
+              >
+                Following
+              </button>
+            ) : isFollowingLoading ? (
+              <button
+                className="flex-1 py-1.5 text-white bg-gray-500 rounded-lg hover:shadow-lg"
+                disabled={isFollowingLoading}
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                className="flex-1 py-1.5 text-white bg-blue-500 rounded-lg hover:shadow-lg "
+                onClick={followHandler}
+                disabled={isFollowingLoading}
+              >
+                Follow
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ type Props = {
       createdAt: string;
       updatedAt: string;
       friends: any;
+      friendsrequests: any;
     }
   ];
   user: {
@@ -28,6 +29,7 @@ type Props = {
     createdAt: string;
     updatedAt: string;
     friends: any;
+    friendsrequests: any;
   };
 };
 const container = {
@@ -62,8 +64,17 @@ const Feed = (props: Props) => {
   const filterUser = users?.filter(
     (user: any) =>
       user.id !== author.id &&
-      !author.friends.map((friend: any) => friend.userId).includes(user.id)
+      !author.friendsrequests
+        .map((friend: any) => friend.friendId)
+        .includes(user.id)
   );
+  // console.log(
+  //   author.friends.filter((friend: any) => {
+  //     return author.friendsrequests.some(
+  //       (friendrequest: any) => friendrequest.friendId === friend.user.id
+  //     );
+  //   })
+  // );
   return isLoading ? (
     <FeedAnimation />
   ) : (
@@ -88,11 +99,13 @@ const Feed = (props: Props) => {
         })}
       </motion.div>
       <motion.div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
-        {filterUser.map((user: any) => {
-          return (
-            <FollowSuggestion authorId={author?.id} user={user} key={user.id} />
-          );
-        })}
+        {filterUser &&
+          author &&
+          filterUser.map((user: any) => {
+            return (
+              <FollowSuggestion author={author} user={user} key={user.id} />
+            );
+          })}
         <BirthdayCard />
         <UpcomingBirthdays />
       </motion.div>

@@ -35,7 +35,7 @@ const Layout = ({ children, user }: any) => {
       >
         <Navbar user={user} />
       </motion.div>
-      <LeftSidebar />
+      <LeftSidebar user={user} />
       <div
         className={`${
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"

@@ -19,6 +19,12 @@ export const validateRoute = (handler:any) => {
                   user: true
                 }
               },
+              friendsrequests: {
+                include: {
+                  friend: true,
+                  user: true
+                }
+              },
               conversations:{
                 include:{
                   message:{

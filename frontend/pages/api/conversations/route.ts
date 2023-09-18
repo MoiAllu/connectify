@@ -72,31 +72,6 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
             }
           });
           
-          // await prisma.user.update({
-          //   where:{
-          //     id:currentUserId
-          //   },
-          //   data:{
-          //     conversations:{
-          //       connect:{
-          //           id:existingConversations[0].id
-          //         }
-          //     }
-          //   }
-          // })
-          // await prisma.user.update({
-          //   where:{
-          //     id:userId
-          //   },
-          //   data:{
-          //     conversations:{
-          //       connect:{
-          //         id:existingConversations[0].id
-          //       }
-          //     }
-          //   }
-          // })
-
        const singleConversation = existingConversations[0]
        if(singleConversation) return res.json(singleConversation); 
         
