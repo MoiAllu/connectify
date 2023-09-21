@@ -34,15 +34,17 @@ export const useGetUserConversations=(userId:any)=>{
     const [allConversations,setAllConversations]=useState([])
     const [countUnseenMessages,setCountUnseenMessages]=useState(0)
     const {data,error}=useSWR(userId,conversationHandlerSwr);
+
     useEffect(()=>{
         if(data){
+            setCountUnseenMessages(0)
             setAllConversations(data)
-            allConversations?.map((conversation:any)=>{
-                if(!conversation.message[conversation.message.length-1]?.users.map((user:any)=>user.id).includes(userId) && conversation.message[conversation.message.length-1]?.senderId!=userId)
+            allConversations.map((conversation:any)=>{
+                if(!conversation.message[conversation.message.length-1]?.users.map((user:any)=>user.id).includes(userId) && conversation.message[conversation.message.length-1]?.senderId!==userId)
                 {
-                    console.log("new message")
-                    setCountUnseenMessages(countUnseenMessages+1)
+                    setCountUnseenMessages(countUnseenMessages+1)  
                 }
+                return
             })
         }
     },[userId,data])
