@@ -143,28 +143,20 @@ const ChatWindow = (props: Props) => {
         userId: user.id,
         conversationId: allMessages.id,
       });
-      // props.setAllMessages((prev: any) => {
-      //   if (find(prev.message, { id: data.id })) return prev;
-      //   else return { ...prev, message: [...prev.message, data] };
-      // });
-      console.log("allMessages", allMessages);
       props.setConversations((prev: any) => {
         prev.map((conversation: any) => {
           if (conversation.id === allMessages.id) {
-            conversation.message = [...conversation.message, data];
+            props.setAllMessages((prev: any) => {
+              if (find(prev.message, { id: data.id })) return prev;
+              else return { ...prev, message: [...prev.message, data] };
+            });
           }
           return conversation;
         });
         return prev;
       });
-      const updatedMessages = props.conversations.filter(
-        (conversation: any) => conversation.id === allMessages.id
-      );
-      props.setAllMessages(updatedMessages[0]);
     };
-    // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     const updateMessageHandler = (data: any) => {
-      console.log("seen Handler active");
       props.setAllMessages((prev: any) => {
         if (prev.message?.map((message: any) => message.id === data.id)) {
           const indexMsg = prev.message.findIndex(
