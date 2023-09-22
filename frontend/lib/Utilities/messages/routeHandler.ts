@@ -1,5 +1,4 @@
 export default function routeHandler(data:{currentUserId:number, userId:number, conversationId:number, message:string, image:string}){
-
     return fetch(`/api/messages/route`,{
         method: 'POST',
         credentials:"include",

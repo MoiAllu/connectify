@@ -21,7 +21,7 @@ type Props = {
   >;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
-  chatWindowData: {};
+  chatWindowData: {} | any;
   conversations: any;
   allMessages: {
     id: number;
@@ -128,10 +128,10 @@ const ChatWindow = (props: Props) => {
 
     const response = await routeHandler({
       userId: user.id,
-      friendId: chatWindowData?.friendId,
       currentUserId: user.id,
       conversationId: chatWindowData?.conversationId,
       message: e.target[0].value,
+      image: "",
     });
     setMessage("");
     setIsMessageSending(false);
