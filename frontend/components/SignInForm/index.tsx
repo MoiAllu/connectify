@@ -20,7 +20,7 @@ const SignInForm = (props: Props) => {
   const guestUserHandler = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-
+    setAuthError({ error: undefined, sucess: undefined });
     const respone = await testUserSignIn({
       email: "user@test.com",
       password: "password",
@@ -34,6 +34,7 @@ const SignInForm = (props: Props) => {
   const submitHandler = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError({ error: undefined, sucess: undefined });
     const respone = await signInAuth({ email, password });
     setAuthError(respone);
     if (respone?.success) {

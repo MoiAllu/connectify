@@ -2,9 +2,36 @@ import React from "react";
 import Chats from "./Chats";
 import PersonChat from "./PersonChat";
 
-type Props = {};
+type Props = {
+  setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
+  setChatWindowData: React.Dispatch<React.SetStateAction<{}>>;
+  setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
+  setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
+  setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
+  setChatWindowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  conversations: any;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: [
+      {
+        id: number;
+        name: string;
+        email: string;
+        profilePicture: string;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    friendsrequests: any;
+  };
+};
 
-const Inbox: React.FC<Props> = ({}) => {
+const Inbox: React.FC<Props> = (props: Props) => {
   return (
     <div className="flex flex-col items-center w-full lg:w-[40%] h-[calc(100vh-100px)] bg-white shadow-lg gap-3 py-6 px-4 overflow-auto scrollbar-light my-4 rounded-2xl min-w-[300px]">
       {/* Search */}
@@ -29,7 +56,7 @@ const Inbox: React.FC<Props> = ({}) => {
         <label htmlFor="searchbox"></label>
       </div>
 
-      <Chats />
+      <Chats {...props} />
     </div>
   );
 };

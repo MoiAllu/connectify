@@ -7,7 +7,31 @@ import FollowSuggestion from "../Cards/FollowSuggestion";
 import UpcomingBirthdays from "../Cards/UpcomingBirthdays";
 import { FeedAnimation } from "./feedAnimation";
 import Post from "./Post";
-type Props = {};
+import { useAllUsers } from "../../lib/hooks/useMe";
+type Props = {
+  users: [
+    {
+      id: number;
+      name: string;
+      email: string;
+      profilePicture: string;
+      createdAt: string;
+      updatedAt: string;
+      friends: any;
+      friendsrequests: any;
+    }
+  ];
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profilePicture: string;
+    createdAt: string;
+    updatedAt: string;
+    friends: any;
+    friendsrequests: any;
+  };
+};
 const container = {
   show: {
     transition: {
@@ -35,7 +59,22 @@ const item = {
   },
 };
 const Feed = (props: Props) => {
+  const { user: author, users } = props;
   const { posts, isLoading } = useAllPosts();
+  const filterUser = users?.filter(
+    (user: any) =>
+      user.id !== author.id &&
+      !author.friendsrequests
+        .map((friend: any) => friend.friendId)
+        .includes(user.id)
+  );
+  // console.log(
+  //   author.friends.filter((friend: any) => {
+  //     return author.friendsrequests.some(
+  //       (friendrequest: any) => friendrequest.friendId === friend.user.id
+  //     );
+  //   })
+  // );
   return isLoading ? (
     <FeedAnimation />
   ) : (
@@ -60,7 +99,13 @@ const Feed = (props: Props) => {
         })}
       </motion.div>
       <motion.div className="hidden 2xl:flex flex-col flex-1 gap-4 py-8">
-        <FollowSuggestion />
+        {filterUser &&
+          author &&
+          filterUser.map((user: any) => {
+            return (
+              <FollowSuggestion author={author} user={user} key={user.id} />
+            );
+          })}
         <BirthdayCard />
         <UpcomingBirthdays />
       </motion.div>

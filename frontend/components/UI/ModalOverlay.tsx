@@ -4,7 +4,7 @@ const Backdrop = ({ children, setProfileButton }: any) => {
   };
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm bottom-0 flex justify-center items-center rounded-md"
+      className="h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm bottom-0 flex justify-center items-center rounded-md"
       onClick={backdropHanlder}
       id="backdrop"
     >

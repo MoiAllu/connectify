@@ -11,6 +11,33 @@ export const validateRoute = (handler:any) => {
           const { id } = jwt.verify(token, process.env.JWT_SECRET)
           user = await prisma.user.findUnique({
             where: { id },
+            include:
+            {
+              friends: {
+                include: {
+                  friend: true,
+                  user: true
+                }
+              },
+              friendsrequests: {
+                include: {
+                  friend: true,
+                  user: true
+                }
+              },
+              conversations:{
+                include:{
+                  message:{
+                    include:{
+                      seen:true,
+                      sender:true,
+                      users:true  
+                    }
+                  }
+                },
+                
+              }
+            }     
           })
           if (!user) {
             throw new Error('Not real user')
@@ -20,6 +47,8 @@ export const validateRoute = (handler:any) => {
           res.json({ error: 'Not Authorizied' })
           return
         }
+        //delete user password
+        user.password = ""
         return handler(req, res, user)
       }
   

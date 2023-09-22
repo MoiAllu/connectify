@@ -12,24 +12,45 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  email          String     @unique
-  password       String
-  name           String
-  profilePicture String?
-  bgPicture      String?
-  birthday       DateTime?
-  github         String?
-  location       String?
-  facebook       String?
-  instagram      String?
-  twitter        String?
-  comments       Comment[]
-  likes          Like[]
-  posts          Post[]
-  postlikes      PostLike[]
+  id              Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  email           String         @unique
+  password        String
+  name            String
+  profilePicture  String?
+  bgPicture       String?
+  birthday        DateTime?
+  github          String?
+  location        String?
+  facebook        String?
+  instagram       String?
+  twitter         String?
+  comments        Comment[]
+  likes           Like[]
+  posts           Post[]
+  postlikes       PostLike[]
+  messages        Message[]      @relation("sender")
+  seenBy          Message[]      @relation("Seen")
+  conversations   Conversation[] @relation("conversation")
+  conversation    Conversation?  @relation(fields: [conversationId], references: [id])
+  conversationId  Int?
+  seenMessage     Message?       @relation(fields: [seenMessageId], references: [id])
+  seenMessageId   Int?
+  friends         Friends[]
+  friendsrequests Friends[]      @relation("request")
+}
+
+model Friends {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation("request", fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  friend    User     @relation(fields: [friendId], references: [id], onDelete: Cascade)
+  friendId  Int
+  status    String   @default("pending")
+
+  @@id([userId, friendId])
 }
 
 model Post {
@@ -79,4 +100,31 @@ model PostLike {
   postId Int
 
   @@id([userId, postId])
+}
+
+model Conversation {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  lastMessage DateTime  @default(now())
+  name        String?
+  isGroup     Boolean?
+  message     Message[]
+  userId      Int?
+  usersIds    Int[]
+  users       User[]
+  User        User?     @relation("conversation", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  body           String?
+  image          String?
+  sender         User         @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId       Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId Int
+  seen           User?        @relation("Seen", fields: [seenId], references: [id])
+  seenId         Int?
+  users          User[]
 }

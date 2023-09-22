@@ -7,6 +7,7 @@ import { useMe } from "../../lib/hooks/useMe";
 import likePost from "../../lib/Utilities/posts/postLike";
 import deletePost from "../../lib/Utilities/posts/deletePost";
 import Router from "next/router";
+import Link from "next/link";
 
 const Post = ({ post, iniLoading }: any) => {
   const [delRes, setDelRes] = useState({} as any);
@@ -127,7 +128,9 @@ const Post = ({ post, iniLoading }: any) => {
           height={40}
         />
         <div className="flex flex-col flex-1">
-          <p className="font-semibold">{post?.author?.name}</p>
+          <Link href={`/profile/${post?.author?.id}-${post?.author?.name}`}>
+            <p className="font-semibold cursor-pointer">{post?.author?.name}</p>
+          </Link>
           <p className="text-sm">
             {moment.unix(postCreatedAt).fromNow()} |{" "}
             {post?.published ? "Public" : "Private"}

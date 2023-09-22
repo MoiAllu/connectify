@@ -12,7 +12,11 @@ const Layout = ({ children, user }: any) => {
   const router: NextRouter = useRouter();
   const [hideRightBar, isHideRightBar] = useState(false);
   useEffect(() => {
-    if (["/profile", "/messages"].includes(router.pathname)) {
+    if (router.query.profile) {
+      isHideRightBar(true);
+      return;
+    }
+    if (["/profile", "/messages", "/notifications"].includes(router.pathname)) {
       isHideRightBar(true);
     } else isHideRightBar(false);
   }, [router]);
@@ -31,7 +35,7 @@ const Layout = ({ children, user }: any) => {
       >
         <Navbar user={user} />
       </motion.div>
-      <LeftSidebar />
+      <LeftSidebar user={user} />
       <div
         className={`${
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"
@@ -41,7 +45,7 @@ const Layout = ({ children, user }: any) => {
       >
         {children}
       </div>
-      {!hideRightBar && <RightSidebar />}
+      {!hideRightBar && <RightSidebar user={user} />}
       <BottomBar />
     </>
   );
