@@ -82,53 +82,53 @@ const ChatWindow = (props: Props) => {
   const conversationId = "chat" + allMessages.id;
 
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  useEffect(() => {
-    const messageHandler = async (data: any) => {
-      await seenHandler({
-        userId: user.id,
-        conversationId: allMessages.id,
-      });
+  // useEffect(() => {
+  //   const messageHandler = async (data: any) => {
+  //     await seenHandler({
+  //       userId: user.id,
+  //       conversationId: allMessages.id,
+  //     });
 
-      props.setConversations((prev: any) => {
-        console.log("conversation", prev);
-        prev.map((conversation: any) => {
-          if (conversation.id === allMessages.id) {
-            props.setAllMessages((prev: any) => {
-              console.log("messages", prev);
-              if (find(prev.message, { id: data.id })) return prev;
-              else return { ...prev, message: [...prev.message, data] };
-            });
-          }
-          return conversation;
-        });
-        return prev;
-      });
-    };
-    // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    const updateMessageHandler = (data: any) => {
-      console.log("update message", data);
-      props.setAllMessages((prev: any) => {
-        if (prev.message.map((message: any) => message.id === data.id)) {
-          const indexMsg = prev.message.findIndex(
-            (message: any) => message.id === data.id
-          );
-          prev.message[indexMsg] = data;
-          console.log("updated", prev);
-          return prev;
-        }
-        return prev;
-      });
-    };
+  //     props.setConversations((prev: any) => {
+  //       console.log("conversation", prev);
+  //       prev.map((conversation: any) => {
+  //         if (conversation.id === allMessages.id) {
+  //           props.setAllMessages((prev: any) => {
+  //             console.log("messages", prev);
+  //             if (find(prev.message, { id: data.id })) return prev;
+  //             else return { ...prev, message: [...prev.message, data] };
+  //           });
+  //         }
+  //         return conversation;
+  //       });
+  //       return prev;
+  //     });
+  //   };
+  //   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   const updateMessageHandler = (data: any) => {
+  //     console.log("update message", data);
+  //     props.setAllMessages((prev: any) => {
+  //       if (prev.message.map((message: any) => message.id === data.id)) {
+  //         const indexMsg = prev.message.findIndex(
+  //           (message: any) => message.id === data.id
+  //         );
+  //         prev.message[indexMsg] = data;
+  //         console.log("updated", prev);
+  //         return prev;
+  //       }
+  //       return prev;
+  //     });
+  //   };
 
-    pusherClient.subscribe(conversationId);
-    pusherClient.bind("chat", messageHandler);
-    pusherClient.bind("seen", updateMessageHandler);
-    return () => {
-      pusherClient.unbind("chat", messageHandler);
-      pusherClient.bind("seen", updateMessageHandler);
-      pusherClient.unsubscribe(conversationId);
-    };
-  }, [sendedMessage]);
+  //   pusherClient.subscribe(conversationId);
+  //   pusherClient.bind("chat", messageHandler);
+  //   pusherClient.bind("seen", updateMessageHandler);
+  //   return () => {
+  //     pusherClient.unbind("chat", messageHandler);
+  //     pusherClient.bind("seen", updateMessageHandler);
+  //     pusherClient.unsubscribe(conversationId);
+  //   };
+  // }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -146,46 +146,59 @@ const ChatWindow = (props: Props) => {
     console.log(response);
     setSendedMessage(response);
     if (response.error) return console.log(response.error);
-    //   const messageHandler = async (data: any) => {
-    //     await seenHandler({
-    //       userId: user.id,
-    //       conversationId: allMessages.id,
-    //     });
-    //     props.setConversations((prev: any) => {
-    //       prev.map((conversation: any) => {
-    //         if (conversation.id === allMessages.id) {
-    //           props.setAllMessages((prev: any) => {
-    //             if (find(prev.message, { id: data.id })) return prev;
-    //             else return { ...prev, message: [...prev.message, data] };
-    //           });
-    //         }
-    //         return conversation;
-    //       });
-    //       return prev;
-    //     });
-    //   };
-    //   const updateMessageHandler = (data: any) => {
-    //     props.setAllMessages((prev: any) => {
-    //       if (prev.message?.map((message: any) => message.id === data.id)) {
-    //         const indexMsg = prev.message.findIndex(
-    //           (message: any) => message.id === data.id
-    //         );
-    //         prev.message[indexMsg] = data;
+    const messageHandler = async (data: any) => {
+      await seenHandler({
+        userId: user.id,
+        conversationId: allMessages.id,
+      });
+      //   props.setConversations((prev: any) => {
+      //     prev.map((conversation: any) => {
+      //       if (conversation.id === allMessages.id) {
+      //         props.setAllMessages((prev: any) => {
+      //           if (find(prev.message, { id: data.id })) return prev;
+      //           else return { ...prev, message: [...prev.message, data] };
+      //         });
+      //       }
+      //       return conversation;
+      //     });
+      //     return prev;
+      //   });
+      // };
+      props.setAllMessages((prev: any) => {
+        console.log("allPreviousSingleConversation", prev);
+        if (find(prev.message, { id: data.id })) return prev;
+        else
+          return (
+            console.log("afterUpdate", {
+              ...prev,
+              message: [...prev.message, data],
+            }),
+            { ...prev, message: [...prev.message, data] }
+          );
+      });
+    };
+    const updateMessageHandler = (data: any) => {
+      props.setAllMessages((prev: any) => {
+        if (prev.message?.map((message: any) => message.id === data.id)) {
+          const indexMsg = prev.message.findIndex(
+            (message: any) => message.id === data.id
+          );
+          prev.message[indexMsg] = data;
 
-    //         return prev;
-    //       }
-    //       return prev;
-    //     });
-    //   };
+          return prev;
+        }
+        return prev;
+      });
+    };
 
-    //   pusherClient.subscribe(conversationId);
-    //   pusherClient.bind("chat", messageHandler);
-    //   pusherClient.bind("seen", updateMessageHandler);
-    //   return () => {
-    //     pusherClient.unbind("chat", messageHandler);
-    //     pusherClient.bind("seen", updateMessageHandler);
-    //     pusherClient.unsubscribe(conversationId);
-    //   };
+    pusherClient.subscribe(conversationId);
+    pusherClient.bind("chat", messageHandler);
+    pusherClient.bind("seen", updateMessageHandler);
+    return () => {
+      pusherClient.unbind("chat", messageHandler);
+      pusherClient.bind("seen", updateMessageHandler);
+      pusherClient.unsubscribe(conversationId);
+    };
   };
 
   if (!props.showChatWindow) return null;
