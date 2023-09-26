@@ -85,6 +85,7 @@ const ChatWindow = (props: Props) => {
   useEffect(() => {
     console.log("sendedMessage", sendedMessage);
     const messageHandler = async (data: any) => {
+      console.log(data);
       await seenHandler({
         userId: user.id,
         conversationId: allMessages.id,
@@ -120,7 +121,11 @@ const ChatWindow = (props: Props) => {
         return prev;
       });
     };
-
+    console.log(
+      "Pusher Triggered",
+      pusherClient.subscribe(conversationId),
+      pusherClient.bind("chat", messageHandler)
+    );
     pusherClient.subscribe(conversationId);
     pusherClient.bind("chat", messageHandler);
     pusherClient.bind("seen", updateMessageHandler);
