@@ -18,6 +18,7 @@ type Props = {
 const DeleteMessage = (props: Props) => {
   const { userId, messageId, conversationId } = props.deleteMessageData;
   const [changeState, setChangeState] = useState(false);
+  const [deleteResponse, setDeleteResponse] = useState(undefined);
 
   const deleteHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -28,42 +29,36 @@ const DeleteMessage = (props: Props) => {
       userId,
       conversationId,
     });
-
+    setDeleteResponse(response);
     props.setDeleteMessage({ response });
-    props.setDeleteBackdropHandler(false);
   };
 
   useEffect(() => {
-    console.log("deleteMessageUseEffect");
-    const messageHandler = (data: any) => {
-      console.log("deleteMessage handler");
-      props.setAllMessages((prev: any) => {
-        if (find(prev.message, { id: data.id })) {
-          return {
-            ...prev,
-            message: prev.message.filter(
-              (message: any) => message.id !== data.id
-            ),
-          };
-        } else return { ...prev };
-      });
-    };
+    if (deleteResponse) {
+      const messageHandler = (data: any) => {
+        props.setDeleteBackdropHandler(false);
+        props.setAllMessages((prev: any) => {
+          if (find(prev.message, { id: data.id })) {
+            return {
+              ...prev,
+              message: prev.message.filter(
+                (message: any) => message.id !== data.id
+              ),
+            };
+          } else return { ...prev };
+        });
+      };
 
-    const conversationIdToDelete = "deleteChat" + conversationId;
-    pusherClient.subscribe(conversationIdToDelete);
-    pusherClient.bind("deleteChat", messageHandler);
+      const conversationIdToDelete = "deleteChat" + conversationId;
+      pusherClient.subscribe(conversationIdToDelete);
+      pusherClient.bind("deleteChat", messageHandler);
 
-    return () => {
-      pusherClient.unsubscribe(conversationIdToDelete);
-      pusherClient.unbind("deleteChat", messageHandler);
-    };
-  }, [
-    messageId,
-    userId,
-    conversationId,
-    props.setAllMessages,
-    props.deleteMessage,
-  ]);
+      return () => {
+        pusherClient.unsubscribe(conversationIdToDelete);
+        pusherClient.unbind("deleteChat", messageHandler);
+      };
+    }
+  }, [deleteResponse, messageId, userId, conversationId]);
 
   return (
     <div className="flex flex-col items-center justify-center bg-white rounded-md p-4">
