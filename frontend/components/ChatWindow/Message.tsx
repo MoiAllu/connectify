@@ -4,14 +4,11 @@ import moment from "moment";
 import deleteMessageHandler from "../../lib/Utilities/messages/deleteMessageHandler";
 type Props = {
   setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteMessageData: React.Dispatch<
-    React.SetStateAction<{
-      userId: number;
-      messageId: number;
-      conversationId: number;
-    }>
-  >;
-
+  setDeleteMessageData: React.Dispatch<{
+    userId: number;
+    messageId: number;
+    conversationId: number;
+  }>;
   message: string;
   createdAt: any;
   isSender: boolean;
