@@ -87,10 +87,10 @@ const ChatWindow = (props: Props) => {
     pusherClient.subscribe(conversationId);
     const messageHandler = async (data: any) => {
       console.log(data);
-      await seenHandler({
-        userId: user.id,
-        conversationId: allMessages.id,
-      });
+      // await seenHandler({
+      //   userId: user.id,
+      //   conversationId: allMessages.id,
+      // });
 
       props.setConversations((prev: any) => {
         console.log("conversation", prev);
@@ -124,6 +124,11 @@ const ChatWindow = (props: Props) => {
     };
     pusherClient.bind("chat", messageHandler);
     pusherClient.bind("seen", updateMessageHandler);
+    return () => {
+      pusherClient.unbind("chat", messageHandler);
+      pusherClient.unbind("seen", updateMessageHandler);
+      pusherClient.unsubscribe(conversationId);
+    };
   }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
