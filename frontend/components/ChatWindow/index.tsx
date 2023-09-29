@@ -87,10 +87,10 @@ const ChatWindow = (props: Props) => {
     pusherClient.subscribe(conversationId);
     const messageHandler = async (data: any) => {
       console.log(data);
-      // await seenHandler({
-      //   userId: user.id,
-      //   conversationId: allMessages.id,
-      // });
+      await seenHandler({
+        userId: user.id,
+        conversationId: allMessages.id,
+      });
 
       props.setConversations((prev: any) => {
         console.log("conversation", prev);
