@@ -84,6 +84,7 @@ const ChatWindow = (props: Props) => {
   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => {
     console.log("sendedMessage", sendedMessage);
+    pusherClient.subscribe(conversationId);
     const messageHandler = async (data: any) => {
       console.log(data);
       await seenHandler({
@@ -121,19 +122,8 @@ const ChatWindow = (props: Props) => {
         return prev;
       });
     };
-    console.log(
-      "Pusher Triggered",
-      pusherClient.subscribe(conversationId),
-      pusherClient.bind("chat", messageHandler)
-    );
-    pusherClient.subscribe(conversationId);
     pusherClient.bind("chat", messageHandler);
     pusherClient.bind("seen", updateMessageHandler);
-    return () => {
-      pusherClient.unbind("chat", messageHandler);
-      pusherClient.unbind("seen", updateMessageHandler);
-      pusherClient.unsubscribe(conversationId);
-    };
   }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
