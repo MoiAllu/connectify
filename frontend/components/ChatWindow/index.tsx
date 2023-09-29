@@ -124,6 +124,7 @@ const ChatWindow = (props: Props) => {
 
     const updateMessageHandler = (data: any) => {
       console.log("updateMessageHandler trigered");
+      setIsMessageSending(false);
       props.setAllMessages((prev: any) => {
         if (prev.message.some((message: any) => message.id === data.id)) {
           const indexMsg = prev.message.findIndex(
@@ -158,7 +159,6 @@ const ChatWindow = (props: Props) => {
     });
 
     setMessage("");
-    setIsMessageSending(false);
     setSendedMessage(response);
 
     if (response.error) {
