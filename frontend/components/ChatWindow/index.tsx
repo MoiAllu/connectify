@@ -74,15 +74,36 @@ const ChatWindow = (props: Props) => {
     setMobileView,
   } = props;
 
-  const [sendedMessage, setSendedMessage] = useState({});
+  const [sendedMessage, setSendedMessage] = useState({
+    error: "",
+    message: {
+      id: 0,
+      body: "",
+      image: "",
+      createdAt: "",
+      updatedAt: "",
+      senderId: 0,
+      conversationId: 0,
+      sender: {
+        id: 0,
+        name: "",
+        email: "",
+        profilePicture: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    },
+  });
   const [message, setMessage] = useState("");
   const [isMessageSending, setIsMessageSending] = useState(false);
   const isActive = true;
   const conversationId = `chat${allMessages.id}`;
 
   useEffect(() => {
+    console.log("sendedMessage UseEffect trigered");
     pusherClient.subscribe(conversationId);
     const messageHandler = async (data: any) => {
+      console.log("messageHandler trigered");
       await seenHandler({
         userId: user.id,
         conversationId: allMessages.id,
@@ -102,6 +123,7 @@ const ChatWindow = (props: Props) => {
     };
 
     const updateMessageHandler = (data: any) => {
+      console.log("updateMessageHandler trigered");
       props.setAllMessages((prev: any) => {
         if (prev.message.some((message: any) => message.id === data.id)) {
           const indexMsg = prev.message.findIndex(
@@ -113,7 +135,6 @@ const ChatWindow = (props: Props) => {
         return prev;
       });
     };
-
     pusherClient.bind("chat", messageHandler);
     pusherClient.bind("seen", updateMessageHandler);
 
