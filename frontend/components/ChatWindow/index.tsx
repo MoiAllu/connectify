@@ -108,7 +108,6 @@ const ChatWindow = (props: Props) => {
         userId: user.id,
         conversationId: allMessages.id,
       });
-
       props.setConversations((prev: any) => {
         return prev.map((conversation: any) => {
           if (conversation.id === allMessages.id) {
@@ -158,9 +157,8 @@ const ChatWindow = (props: Props) => {
       image: "",
     });
 
-    setMessage("");
     setSendedMessage(response);
-
+    setMessage("");
     if (response.error) {
       console.log(response.error);
       return;

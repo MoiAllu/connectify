@@ -23,7 +23,7 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
             }
         });
         const id= "deleteChat"+ conversationId;
-        pusherServer.trigger(id, 'deleteChat', deletedMessage);
+       await pusherServer.trigger(id, 'deleteChat', deletedMessage);
         return res.json(deletedMessage);
 
     }catch{
