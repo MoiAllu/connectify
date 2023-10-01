@@ -39,6 +39,8 @@ const PersonChat = (props: Props) => {
     selected,
   } = props;
   const [changeState, setChangeState] = React.useState(false);
+  const [personChatSet, setPersonChatSet] = React.useState({} as any);
+  const [seenHandlerSet, setSeenHandlerSet] = React.useState({});
   // const friendUser = [user.id, friendId];
   // const friendUser2 = [friendId, user.id];
   const messages = conversations.filter((conversation: any) =>
@@ -58,6 +60,20 @@ const PersonChat = (props: Props) => {
   //   });
   //   console.log("changeState", changeState);
   // }, [changeState]);
+  React.useEffect(() => {
+    if (personChatSet.id) {
+      console.log("personChatSet", personChatSet);
+      const allMessages = conversations.find(
+        (conversation: any) => conversation.id === personChatSet.id
+      );
+
+      if (allMessages) {
+        setAllMessages(allMessages);
+        setShowChatWindow(true);
+        setChatWindowLoading(false);
+      }
+    }
+  }, [conversations, personChatSet]);
 
   const onClickHandler = async (e: any) => {
     e.preventDefault();
@@ -77,6 +93,7 @@ const PersonChat = (props: Props) => {
       name: friendName,
     });
     // console.log(response);
+    setPersonChatSet(response);
     setChatWindowData({
       userId,
       friendId,
@@ -89,16 +106,11 @@ const PersonChat = (props: Props) => {
       conversationId: response.id,
     });
     console.log(seenMessage);
-    // const allmessages = await getHandler({
-    //   user,
-    //   userId,
-    //   conversationId: response.id,
-    // });
+    setSeenHandlerSet(seenMessage);
+
     const allmessages = conversations.filter(
       (conversation: any) => conversation.id === response.id
     );
-    // console.log("api response", messages);
-    // console.log("local response", messages2[0]);
     setAllMessages(allmessages[0]);
     setShowChatWindow(true);
     setChatWindowLoading(false);

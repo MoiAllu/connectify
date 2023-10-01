@@ -124,15 +124,22 @@ const ChatWindow = (props: Props) => {
     const updateMessageHandler = (data: any) => {
       console.log("updateMessageHandler trigered");
       setIsMessageSending(false);
-      props.setAllMessages((prev: any) => {
-        if (prev.message.some((message: any) => message.id === data.id)) {
-          const indexMsg = prev.message.findIndex(
-            (message: any) => message.id === data.id
-          );
-          prev.message[indexMsg] = data;
-          return prev;
-        }
-        return prev;
+      props.setConversations((prev: any) => {
+        return prev.map((conversation: any) => {
+          if (conversation.id === allMessages.id) {
+            props.setAllMessages((prev: any) => {
+              if (find(prev.message, { id: data.id })) {
+                const indexMsg = prev.message.findIndex(
+                  (message: any) => message.id === data.id
+                );
+                prev.message[indexMsg] = data;
+                return prev;
+              }
+              return prev;
+            });
+          }
+          return conversation;
+        });
       });
     };
     pusherClient.bind("chat", messageHandler);

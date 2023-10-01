@@ -60,6 +60,7 @@ const DeleteMessage = (props: Props) => {
     props.setDeleteMessage({ response });
 
     const messageHandler = (data: any) => {
+      props.setDeleteBackdropHandler(false);
       props.setAllMessages((prev: any) => {
         if (find(prev.message, { id: data.id })) {
           console.log("Filter Array", {
@@ -77,13 +78,13 @@ const DeleteMessage = (props: Props) => {
         } else return { ...prev };
       });
     };
-    const conversationid = "deleteChat" + conversationId;
+    // const conversationid = "deleteChat" + conversationId;
     // console.log(conversationid);
-    pusherClient.subscribe(conversationid);
+    // pusherClient.subscribe(conversationid);
     pusherClient.bind("deleteChat", messageHandler);
-    props.setDeleteBackdropHandler(false);
+    // props.setDeleteBackdropHandler(false);
     return () => {
-      pusherClient.unsubscribe(conversationid);
+      // pusherClient.unsubscribe(conversationid);
       pusherClient.unbind("deleteChat", messageHandler);
     };
   };
