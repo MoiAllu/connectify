@@ -35,6 +35,7 @@ const DeleteMessage = (props: Props) => {
 
   useEffect(() => {
     if (deleteResponse) {
+      console.log(deleteResponse);
       const messageHandler = (data: any) => {
         props.setDeleteBackdropHandler(false);
         props.setAllMessages((prev: any) => {
@@ -48,13 +49,15 @@ const DeleteMessage = (props: Props) => {
           } else return { ...prev };
         });
       };
-
-      const conversationIdToDelete = "deleteChat" + conversationId;
-      pusherClient.subscribe(conversationIdToDelete);
+      // const conversationIdToDelete = "deleteChat" + conversationId;
+      // pusherClient.subscribe(conversationIdToDelete);
       pusherClient.bind("deleteChat", messageHandler);
-
+      console.log(
+        "deleteChat",
+        pusherClient.bind("deleteChat", messageHandler)
+      );
       return () => {
-        pusherClient.unsubscribe(conversationIdToDelete);
+        // pusherClient.unsubscribe(conversationIdToDelete);
         pusherClient.unbind("deleteChat", messageHandler);
       };
     }

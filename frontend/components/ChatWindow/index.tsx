@@ -111,7 +111,7 @@ const ChatWindow = (props: Props) => {
       props.setConversations((prev: any) => {
         return prev.map((conversation: any) => {
           if (conversation.id === allMessages.id) {
-            props.setAllMessages((prev: any) => {
+            return props.setAllMessages((prev: any) => {
               if (find(prev.message, { id: data.id })) return prev;
               else return { ...prev, message: [...prev.message, data] };
             });
@@ -256,12 +256,13 @@ const ChatWindow = (props: Props) => {
         </div>
         <input
           type="text"
-          className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
+          className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none focus:ring-2 focus:ring-sky-200"
           placeholder="Send a message"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           disabled={isMessageSending}
           required
+          ref={(input) => input && input.focus()}
         />
         <button
           className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"

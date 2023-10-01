@@ -22,8 +22,9 @@ export default async(req:NextApiRequest,res:NextApiResponse)=>{
                 id:messageId
             }
         });
-        const id= "deleteChat"+ conversationId;
-       await pusherServer.trigger(id, 'deleteChat', deletedMessage);
+        // const id= "deleteChat"+ conversationId;
+        const id= "chat"+ conversationId;
+         await pusherServer.trigger(id, 'deleteChat', deletedMessage);
         return res.json(deletedMessage);
 
     }catch{
