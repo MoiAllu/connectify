@@ -62,7 +62,6 @@ const PersonChat = (props: Props) => {
   // }, [changeState]);
   React.useEffect(() => {
     if (personChatSet.id) {
-      console.log("personChatSet", personChatSet);
       const allMessages = conversations.find(
         (conversation: any) => conversation.id === personChatSet.id
       );
