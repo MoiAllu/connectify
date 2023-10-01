@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Message from "./Message";
 import routeHandler from "../../lib/Utilities/messages/routeHandler";
@@ -7,18 +7,17 @@ import { pusherClient } from "../../lib/pusher";
 import { find } from "lodash";
 import seenHandler from "../../lib/Utilities/messages/seenHandler";
 
+// Define types for props
 type Props = {
   setDeleteBackdropHandler: React.Dispatch<React.SetStateAction<boolean>>;
   showChatWindow: boolean;
   setShowChatWindow: React.Dispatch<React.SetStateAction<boolean>>;
   setMobileView: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteMessageData: React.Dispatch<
-    React.SetStateAction<{
-      userId: number;
-      messageId: number;
-      conversationId: number;
-    }>
-  >;
+  setDeleteMessageData: React.Dispatch<{
+    userId: number;
+    messageId: number;
+    conversationId: number;
+  }>;
   setAllMessages: React.Dispatch<React.SetStateAction<{}>>;
   setConversations: React.Dispatch<React.SetStateAction<[] | any>>;
   chatWindowData: {} | any;
@@ -74,61 +73,77 @@ const ChatWindow = (props: Props) => {
     setDeleteMessageData,
     setMobileView,
   } = props;
-  const [sendedMessage, setSendedMessage] = React.useState({});
 
-  const [message, setMessage] = React.useState("");
-  const [isMessageSending, setIsMessageSending] = React.useState(false);
+  const [sendedMessage, setSendedMessage] = useState({
+    error: "",
+    message: {
+      id: 0,
+      body: "",
+      image: "",
+      createdAt: "",
+      updatedAt: "",
+      senderId: 0,
+      conversationId: 0,
+      sender: {
+        id: 0,
+        name: "",
+        email: "",
+        profilePicture: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    },
+  });
+  const [message, setMessage] = useState("");
+  const [isMessageSending, setIsMessageSending] = useState(false);
   const isActive = true;
-  const conversationId = "chat" + allMessages.id;
+  const conversationId = `chat${allMessages.id}`;
 
-  // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  // useEffect(() => {
-  //   const messageHandler = async (data: any) => {
-  //     await seenHandler({
-  //       userId: user.id,
-  //       conversationId: allMessages.id,
-  //     });
+  useEffect(() => {
+    console.log("sendedMessage UseEffect trigered");
+    pusherClient.subscribe(conversationId);
+    const messageHandler = async (data: any) => {
+      console.log("messageHandler trigered");
+      await seenHandler({
+        userId: user.id,
+        conversationId: allMessages.id,
+      });
+      props.setConversations((prev: any) => {
+        return prev.map((conversation: any) => {
+          if (conversation.id === allMessages.id) {
+            props.setAllMessages((prev: any) => {
+              if (find(prev.message, { id: data.id })) return prev;
+              else return { ...prev, message: [...prev.message, data] };
+            });
+          }
+          return conversation;
+        });
+      });
+    };
 
-  //     props.setConversations((prev: any) => {
-  //       console.log("conversation", prev);
-  //       prev.map((conversation: any) => {
-  //         if (conversation.id === allMessages.id) {
-  //           props.setAllMessages((prev: any) => {
-  //             console.log("messages", prev);
-  //             if (find(prev.message, { id: data.id })) return prev;
-  //             else return { ...prev, message: [...prev.message, data] };
-  //           });
-  //         }
-  //         return conversation;
-  //       });
-  //       return prev;
-  //     });
-  //   };
-  //   // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  //   const updateMessageHandler = (data: any) => {
-  //     console.log("update message", data);
-  //     props.setAllMessages((prev: any) => {
-  //       if (prev.message.map((message: any) => message.id === data.id)) {
-  //         const indexMsg = prev.message.findIndex(
-  //           (message: any) => message.id === data.id
-  //         );
-  //         prev.message[indexMsg] = data;
-  //         console.log("updated", prev);
-  //         return prev;
-  //       }
-  //       return prev;
-  //     });
-  //   };
+    const updateMessageHandler = (data: any) => {
+      console.log("updateMessageHandler trigered");
+      setIsMessageSending(false);
+      props.setAllMessages((prev: any) => {
+        if (prev.message.some((message: any) => message.id === data.id)) {
+          const indexMsg = prev.message.findIndex(
+            (message: any) => message.id === data.id
+          );
+          prev.message[indexMsg] = data;
+          return prev;
+        }
+        return prev;
+      });
+    };
+    pusherClient.bind("chat", messageHandler);
+    pusherClient.bind("seen", updateMessageHandler);
 
-  //   pusherClient.subscribe(conversationId);
-  //   pusherClient.bind("chat", messageHandler);
-  //   pusherClient.bind("seen", updateMessageHandler);
-  //   return () => {
-  //     pusherClient.unbind("chat", messageHandler);
-  //     pusherClient.bind("seen", updateMessageHandler);
-  //     pusherClient.unsubscribe(conversationId);
-  //   };
-  // }, [sendedMessage]);
+    return () => {
+      pusherClient.unbind("chat", messageHandler);
+      pusherClient.unbind("seen", updateMessageHandler);
+      pusherClient.unsubscribe(conversationId);
+    };
+  }, [sendedMessage]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -141,78 +156,30 @@ const ChatWindow = (props: Props) => {
       message: e.target[0].value,
       image: "",
     });
-    setMessage("");
-    setIsMessageSending(false);
-    console.log(response);
+
     setSendedMessage(response);
-    if (response.error) return console.log(response.error);
-    const messageHandler = async (data: any) => {
-      await seenHandler({
-        userId: user.id,
-        conversationId: allMessages.id,
-      });
-      //   props.setConversations((prev: any) => {
-      //     prev.map((conversation: any) => {
-      //       if (conversation.id === allMessages.id) {
-      //         props.setAllMessages((prev: any) => {
-      //           if (find(prev.message, { id: data.id })) return prev;
-      //           else return { ...prev, message: [...prev.message, data] };
-      //         });
-      //       }
-      //       return conversation;
-      //     });
-      //     return prev;
-      //   });
-      // };
-      props.setAllMessages((prev: any) => {
-        console.log("allPreviousSingleConversation", prev);
-        if (find(prev.message, { id: data.id })) return prev;
-        else
-          return (
-            console.log("afterUpdate", {
-              ...prev,
-              message: [...prev.message, data],
-            }),
-            { ...prev, message: [...prev.message, data] }
-          );
-      });
-    };
-    const updateMessageHandler = (data: any) => {
-      props.setAllMessages((prev: any) => {
-        if (prev.message?.map((message: any) => message.id === data.id)) {
-          const indexMsg = prev.message.findIndex(
-            (message: any) => message.id === data.id
-          );
-          prev.message[indexMsg] = data;
-
-          return prev;
-        }
-        return prev;
-      });
-    };
-
-    pusherClient.subscribe(conversationId);
-    pusherClient.bind("chat", messageHandler);
-    pusherClient.bind("seen", updateMessageHandler);
-    return () => {
-      pusherClient.unbind("chat", messageHandler);
-      pusherClient.bind("seen", updateMessageHandler);
-      pusherClient.unsubscribe(conversationId);
-    };
+    setMessage("");
+    if (response.error) {
+      console.log(response.error);
+      return;
+    }
   };
 
   if (!props.showChatWindow) return null;
+
   return (
     <div className="bg-white w-full flex flex-col h-[calc(100vh-100px)] sm:p-4 p-2 my-4 rounded-2xl shadow-md">
+      {/* Chat Header */}
       <div className="flex justify-between w-full p-2 pb-4 border-b-2">
         <div className="flex justify-between gap-3">
           <button
-            className=" hover:bg-gray-200 p-2 rounded-lg"
+            className="hover:bg-gray-200 p-2 rounded-lg"
             onClick={() => {
               setMobileView(false);
               props.setShowChatWindow(false);
             }}
           >
+            {/* Close Button Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -250,7 +217,7 @@ const ChatWindow = (props: Props) => {
         </div>
       </div>
 
-      {/* Chat */}
+      {/* Chat Messages */}
       {allMessages.message && (
         <div className="flex-1 overflow-auto scrollbar-light my-2 flex flex-col gap-3 h-full w-full">
           {allMessages.message.map((mess: any, i: any) => (
@@ -272,14 +239,14 @@ const ChatWindow = (props: Props) => {
         </div>
       )}
 
-      {/* Message */}
+      {/* Message Input */}
       <form
         className="flex justify-between items-center gap-4"
         onSubmit={submitHandler}
       >
         <div className="sm:block hidden">
           <Image
-            className="rounded-full min-w-[28px] min-h-[28px] "
+            className="rounded-full min-w-[28px] min-h-[28px]"
             src={"/square.jpg"}
             alt="Avatar Image"
             objectFit="fill"
@@ -289,12 +256,13 @@ const ChatWindow = (props: Props) => {
         </div>
         <input
           type="text"
-          className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none"
+          className="bg-gray-50 shadow-sm flex-1 p-1.5 rounded-lg outline-none focus:ring-2 focus:ring-sky-200"
           placeholder="Send a message"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           disabled={isMessageSending}
           required
+          ref={(input) => input && input.focus()}
         />
         <button
           className="bg-sky-200 hover:bg-sky-300 p-1.5 rounded-lg"
@@ -302,6 +270,7 @@ const ChatWindow = (props: Props) => {
           disabled={isMessageSending}
         >
           {isMessageSending ? (
+            // Loading Spinner Icon
             <svg
               aria-hidden="true"
               className="mr-2 w-5 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -319,6 +288,7 @@ const ChatWindow = (props: Props) => {
               />
             </svg>
           ) : (
+            // Send Icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="28"

@@ -58,7 +58,6 @@ const DeleteMessage = (props: Props) => {
     });
     // console.log(response);
     props.setDeleteMessage({ response });
-    props.setDeleteBackdropHandler(false);
 
     const messageHandler = (data: any) => {
       props.setAllMessages((prev: any) => {
@@ -82,6 +81,7 @@ const DeleteMessage = (props: Props) => {
     // console.log(conversationid);
     pusherClient.subscribe(conversationid);
     pusherClient.bind("deleteChat", messageHandler);
+    props.setDeleteBackdropHandler(false);
     return () => {
       pusherClient.unsubscribe(conversationid);
       pusherClient.unbind("deleteChat", messageHandler);

@@ -41,7 +41,7 @@ const Layout = ({ children, user }: any) => {
           auth ? "lg:w-[calc(100vw-36vw)] right-[18vw]" : "lg:w-[100vw]"
         } ${
           hideRightBar && "lg:w-[calc(100vw-18vw)] right-0"
-        } lg:absolute  top-[70px] bg-gray-50 rounded-2xl`}
+        } lg:absolute top-[70px] bg-gray-50 rounded-2xl`}
       >
         {children}
       </div>
