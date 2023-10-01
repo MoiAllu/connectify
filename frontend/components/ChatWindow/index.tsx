@@ -111,7 +111,7 @@ const ChatWindow = (props: Props) => {
       props.setConversations((prev: any) => {
         return prev.map((conversation: any) => {
           if (conversation.id === allMessages.id) {
-            return props.setAllMessages((prev: any) => {
+            props.setAllMessages((prev: any) => {
               if (find(prev.message, { id: data.id })) return prev;
               else return { ...prev, message: [...prev.message, data] };
             });
