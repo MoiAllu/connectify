@@ -51,7 +51,7 @@ export default async (req :NextApiRequest, res:NextApiResponse) => {
             }
         })
         const id= "chat"+ conversationId;
-       await pusherServer.trigger(id, 'chat', newMessage);
+      await pusherServer.trigger(id, 'chat', newMessage);
     //  const lastMessage = updateConversation.message[updateConversation.message.length - 1];
     //   updateConversation.users.map((user) => {
     //      pusherServer.trigger(user.email!, 'conversation:update', {
